@@ -7,6 +7,7 @@ import About from "./page/about/About";
 import Product from "./page/products/Product";
 import Partners from "./page/partners/Partners";
 import Contact from "./page/contact/Contact";
+import Login from "./page/loginPage/Login";
 function App() {
   const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ function App() {
           element: <Contact />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
   ]);
   return <RouterProvider router={router} />;
