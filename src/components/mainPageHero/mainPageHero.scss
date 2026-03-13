@@ -1,0 +1,141 @@
+@use "/src/utils/styles/colors.scss" as colors;
+@use "/src/utils/styles/defaultTexts.scss" as defaultTexts;
+
+.hero {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: colors.$color-bg-page;
+  padding: 300px 0;
+}
+
+.hero__inner {
+  z-index: 2;
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 750px;
+  }
+
+  .hero__logo {
+    width: 350px;
+    margin-bottom: 32px;
+  }
+
+  .hero__text {
+    @extend .default-text;
+    color: colors.$color-text-primary;
+    margin-bottom: 32px;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .hero__btn {
+    @extend .default-text;
+    text-decoration: none;
+    padding: 12px 32px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+
+    &--primary {
+      background-color: colors.$color-text-primary;
+      color: colors.$color-white;
+    }
+
+    &--secondary {
+      background-color: colors.$color-white;
+      color: colors.$color-text-primary;
+    }
+
+    &--ghost {
+      background-color: colors.$color-bg-secondary;
+      color: colors.$color-text-primary;
+    }
+  }
+}
+
+// ── Background decorative elements ───────────────────────
+.hero__bg-element {
+  background-image: url("/assets/cyrcle1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero__bg-element--1 {
+  position: absolute;
+  top: 5%;
+  right: 2.5%;
+  width: 385px;
+  height: 385px;
+  z-index: 1;
+}
+
+.hero__bg-element--2 {
+  position: absolute;
+  bottom: 5%;
+  left: 2.5%;
+  width: 320px;
+  height: 320px;
+  z-index: 1;
+}
+
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 768px) {
+  .hero {
+    padding: 200px 0;
+  }
+
+  .hero__inner {
+    .hero__content {
+      max-width: 100%;
+    }
+
+    .hero__logo {
+      width: 250px;
+    }
+
+    .hero__text {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .hero__actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hero__btn {
+      width: 100%;
+      max-width: 250px;
+    }
+  }
+
+  .hero__bg-element--1 {
+    width: 180px;
+    height: 180px;
+  }
+
+  .hero__bg-element--2 {
+    width: 150px;
+    height: 150px;
+  }
+}
