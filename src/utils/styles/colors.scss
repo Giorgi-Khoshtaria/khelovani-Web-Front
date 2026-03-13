@@ -20,8 +20,10 @@ $color-sand: #d9c4a0; // warm sand
 $color-espresso: #2b1a0f; // dark espresso
 $color-walnut: #6b4c35; // walnut brown
 $color-darkest: #1a1108; // near black
-$color-text-primary: #4b5563;
-$color-text-mirage: #111827;
+$color-text-primary: #111827;
+$color-text-secondary: #4b5563;
+
+$color-border: #d1d5db;
 // ============================================
 // Semantic Aliases (optional, recommended)
 // ============================================
@@ -29,8 +31,9 @@ $color-bg-primary: $color-bg-page;
 $color-bg-secondary: $color-bg-secondary;
 $color-bg-accent: $color-bg-accent;
 $color-text-primary: $color-text-primary;
-$color-text-muted: $color-espresso;
+$color-text-secondary: $color-text-secondary;
 $color-text-light: $color-walnut;
 $color-text-dark: $color-darkest;
 $color-accent: $color-deep-red;
-$color-accent-light: $color-burnt-red;
+
+// $color-accent-light: $color-burnt-red;

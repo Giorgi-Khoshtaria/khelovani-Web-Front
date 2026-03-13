@@ -1,5 +1,5 @@
-@use "/src/utils/styles.css/colors.scss" as colors;
-@use "/src/utils/styles.css/defaultTexts.scss" as defaultTexts;
+@use "/src/utils/styles/colors.scss" as colors;
+@use "/src/utils/styles/defaultTexts.scss" as defaultTexts;
 
 .auth-action {
   display: flex;
@@ -15,7 +15,7 @@
   }
 
   .login-btn {
-    color: colors.$color-text-mirage;
+    color: colors.$color-text-primary;
     transition: all 0.3s ease;
 
     &:hover {
@@ -25,8 +25,8 @@
   }
 
   .register-btn {
-    background-color: colors.$color-text-mirage;
     color: colors.$color-white;
+    background-color: colors.$color-text-primary;
   }
 
   &.mobile {

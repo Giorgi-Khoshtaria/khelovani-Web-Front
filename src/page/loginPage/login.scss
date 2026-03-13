@@ -1,0 +1,122 @@
+@use "/src/utils/styles/colors.scss" as colors;
+@use "/src/utils/styles/defaultTexts.scss" as defaultTexts;
+
+.login-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: colors.$color-bg-page;
+}
+.login-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 36px;
+  background-color: colors.$color-white;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+.login-content {
+  h2 {
+    @extend .large-text;
+    color: colors.$color-text-primary;
+    text-align: center;
+  }
+  p {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 36px;
+  }
+}
+.login-form__inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    label {
+      @extend .default-text;
+      color: colors.$color-text-primary;
+    }
+    input {
+      @extend .default-text;
+      color: colors.$color-text-primary;
+      padding: 10px;
+      border: 1px solid colors.$color-border;
+      border-radius: 12px;
+      outline: none;
+      &:focus {
+        border-color: colors.$color-text-primary;
+      }
+    }
+  }
+}
+.forgot-password-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+  a {
+    @extend .default-text;
+    color: colors.$color-text-primary;
+    text-decoration: none;
+  }
+}
+
+.sign-in-button {
+  margin-bottom: 32px;
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: colors.$color-text-primary;
+    color: colors.$color-white;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    cursor: pointer;
+    &:hover {
+      background-color: colors.$color-text-secondary;
+    }
+  }
+}
+.register-container {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  p {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+  }
+  a {
+    @extend .default-text;
+    color: colors.$color-text-primary;
+    text-decoration: none;
+  }
+}
+
+.back-to-home {
+  margin-top: 20px;
+  a {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    img {
+      width: 20px;
+      height: 20px;
+      fill: colors.$color-text-secondary;
+    }
+  }
+}
