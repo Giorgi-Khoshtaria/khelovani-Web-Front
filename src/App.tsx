@@ -5,7 +5,7 @@ import MainPage from "./page/mainPage/MainPage";
 import Layout from "./layout/Layout";
 import About from "./page/about/About";
 import Product from "./page/products/Product";
-import Partners from "./page/parntners/Partners";
+import Partners from "./page/partners/Partners";
 import Contact from "./page/contact/Contact";
 function App() {
   const router = createBrowserRouter([

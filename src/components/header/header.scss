@@ -1,0 +1,106 @@
+@use "/src/utils/styles.css/colors.scss" as colors;
+@use "/src/utils/styles.css/defaultTexts.scss" as defaultTexts;
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: colors.$color-white;
+  padding: 0 40px;
+  position: relative;
+  z-index: 100;
+}
+
+.logo {
+  width: 150px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.favorites-action {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  select {
+    @extend .default-text;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+  }
+}
+
+.burger-menu {
+  display: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// ── Overlay ──────────────────────────────────────────────
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+
+  // always present in DOM but invisible & non-interactive by default
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+// ── Responsive ───────────────────────────────────────────
+@media (max-width: 1100px) {
+  .nav,
+  .auth-action-section {
+    display: none !important;
+  }
+
+  .burger-menu {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 10px;
+  }
+}

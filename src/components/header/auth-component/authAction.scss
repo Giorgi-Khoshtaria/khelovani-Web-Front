@@ -1,0 +1,36 @@
+@use "/src/utils/styles.css/colors.scss" as colors;
+@use "/src/utils/styles.css/defaultTexts.scss" as defaultTexts;
+
+.auth-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  a {
+    @extend .default-text;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  .login-btn {
+    color: colors.$color-text-mirage;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: colors.$color-bg-accent;
+      color: colors.$color-white;
+    }
+  }
+
+  .register-btn {
+    background-color: colors.$color-text-mirage;
+    color: colors.$color-white;
+  }
+
+  &.mobile {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,27 @@
+@use "/src/utils/styles.css/colors.scss" as colors;
+@use "/src/utils/styles.css/defaultTexts.scss" as defaultTexts;
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+
+  li {
+    a {
+      @extend .default-text;
+      text-decoration: none;
+      color: colors.$color-text-dark;
+
+      &:hover {
+        color: colors.$color-accent;
+      }
+    }
+  }
+
+  &.mobile {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
