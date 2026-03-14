@@ -12,9 +12,14 @@ export const registerUser = async (data: UserTypes) => {
   }
 };
 
+// Remove withCredentials (you use JWT in localStorage, not cookies)
 export const loginUser = async (data: LoginTypes) => {
   try {
-    const response = await axios.post(`${API_URL}/api/user/login`, data);
+    const response = await axios.post(`${API_URL}/api/user/login`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error logging in user:", error);
