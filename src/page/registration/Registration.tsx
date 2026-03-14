@@ -1,42 +1,95 @@
-import { useState } from "react";
 import "./registration.scss";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
+import { registerUser } from "../../utils/requests/registration.req";
+import type { UserTypes } from "../../utils/types/userTypes";
+import PasswordInput from "../../components/registrationComponents/PasswordInput";
+import {
+  validateRegistrationForm,
+  type RegistrationFormData,
+  type FormErrors,
+} from "../../utils/validations/RegistrtionValidations";
 
-const EyeOpen = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
+const INITIAL_FORM: RegistrationFormData = {
+  idNumber: "",
+  nameGe: "",
+  nameEn: "",
+  dateOfBirth: "",
+  city: "",
+  address: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  terms: false,
+};
 
-const EyeOff = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-    <line x1="1" y1="1" x2="23" y2="23" />
-  </svg>
-);
+export default function Registration() {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<RegistrationFormData>(INITIAL_FORM);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
 
-function Registration() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { id, value, type } = e.target;
+    const checked =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
+
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === "checkbox" ? checked : value,
+    }));
+
+    // Clear error on change
+    if (errors[id]) {
+      setErrors((prev) => ({ ...prev, [id]: "" }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setApiError("");
+
+    const validationErrors = validateRegistrationForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      toast.error("გთხოვთ შეასწოროთ ფორმაში არსებული შეცდომები");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const payload: UserTypes = {
+        idNumber: formData.idNumber,
+        nameGe: formData.nameGe || undefined,
+        nameEn: formData.nameEn,
+        dateOfBirth: formData.dateOfBirth,
+        city: formData.city,
+        address: formData.address,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      await registerUser(payload);
+      toast.success("ანგარიში წარმატებით შეიქმნა! გთხოვთ გაიაროთ ავტორიზაცია.");
+      navigate("/login");
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error && "response" in error
+          ? // @ts-expect-error axios error
+            (error?.response?.data?.message ??
+            "რეგისტრაციის დროს დაფიქსირდა შეცდომა")
+          : "რეგისტრაციის დროს დაფიქსირდა შეცდომა";
+      setApiError(message);
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="registration-page">
@@ -46,38 +99,97 @@ function Registration() {
           <p>შემოგვიერთდი და აღმოაჩინე ქართული ხელოსნური ნივთები</p>
         </div>
 
-        <form className="registration-form__inputs">
-          {/* Full width: ID */}
+        {apiError && (
+          <p
+            className="error-text"
+            style={{ textAlign: "center", marginBottom: "16px" }}
+          >
+            {apiError}
+          </p>
+        )}
+
+        <form className="registration-form__inputs" onSubmit={handleSubmit}>
+          {/* ID Number */}
           <div className="form-group form-group--full">
-            <label htmlFor="idNumber">პირადი ნომერი</label>
+            <label htmlFor="idNumber">პირადი ნომერი *</label>
             <input
               type="text"
               id="idNumber"
+              value={formData.idNumber}
+              onChange={handleChange}
+              className={errors.idNumber ? "input-error" : ""}
               placeholder="11-ნიშნა პირადი ნომერი"
               maxLength={11}
             />
+            {errors.idNumber && (
+              <span className="error-text">{errors.idNumber}</span>
+            )}
           </div>
 
-          {/* 2 cols: Names */}
+          {/* Names */}
           <div className="form-group">
             <label htmlFor="nameGe">სახელი და გვარი (ქართულად)</label>
-            <input type="text" id="nameGe" placeholder="სახელი გვარი" />
+            <input
+              type="text"
+              id="nameGe"
+              value={formData.nameGe}
+              onChange={handleChange}
+              placeholder="სახელი გვარი"
+            />
           </div>
 
           <div className="form-group">
-            <label htmlFor="nameEn">სახელი და გვარი (ლათინურად)</label>
-            <input type="text" id="nameEn" placeholder="First and Last Name" />
+            <label htmlFor="nameEn">სახელი და გვარი (ლათინურად) *</label>
+            <input
+              type="text"
+              id="nameEn"
+              value={formData.nameEn}
+              onChange={handleChange}
+              className={errors.nameEn ? "input-error" : ""}
+              placeholder="First and Last Name"
+            />
+            {errors.nameEn && (
+              <span className="error-text">{errors.nameEn}</span>
+            )}
           </div>
 
-          {/* 2 cols: DOB + City */}
+          {/* Email */}
+          <div className="form-group form-group--full">
+            <label htmlFor="email">ელ-ფოსტა *</label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={errors.email ? "input-error" : ""}
+              placeholder="example@mail.com"
+            />
+            {errors.email && <span className="error-text">{errors.email}</span>}
+          </div>
+
+          {/* DOB + City */}
           <div className="form-group">
-            <label htmlFor="dob">დაბადების თარიღი</label>
-            <input type="date" id="dob" />
+            <label htmlFor="dateOfBirth">დაბადების თარიღი *</label>
+            <input
+              type="date"
+              id="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              className={errors.dateOfBirth ? "input-error" : ""}
+            />
+            {errors.dateOfBirth && (
+              <span className="error-text">{errors.dateOfBirth}</span>
+            )}
           </div>
 
           <div className="form-group">
-            <label htmlFor="city">ქალაქი</label>
-            <select id="city" defaultValue="">
+            <label htmlFor="city">ქალაქი *</label>
+            <select
+              id="city"
+              value={formData.city}
+              onChange={handleChange}
+              className={errors.city ? "input-error" : ""}
+            >
               <option value="" disabled>
                 აირჩიე ქალაქი
               </option>
@@ -88,64 +200,71 @@ function Registration() {
               <option value="gori">გორი</option>
               <option value="zugdidi">ზუგდიდი</option>
             </select>
+            {errors.city && <span className="error-text">{errors.city}</span>}
           </div>
 
-          {/* Full width: Address */}
+          {/* Address */}
           <div className="form-group form-group--full">
-            <label htmlFor="address">მისამართი</label>
-            <input type="text" id="address" placeholder="ქუჩა, შენობა, ბინა" />
+            <label htmlFor="address">მისამართი *</label>
+            <input
+              type="text"
+              id="address"
+              value={formData.address}
+              onChange={handleChange}
+              className={errors.address ? "input-error" : ""}
+              placeholder="ქუჩა, შენობა, ბინა"
+            />
+            {errors.address && (
+              <span className="error-text">{errors.address}</span>
+            )}
           </div>
 
-          {/* 2 cols: Passwords */}
-          <div className="form-group">
-            <label htmlFor="password">პაროლი</label>
-            <div className="input-password">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="შექმენი ძლიერი პაროლი"
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowPassword((p) => !p)}
-                aria-label="პაროლის ჩვენება"
-              >
-                {showPassword ? <EyeOff /> : <EyeOpen />}
-              </button>
-            </div>
-          </div>
+          {/* Passwords — reusable component */}
+          <PasswordInput
+            id="password"
+            label="პაროლი *"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="შექმენი ძლიერი პაროლი"
+            hasError={!!errors.password}
+            errorMessage={errors.password}
+          />
 
-          <div className="form-group">
-            <label htmlFor="confirmPassword">გაიმეორე პაროლი</label>
-            <div className="input-password">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                placeholder="ხელახლა შეიყვანე პაროლი"
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowConfirmPassword((p) => !p)}
-                aria-label="პაროლის ჩვენება"
-              >
-                {showConfirmPassword ? <EyeOff /> : <EyeOpen />}
-              </button>
-            </div>
-          </div>
+          <PasswordInput
+            id="confirmPassword"
+            label="გაიმეორე პაროლი *"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="ხელახლა შეიყვანე პაროლი"
+            hasError={!!errors.confirmPassword}
+            errorMessage={errors.confirmPassword}
+          />
 
-          {/* Full width: Terms + Submit */}
+          {/* Terms */}
           <div className="terms-container form-group--full">
-            <input type="checkbox" id="terms" />
-            <label htmlFor="terms">
-              ვეთანხმები <Link to="/terms">მომსახურების პირობებს</Link> და{" "}
-              <Link to="/privacy">კონფიდენციალურობის პოლიტიკას</Link>
-            </label>
+            <div
+              style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}
+            >
+              <input
+                type="checkbox"
+                id="terms"
+                checked={formData.terms}
+                onChange={handleChange}
+              />
+              <label htmlFor="terms">
+                ვეთანხმები <Link to="/terms">მომსახურების პირობებს</Link> და{" "}
+                <Link to="/privacy">კონფიდენციალურობის პოლიტიკას</Link>
+              </label>
+            </div>
+            {errors.terms && <span className="error-text">{errors.terms}</span>}
           </div>
 
-          <button type="submit" className="create-account-btn form-group--full">
-            ანგარიშის შექმნა
+          <button
+            type="submit"
+            className="create-account-btn form-group--full"
+            disabled={isLoading}
+          >
+            {isLoading ? "მიმდინარეობს..." : "ანგარიშის შექმნა"}
           </button>
         </form>
 
@@ -165,5 +284,3 @@ function Registration() {
     </div>
   );
 }
-
-export default Registration;

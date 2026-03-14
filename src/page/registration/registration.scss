@@ -239,3 +239,14 @@
     grid-column: 1;
   }
 }
+
+// ── Validation Errors ─────────────────────────────────────
+.error-text {
+  color: #d32f2f;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.input-error {
+  border-color: #d32f2f !important;
+}
