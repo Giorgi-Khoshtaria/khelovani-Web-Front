@@ -30,7 +30,6 @@ export default function Registration() {
   const [formData, setFormData] = useState<RegistrationFormData>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [apiError, setApiError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -52,7 +51,6 @@ export default function Registration() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setApiError("");
 
     const validationErrors = validateRegistrationForm(formData);
     if (Object.keys(validationErrors).length > 0) {
@@ -76,16 +74,30 @@ export default function Registration() {
 
       await registerUser(payload);
       toast.success("ანგარიში წარმატებით შეიქმნა! გთხოვთ გაიაროთ ავტორიზაცია.");
-      navigate("/login");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error: unknown) {
-      const message =
-        error instanceof Error && "response" in error
-          ? // @ts-expect-error axios error
-            (error?.response?.data?.message ??
-            "რეგისტრაციის დროს დაფიქსირდა შეცდომა")
-          : "რეგისტრაციის დროს დაფიქსირდა შეცდომა";
-      setApiError(message);
-      toast.error(message);
+      if (error instanceof Error && "response" in error) {
+        // @ts-expect-error axios error
+        const responseData = error?.response?.data;
+
+        if (responseData?.errors && Array.isArray(responseData.errors)) {
+          // 422 — backend validation errors array → show each as individual toast
+          responseData.errors.forEach(
+            (err: { field: string; message: string }) => {
+              toast.error(err.message);
+            },
+          );
+        } else if (responseData?.message) {
+          // 409 duplicate / 500 server error → single message toast
+          toast.error(responseData.message);
+        } else {
+          toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        }
+      } else if (error instanceof Error && error.message === "Network Error") {
+        toast.error("სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით");
+      } else {
+        toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -98,15 +110,6 @@ export default function Registration() {
           <h2>ანგარიშის შექმნა</h2>
           <p>შემოგვიერთდი და აღმოაჩინე ქართული ხელოსნური ნივთები</p>
         </div>
-
-        {apiError && (
-          <p
-            className="error-text"
-            style={{ textAlign: "center", marginBottom: "16px" }}
-          >
-            {apiError}
-          </p>
-        )}
 
         <form className="registration-form__inputs" onSubmit={handleSubmit}>
           {/* ID Number */}
