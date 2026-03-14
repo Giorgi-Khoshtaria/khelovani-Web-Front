@@ -8,6 +8,7 @@ import Product from "./page/products/Product";
 import Partners from "./page/partners/Partners";
 import Contact from "./page/contact/Contact";
 import Login from "./page/loginPage/Login";
+import Registration from "./page/registration/Registration";
 function App() {
   const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Registration />,
     },
   ]);
   return <RouterProvider router={router} />;
