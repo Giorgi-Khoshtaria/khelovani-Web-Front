@@ -9,3 +9,8 @@ export interface UserTypes {
   password: string;
   // isActive: boolean;
 }
+
+export interface LoginTypes {
+  email: string;
+  password: string;
+}

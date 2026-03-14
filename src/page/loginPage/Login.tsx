@@ -1,10 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./login.scss";
 import { Link } from "react-router-dom";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
+import type { LoginTypes } from "../../utils/types/userTypes";
+import { toast } from "react-toastify";
+import { loginUser } from "@/utils/requests/userRequests/auth.req";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [data, setData] = useState<LoginTypes>({
+    email: "",
+    password: "",
+  });
+
+  const handleLogin = async () => {
+    if (!data.email || !data.password) {
+      toast.error("გთხოვთ შეავსოთ ყველა ველი");
+      return;
+    }
+    try {
+      const response = await loginUser(data);
+      console.log(response);
+    } catch (error) {
+      console.error("Error logging in user:", error);
+    }
+  };
+  useEffect(() => {
+    handleLogin();
+  }, []);
 
   return (
     <div className="login-page">
@@ -20,6 +43,8 @@ function Login() {
               type="email"
               id="email"
               placeholder="მაგ: example@gmail.com"
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
             />
           </div>
           <div>
@@ -29,6 +54,8 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="შეიყვანე პაროლი"
+                value={data.password}
+                onChange={(e) => setData({ ...data, password: e.target.value })}
               />
               <button
                 type="button"
