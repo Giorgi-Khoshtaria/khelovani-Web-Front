@@ -11,6 +11,7 @@ import SideMenu from "./sideManu/sideManu";
 function Header() {
   const [lang, setLang] = useState<"GE" | "EN">("GE");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -19,6 +20,13 @@ function Header() {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  // Add shadow on scroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const nav = [
     { title: "მთავარი", titleEn: "Home", path: "/" },
@@ -30,7 +38,7 @@ function Header() {
 
   return (
     <>
-      <header className="header">
+      <header className={`header${scrolled ? " header--scrolled" : ""}`}>
         <Link to="/" className="header-logo">
           <img className="logo" src="/assets/logo.png" alt="logo" />
         </Link>

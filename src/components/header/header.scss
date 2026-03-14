@@ -8,8 +8,15 @@
   justify-content: space-between;
   background-color: colors.$color-white;
   padding: 0 40px;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 100;
+  box-shadow: none;
+  transition: box-shadow 0.3s ease;
+
+  &--scrolled {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .logo {
