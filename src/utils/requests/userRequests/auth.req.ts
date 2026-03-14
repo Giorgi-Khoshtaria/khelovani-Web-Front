@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { UserTypes } from "../../types/userTypes";
+import type { UserTypes, LoginTypes } from "../../types/userTypes";
 
 const API_URL = import.meta.env.VITE_API_URL;
 export const registerUser = async (data: UserTypes) => {
@@ -8,6 +8,16 @@ export const registerUser = async (data: UserTypes) => {
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
+    throw error;
+  }
+};
+
+export const loginUser = async (data: LoginTypes) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/user/login`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error logging in user:", error);
     throw error;
   }
 };

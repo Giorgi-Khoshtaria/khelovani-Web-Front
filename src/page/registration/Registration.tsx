@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
-import { registerUser } from "../../utils/requests/userRequests/registration.req";
+import { registerUser } from "../../utils/requests/userRequests/auth.req";
 import type { UserTypes } from "../../utils/types/userTypes";
 import PasswordInput from "../../components/registrationComponents/PasswordInput";
 import {
