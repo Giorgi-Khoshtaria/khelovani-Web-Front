@@ -1,8 +1,6 @@
 @use "/src/utils/styles/colors.scss" as colors;
 @use "/src/utils/styles/defaultTexts.scss" as defaultTexts;
 
-// Reuses all the same patterns as registration.scss
-
 .registration-page {
   width: 100%;
   display: flex;
@@ -64,10 +62,14 @@
   label {
     @extend .default-text;
     color: colors.$color-text-primary;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
   input,
-  select {
+  select,
+  textarea {
     @extend .default-text;
     color: colors.$color-text-primary;
     padding: 10px 14px;
@@ -92,6 +94,21 @@
     cursor: pointer;
     appearance: auto;
   }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+  }
+}
+
+// ── Label hint (subtitle under label) ────────────────────
+.label-hint {
+  @extend .default-text;
+  font-size: 0.78rem;
+  color: colors.$color-text-secondary;
+  font-weight: 300;
+  opacity: 0.8;
 }
 
 // ── Terms checkbox ────────────────────────────────────────

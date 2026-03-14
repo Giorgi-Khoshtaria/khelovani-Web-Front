@@ -27,8 +27,8 @@ function PartnerRegistration() {
             <input type="text" id="companyNameEn" placeholder="Company Name" />
           </div>
 
-          {/* 2 cols: ID code + Contact person */}
-          <div className="form-group">
+          {/* Full width: ID code */}
+          <div className="form-group form-group--full">
             <label htmlFor="identificationCode">საიდენტიფიკაციო კოდი</label>
             <input
               type="text"
@@ -38,12 +38,18 @@ function PartnerRegistration() {
             />
           </div>
 
+          {/* 2 cols: Contact person + Phone */}
           <div className="form-group">
             <label htmlFor="contactPerson">საკონტაქტო პირის სახელი</label>
             <input type="text" id="contactPerson" placeholder="სახელი გვარი" />
           </div>
 
-          {/* 2 cols: City + Phone */}
+          <div className="form-group">
+            <label htmlFor="phone">ტელეფონის ნომერი</label>
+            <input type="tel" id="phone" placeholder="+995 5XX XXX XXX" />
+          </div>
+
+          {/* 2 cols: City + Email */}
           <div className="form-group">
             <label htmlFor="city">ქალაქი</label>
             <select id="city" defaultValue="">
@@ -60,8 +66,8 @@ function PartnerRegistration() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="phone">ტელეფონის ნომერი</label>
-            <input type="tel" id="phone" placeholder="+995 5XX XXX XXX" />
+            <label htmlFor="email">ელ. ფოსტა</label>
+            <input type="email" id="email" placeholder="company@example.com" />
           </div>
 
           {/* Full width: Address */}
@@ -70,10 +76,19 @@ function PartnerRegistration() {
             <input type="text" id="address" placeholder="ქუჩა, შენობა, ოფისი" />
           </div>
 
-          {/* Full width: Email */}
+          {/* Full width: Short description */}
           <div className="form-group form-group--full">
-            <label htmlFor="email">ელ. ფოსტა</label>
-            <input type="email" id="email" placeholder="company@example.com" />
+            <label htmlFor="description">
+              კომპანიის მოკლე აღწერა
+              <span className="label-hint">
+                რამდენიმე წინადადებით აღწერე შენი კომპანია
+              </span>
+            </label>
+            <textarea
+              id="description"
+              placeholder="მაგ: ჩვენ ვართ ქართული ხელნაკეთი სამკაულების მწარმოებელი კომპანია, დაარსებული 2010 წელს..."
+              rows={3}
+            />
           </div>
 
           {/* Full width: Terms + Submit */}
@@ -92,7 +107,7 @@ function PartnerRegistration() {
 
         {/* <div className="sign-in-container">
           <p>
-            უკვე გაქვს ანგარიში? <Link to="/lo">შესვლა</Link>
+            უკვე გაქვს ანგარიში? <Link to="/login">შესვლა</Link>
           </p>
         </div> */}
       </div>
