@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { UserTypes } from "../types/userTypes";
+import type { UserTypes } from "../../types/userTypes";
 
 const API_URL = import.meta.env.VITE_API_URL;
 export const registerUser = async (data: UserTypes) => {
