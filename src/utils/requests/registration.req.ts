@@ -1,5 +1,4 @@
 import axios from "axios";
-import "dotenv/config";
 import type { UserTypes } from "../types/userTypes";
 
 const API_URL = import.meta.env.VITE_API_URL;
