@@ -9,6 +9,7 @@ import Partners from "./page/partners/Partners";
 import Contact from "./page/contact/Contact";
 import Login from "./page/loginPage/Login";
 import Registration from "./page/registration/Registration";
+import PartnerRegistration from "./page/partnerRegistration/PartnerRegistration";
 function App() {
   const router = createBrowserRouter([
     {
@@ -44,6 +45,10 @@ function App() {
     {
       path: "/register",
       element: <Registration />,
+    },
+    {
+      path: "/become-partner",
+      element: <PartnerRegistration />,
     },
   ]);
   return <RouterProvider router={router} />;
