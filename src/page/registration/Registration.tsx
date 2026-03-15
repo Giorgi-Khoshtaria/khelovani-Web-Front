@@ -2,6 +2,7 @@ import "./registration.scss";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
 import { registerUser } from "../../utils/requests/userRequests/auth.req";
 import type { UserTypes } from "../../utils/types/userTypes";
@@ -11,6 +12,7 @@ import {
   type RegistrationFormData,
   type FormErrors,
 } from "../../utils/validations/RegistrtionValidations";
+import { useRateLimitCooldown } from "@/utils/limiters/requestLimiter";
 
 const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",
@@ -31,6 +33,9 @@ export default function Registration() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
+    useRateLimitCooldown(120);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -43,7 +48,6 @@ export default function Registration() {
       [id]: type === "checkbox" ? checked : value,
     }));
 
-    // Clear error on change
     if (errors[id]) {
       setErrors((prev) => ({ ...prev, [id]: "" }));
     }
@@ -59,7 +63,10 @@ export default function Registration() {
       return;
     }
 
+    if (isCooldownActive) return;
+
     setIsLoading(true);
+
     try {
       const payload: UserTypes = {
         idNumber: formData.idNumber,
@@ -76,19 +83,22 @@ export default function Registration() {
       toast.success("ანგარიში წარმატებით შეიქმნა! გთხოვთ გაიაროთ ავტორიზაცია.");
       setTimeout(() => navigate("/login"), 2000);
     } catch (error: unknown) {
-      if (error instanceof Error && "response" in error) {
-        // @ts-expect-error axios error
+      if (axios.isAxiosError(error)) {
+        if (error?.response?.status === 429) {
+          startCooldown();
+          setIsLoading(false);
+          return;
+        }
+
         const responseData = error?.response?.data;
 
         if (responseData?.errors && Array.isArray(responseData.errors)) {
-          // 422 — backend validation errors array → show each as individual toast
           responseData.errors.forEach(
             (err: { field: string; message: string }) => {
               toast.error(err.message);
             },
           );
         } else if (responseData?.message) {
-          // 409 duplicate / 500 server error → single message toast
           toast.error(responseData.message);
         } else {
           toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
@@ -111,7 +121,11 @@ export default function Registration() {
           <p>შემოგვიერთდი და აღმოაჩინე ქართული ხელოსნური ნივთები</p>
         </div>
 
-        <form className="registration-form__inputs" onSubmit={handleSubmit}>
+        <form
+          className="registration-form__inputs"
+          onSubmit={handleSubmit}
+          noValidate
+        >
           {/* ID Number */}
           <div className="form-group form-group--full">
             <label htmlFor="idNumber">პირადი ნომერი *</label>
@@ -222,7 +236,7 @@ export default function Registration() {
             )}
           </div>
 
-          {/* Passwords — reusable component */}
+          {/* Passwords */}
           <PasswordInput
             id="password"
             label="პაროლი *"
@@ -261,14 +275,19 @@ export default function Registration() {
             </div>
             {errors.terms && <span className="error-text">{errors.terms}</span>}
           </div>
-
-          <button
-            type="submit"
-            className="create-account-btn form-group--full"
-            disabled={isLoading}
-          >
-            {isLoading ? "მიმდინარეობს..." : "ანგარიშის შექმნა"}
-          </button>
+          <div className="create-account-button">
+            <button
+              type="submit"
+              disabled={isLoading || isButtonDisabled}
+              className="create-account-btn"
+            >
+              {isCooldownActive
+                ? cooldownText
+                : isLoading
+                  ? "მიმდინარეობს..."
+                  : "ანგარიშის შექმნა"}
+            </button>
+          </div>
         </form>
 
         <div className="sign-in-container">

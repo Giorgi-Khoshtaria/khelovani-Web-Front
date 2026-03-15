@@ -183,6 +183,10 @@
   }
 }
 
+.create-account-button {
+  grid-column: 1 / -1;
+}
+
 // ── Sign in link ──────────────────────────────────────────
 .sign-in-container {
   display: flex;
