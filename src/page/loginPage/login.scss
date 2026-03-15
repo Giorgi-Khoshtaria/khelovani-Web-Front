@@ -155,3 +155,30 @@
     color: colors.$color-text-primary;
   }
 }
+.field-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem; // same small size for both fields
+  color: #e53e3e; // red for both
+  font-weight: 400; // same weight as normal text, not bold
+  line-height: 1.4;
+}
+
+.input-error {
+  border-color: #e53e3e !important;
+}
+
+// Make sure the password wrapper doesn't override the error span
+.input-password {
+  position: relative; // keep your existing layout intact
+
+  & + .field-error {
+    // targets the error span right after the wrapper
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #e53e3e;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+}

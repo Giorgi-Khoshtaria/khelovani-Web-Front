@@ -6,27 +6,46 @@ import type { LoginTypes } from "../../utils/types/userTypes";
 import { toast } from "react-toastify";
 import { loginUser } from "@/utils/requests/userRequests/auth.req";
 import axios from "axios";
+import { useRateLimitCooldown } from "@/utils/limiters/requestLimiter";
+import {
+  validateLoginForm,
+  type LoginFormErrors,
+} from "@/utils/validations/loginValidations";
 
 function Login() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<LoginFormErrors>({});
+
+  const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
+    useRateLimitCooldown(120);
+
   const [data, setData] = useState<LoginTypes>({
     email: "",
     password: "",
   });
 
+  const handleFieldChange = (field: keyof LoginTypes, value: string) => {
+    setData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!data.email || !data.password) {
-      toast.error("გთხოვთ შეავსოთ ყველა ველი");
+    const validationErrors = validateLoginForm(data);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
-    console.log(import.meta.env.VITE_API_URL);
 
-    console.log("sending:", data);
+    if (isCooldownActive) return;
+
     setIsLoading(true);
+
     try {
       const response = await loginUser(data);
 
@@ -41,12 +60,18 @@ function Login() {
         const message =
           error?.response?.data?.message ?? "შეცდომა შევიდა სისტემაში";
         toast.error(message);
+
+        if (error?.response?.status === 429) {
+          startCooldown();
+          setIsLoading(false);
+          return;
+        }
       } else if (error instanceof Error && error.message === "Network Error") {
         toast.error("სერვერთან დაკავშირება ვერ მოხერხდა");
       } else {
         toast.error("შეცდომა შევიდა სისტემაში");
       }
-    } finally {
+
       setIsLoading(false);
     }
   };
@@ -59,26 +84,33 @@ function Login() {
           <p>შედი შენს ანგარიშზე გასაგრძელებლად</p>
         </div>
 
-        <form onSubmit={handleLogin} className="login-form__inputs">
-          <div>
+        <form noValidate onSubmit={handleLogin} className="login-form__inputs ">
+          <div className="form-field">
             <label htmlFor="email">ელ. ფოსტა</label>
             <input
               type="email"
               id="email"
               placeholder="მაგ: example@gmail.com"
               value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
+              onChange={(e) => handleFieldChange("email", e.target.value)}
+              className={errors.email ? "input-error" : ""}
             />
+            {errors.email && (
+              <span className="field-error">{errors.email}</span>
+            )}
           </div>
-          <div>
+
+          <div className="form-field">
             <label htmlFor="password">პაროლი</label>
-            <div className="input-password">
+            <div
+              className={`input-password ${errors.password ? "input-error" : ""}`}
+            >
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="შეიყვანე პაროლი"
                 value={data.password}
-                onChange={(e) => setData({ ...data, password: e.target.value })}
+                onChange={(e) => handleFieldChange("password", e.target.value)}
               />
               <button
                 type="button"
@@ -116,16 +148,22 @@ function Login() {
                 )}
               </button>
             </div>
+            {errors.password && (
+              <span className="field-error">{errors.password}</span>
+            )}
           </div>
 
           <div className="forgot-password-container">
             <Link to="/forgot-password">პაროლი დაგავიწყდა?</Link>
           </div>
 
-          {/* ✅ ღილაკი form-ის შიგნით, type="submit" */}
           <div className="sign-in-button">
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? "მიმდინარეობს..." : "შესვლა"}
+            <button type="submit" disabled={isLoading || isButtonDisabled}>
+              {isCooldownActive
+                ? cooldownText
+                : isLoading
+                  ? "მიმდინარეობს..."
+                  : "შესვლა"}
             </button>
           </div>
         </form>
