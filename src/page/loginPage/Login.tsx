@@ -10,9 +10,11 @@ import { useRateLimitCooldown } from "@/utils/limiters/requestLimiter";
 import {
   validateLoginForm,
   type LoginFormErrors,
+  useCheckIfUserIsLogin,
 } from "@/utils/validations/loginValidations";
 
 function Login() {
+  useCheckIfUserIsLogin();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

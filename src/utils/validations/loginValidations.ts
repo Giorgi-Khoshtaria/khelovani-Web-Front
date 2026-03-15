@@ -1,5 +1,7 @@
+import { toast } from "react-toastify";
 import type { LoginTypes } from "../../utils/types/userTypes";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 export type LoginFormErrors = {
   email?: string;
   password?: string;
@@ -29,3 +31,19 @@ export function validateLoginForm(data: LoginTypes): LoginFormErrors {
 
   return errors;
 }
+
+export const useCheckIfUserIsLogin = () => {
+  const navigate = useNavigate();
+  const hasRun = useRef(false); // ← prevents double fire
+
+  useEffect(() => {
+    if (hasRun.current) return; // ← skip if already ran
+
+    const token = localStorage.getItem("access-token");
+    if (token) {
+      hasRun.current = true; // ← mark as ran
+      toast.error("თქვენ უკვე შესული ხართ სისტემაში");
+      setTimeout(() => navigate("/"), 1500);
+    }
+  }, [navigate]);
+};

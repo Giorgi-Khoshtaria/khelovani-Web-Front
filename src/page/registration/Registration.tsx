@@ -13,6 +13,7 @@ import {
   type FormErrors,
 } from "../../utils/validations/RegistrtionValidations";
 import { useRateLimitCooldown } from "@/utils/limiters/requestLimiter";
+import { useCheckIfUserIsLogin } from "@/utils/validations/loginValidations";
 
 const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",
@@ -28,6 +29,7 @@ const INITIAL_FORM: RegistrationFormData = {
 };
 
 export default function Registration() {
+  useCheckIfUserIsLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<RegistrationFormData>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
