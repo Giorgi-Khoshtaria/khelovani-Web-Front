@@ -23,6 +23,7 @@ const INITIAL_FORM: RegistrationFormData = {
   city: "",
   address: "",
   email: "",
+  phone: "",
   password: "",
   confirmPassword: "",
   terms: false,
@@ -77,6 +78,7 @@ export default function Registration() {
         dateOfBirth: formData.dateOfBirth,
         city: formData.city,
         address: formData.address,
+        phone: formData.phone,
         email: formData.email,
         password: formData.password,
       };
@@ -172,8 +174,8 @@ export default function Registration() {
             )}
           </div>
 
-          {/* Email */}
-          <div className="form-group form-group--full">
+          {/* Email + Phone — same pattern as nameGe / nameEn */}
+          <div className="form-group">
             <label htmlFor="email">ელ-ფოსტა *</label>
             <input
               type="email"
@@ -186,7 +188,20 @@ export default function Registration() {
             {errors.email && <span className="error-text">{errors.email}</span>}
           </div>
 
-          {/* DOB + City */}
+          <div className="form-group">
+            <label htmlFor="phone">ტელეფონის ნომერი *</label>
+            <input
+              type="tel"
+              id="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className={errors.phone ? "input-error" : ""}
+              placeholder="5XX XXX XXX"
+            />
+            {errors.phone && <span className="error-text">{errors.phone}</span>}
+          </div>
+
+          {/* DOB + City — same pattern as nameGe / nameEn */}
           <div className="form-group">
             <label htmlFor="dateOfBirth">დაბადების თარიღი *</label>
             <input
@@ -277,6 +292,7 @@ export default function Registration() {
             </div>
             {errors.terms && <span className="error-text">{errors.terms}</span>}
           </div>
+
           <div className="create-account-button">
             <button
               type="submit"
