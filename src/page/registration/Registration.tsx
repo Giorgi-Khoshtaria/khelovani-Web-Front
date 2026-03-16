@@ -6,7 +6,6 @@ import axios from "axios";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
 import { registerUser } from "../../utils/requests/userRequests/auth.req";
 import type { UserTypes } from "../../utils/types/userTypes";
-import PasswordInput from "../../components/registrationComponents/PasswordInput";
 import {
   validateRegistrationForm,
   type RegistrationFormData,
@@ -14,6 +13,12 @@ import {
 } from "../../utils/validations/RegistrtionValidations";
 import { useRateLimitCooldown } from "@/utils/limiters/requestLimiter";
 import { useCheckIfUserIsLogin } from "@/utils/validations/loginValidations";
+import TextInput from "@/utils/sharedComponents/Textinput";
+import PhoneInput from "@/utils/sharedComponents/Phoneinput";
+import PasswordInput from "@/utils/sharedComponents/PasswordInput";
+import SelectInput from "@/utils/sharedComponents/Selectinput";
+import TermsCheckbox from "@/utils/sharedComponents/Termscheckbox";
+import { CITY_OPTIONS } from "@/utils/sharedComponents/Cityoptions";
 
 const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",
@@ -77,7 +82,7 @@ export default function Registration() {
         dateOfBirth: formData.dateOfBirth,
         city: formData.city,
         address: formData.address,
-        phone: formData.phone,
+        phone: `+995${formData.phone}`,
         email: formData.email,
         password: formData.password,
       };
@@ -92,9 +97,7 @@ export default function Registration() {
           setIsLoading(false);
           return;
         }
-
         const responseData = error?.response?.data;
-
         if (responseData?.errors && Array.isArray(responseData.errors)) {
           responseData.errors.forEach(
             (err: { field: string; message: string }) => {
@@ -129,138 +132,88 @@ export default function Registration() {
           onSubmit={handleSubmit}
           noValidate
         >
-          {/* ID Number */}
-          <div className="form-group form-group--full">
-            <label htmlFor="idNumber">პირადი ნომერი *</label>
-            <input
-              type="text"
-              id="idNumber"
-              value={formData.idNumber}
-              onChange={handleChange}
-              className={errors.idNumber ? "input-error" : ""}
-              placeholder="11-ნიშნა პირადი ნომერი"
-              maxLength={11}
-            />
-            {errors.idNumber && (
-              <span className="error-text">{errors.idNumber}</span>
-            )}
-          </div>
+          <TextInput
+            id="idNumber"
+            label="პირადი ნომერი *"
+            value={formData.idNumber}
+            onChange={handleChange}
+            error={errors.idNumber}
+            placeholder="11-ნიშნა პირადი ნომერი"
+            maxLength={11}
+            fullWidth
+          />
 
-          {/* Names */}
-          <div className="form-group">
-            <label htmlFor="nameGe">სახელი და გვარი (ქართულად)</label>
-            <input
-              type="text"
-              id="nameGe"
-              value={formData.nameGe}
-              onChange={handleChange}
-              placeholder="სახელი გვარი"
-            />
-          </div>
+          <TextInput
+            id="nameGe"
+            label="სახელი და გვარი (ქართულად)"
+            value={formData.nameGe}
+            onChange={handleChange}
+            placeholder="სახელი გვარი"
+          />
 
-          <div className="form-group">
-            <label htmlFor="nameEn">სახელი და გვარი (ლათინურად) *</label>
-            <input
-              type="text"
-              id="nameEn"
-              value={formData.nameEn}
-              onChange={handleChange}
-              className={errors.nameEn ? "input-error" : ""}
-              placeholder="First and Last Name"
-            />
-            {errors.nameEn && (
-              <span className="error-text">{errors.nameEn}</span>
-            )}
-          </div>
+          <TextInput
+            id="nameEn"
+            label="სახელი და გვარი (ლათინურად) *"
+            value={formData.nameEn}
+            onChange={handleChange}
+            error={errors.nameEn}
+            placeholder="First and Last Name"
+          />
 
-          {/* Email + Phone — same pattern as nameGe / nameEn */}
-          <div className="form-group">
-            <label htmlFor="email">ელ-ფოსტა *</label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={errors.email ? "input-error" : ""}
-              placeholder="example@mail.com"
-            />
-            {errors.email && <span className="error-text">{errors.email}</span>}
-          </div>
+          <TextInput
+            id="email"
+            label="ელ-ფოსტა *"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="example@mail.com"
+          />
 
-          <div className="form-group">
-            <label htmlFor="phone">ტელეფონის ნომერი *</label>
-            <input
-              type="tel"
-              id="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className={errors.phone ? "input-error" : ""}
-              placeholder="5XX XXX XXX"
-            />
-            {errors.phone && <span className="error-text">{errors.phone}</span>}
-          </div>
+          <PhoneInput
+            id="phone"
+            label="ტელეფონის ნომერი *"
+            value={formData.phone}
+            onChange={handleChange}
+            error={errors.phone}
+          />
 
-          {/* DOB + City — same pattern as nameGe / nameEn */}
-          <div className="form-group">
-            <label htmlFor="dateOfBirth">დაბადების თარიღი *</label>
-            <input
-              type="date"
-              id="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-              className={errors.dateOfBirth ? "input-error" : ""}
-            />
-            {errors.dateOfBirth && (
-              <span className="error-text">{errors.dateOfBirth}</span>
-            )}
-          </div>
+          <TextInput
+            id="dateOfBirth"
+            label="დაბადების თარიღი *"
+            type="date"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            error={errors.dateOfBirth}
+          />
 
-          <div className="form-group">
-            <label htmlFor="city">ქალაქი *</label>
-            <select
-              id="city"
-              value={formData.city}
-              onChange={handleChange}
-              className={errors.city ? "input-error" : ""}
-            >
-              <option value="" disabled>
-                აირჩიე ქალაქი
-              </option>
-              <option value="tbilisi">თბილისი</option>
-              <option value="batumi">ბათუმი</option>
-              <option value="kutaisi">ქუთაისი</option>
-              <option value="rustavi">რუსთავი</option>
-              <option value="gori">გორი</option>
-              <option value="zugdidi">ზუგდიდი</option>
-            </select>
-            {errors.city && <span className="error-text">{errors.city}</span>}
-          </div>
+          <SelectInput
+            id="city"
+            label="ქალაქი *"
+            value={formData.city}
+            onChange={handleChange}
+            options={CITY_OPTIONS}
+            placeholder="აირჩიე ქალაქი"
+            error={errors.city}
+          />
 
-          {/* Address */}
-          <div className="form-group form-group--full">
-            <label htmlFor="address">მისამართი *</label>
-            <input
-              type="text"
-              id="address"
-              value={formData.address}
-              onChange={handleChange}
-              className={errors.address ? "input-error" : ""}
-              placeholder="ქუჩა, შენობა, ბინა"
-            />
-            {errors.address && (
-              <span className="error-text">{errors.address}</span>
-            )}
-          </div>
+          <TextInput
+            id="address"
+            label="მისამართი *"
+            value={formData.address}
+            onChange={handleChange}
+            error={errors.address}
+            placeholder="ქუჩა, შენობა, ბინა"
+            fullWidth
+          />
 
-          {/* Passwords */}
           <PasswordInput
             id="password"
             label="პაროლი *"
             value={formData.password}
             onChange={handleChange}
+            error={errors.password}
             placeholder="შექმენი ძლიერი პაროლი"
-            hasError={!!errors.password}
-            errorMessage={errors.password}
           />
 
           <PasswordInput
@@ -268,33 +221,16 @@ export default function Registration() {
             label="გაიმეორე პაროლი *"
             value={formData.confirmPassword}
             onChange={handleChange}
+            error={errors.confirmPassword}
             placeholder="ხელახლა შეიყვანე პაროლი"
-            hasError={!!errors.confirmPassword}
-            errorMessage={errors.confirmPassword}
           />
 
-          {/* Terms */}
-          <div className="terms-container form-group--full">
-            <div
-              style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}
-            >
-              <input
-                type="checkbox"
-                id="terms"
-                checked={formData.terms}
-                onChange={handleChange}
-              />
-              <label htmlFor="terms">
-                ვეთანხმები <Link to="/terms">მომსახურების პირობებს</Link> და{" "}
-                <Link to="/privacy">კონფიდენციალურობის პოლიტიკას</Link>
-              </label>
-            </div>
-            <div>
-              {errors.terms && (
-                <span className="error-text">{errors.terms}</span>
-              )}
-            </div>
-          </div>
+          <TermsCheckbox
+            id="terms"
+            checked={formData.terms}
+            onChange={handleChange}
+            error={errors.terms}
+          />
 
           <div className="create-account-button">
             <button
