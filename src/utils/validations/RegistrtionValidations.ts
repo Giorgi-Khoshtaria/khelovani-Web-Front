@@ -1,3 +1,5 @@
+import { validatePhone } from "./shared/phone.validation";
+
 export interface RegistrationFormData {
   idNumber: string;
   nameGe: string;
@@ -6,6 +8,7 @@ export interface RegistrationFormData {
   city: string;
   address: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
   terms: boolean;
@@ -113,6 +116,8 @@ export const validateRegistrationForm = (
     errors.email = "შეიყვანეთ სწორი ელ-ფოსტის მისამართი";
   }
 
+  const phoneError = validatePhone(formData.phone);
+  if (phoneError) errors.phone = phoneError;
   // ── Password ──────────────────────────────────────────────
   // min 8 max 30, at least 1 uppercase, at least 1 special character
   if (!password) {

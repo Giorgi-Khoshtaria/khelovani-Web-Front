@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 export const useRateLimitCooldown = (durationSeconds: number = 120) => {
   const [cooldown, setCooldown] = useState<number>(0);
 
-  // Countdown logic
   useEffect(() => {
     if (cooldown <= 0) return;
 
