@@ -1,8 +1,95 @@
 import "./partnerRegistration.scss";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
+import TextInput from "@/utils/sharedComponents/Textinput";
+import PhoneInput from "@/utils/sharedComponents/Phoneinput";
+import SelectInput from "@/utils/sharedComponents/Selectinput";
+import TextareaInput from "@/utils/sharedComponents/Textareainput";
+import TermsCheckbox from "@/utils/sharedComponents/Termscheckbox";
+import { CITY_OPTIONS } from "@/utils/sharedComponents/Cityoptions";
+
+interface PartnerFormData {
+  companyNameGe: string;
+  companyNameEn: string;
+  identificationCode: string;
+  contactPerson: string;
+  phone: string;
+  city: string;
+  email: string;
+  address: string;
+  description: string;
+  terms: boolean;
+}
+
+interface PartnerFormErrors {
+  [key: string]: string | undefined;
+}
+
+const INITIAL_FORM: PartnerFormData = {
+  companyNameGe: "",
+  companyNameEn: "",
+  identificationCode: "",
+  contactPerson: "",
+  phone: "",
+  city: "",
+  email: "",
+  address: "",
+  description: "",
+  terms: false,
+};
 
 function PartnerRegistration() {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<PartnerFormData>(INITIAL_FORM);
+  const [errors, setErrors] = useState<PartnerFormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    const { id, value, type } = e.target;
+    const checked =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
+
+    setFormData((prev) => ({
+      ...prev,
+      [id]: type === "checkbox" ? checked : value,
+    }));
+
+    if (errors[id]) {
+      setErrors((prev) => ({ ...prev, [id]: undefined }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // add your partner register request here
+      toast.success("განაცხადი წარმატებით გაიგზავნა!");
+      setTimeout(() => navigate("/"), 2000);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const responseData = error?.response?.data;
+        if (responseData?.message) {
+          toast.error(responseData.message);
+        } else {
+          toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        }
+      } else {
+        toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="registration-page">
       <div className="registration-page__form">
@@ -11,105 +98,116 @@ function PartnerRegistration() {
           <p>შეავსე ფორმა და გახდი ჩვენი პლატფორმის პარტნიორი</p>
         </div>
 
-        <form className="registration-form__inputs">
-          {/* 2 cols: Company names */}
-          <div className="form-group">
-            <label htmlFor="companyNameGe">კომპანიის სახელი (ქართულად)</label>
-            <input
-              type="text"
-              id="companyNameGe"
-              placeholder="კომპანიის სახელი"
-            />
-          </div>
+        <form
+          className="registration-form__inputs"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <TextInput
+            id="companyNameGe"
+            label="კომპანიის სახელი (ქართულად)"
+            value={formData.companyNameGe}
+            onChange={handleChange}
+            error={errors.companyNameGe}
+            placeholder="კომპანიის სახელი"
+          />
 
-          <div className="form-group">
-            <label htmlFor="companyNameEn">კომპანიის სახელი (ლათინურად)</label>
-            <input type="text" id="companyNameEn" placeholder="Company Name" />
-          </div>
+          <TextInput
+            id="companyNameEn"
+            label="კომპანიის სახელი (ლათინურად)"
+            value={formData.companyNameEn}
+            onChange={handleChange}
+            error={errors.companyNameEn}
+            placeholder="Company Name"
+          />
 
-          {/* Full width: ID code */}
-          <div className="form-group form-group--full">
-            <label htmlFor="identificationCode">საიდენტიფიკაციო კოდი</label>
-            <input
-              type="text"
-              id="identificationCode"
-              placeholder="9-ნიშნა საიდენტიფიკაციო კოდი"
-              maxLength={9}
-            />
-          </div>
+          <TextInput
+            id="identificationCode"
+            label="საიდენტიფიკაციო კოდი"
+            value={formData.identificationCode}
+            onChange={handleChange}
+            error={errors.identificationCode}
+            placeholder="9-ნიშნა საიდენტიფიკაციო კოდი"
+            maxLength={9}
+            fullWidth
+          />
 
-          {/* 2 cols: Contact person + Phone */}
-          <div className="form-group">
-            <label htmlFor="contactPerson">საკონტაქტო პირის სახელი</label>
-            <input type="text" id="contactPerson" placeholder="სახელი გვარი" />
-          </div>
+          <TextInput
+            id="contactPerson"
+            label="საკონტაქტო პირის სახელი"
+            value={formData.contactPerson}
+            onChange={handleChange}
+            error={errors.contactPerson}
+            placeholder="სახელი გვარი"
+          />
 
-          <div className="form-group">
-            <label htmlFor="phone">ტელეფონის ნომერი</label>
-            <input type="tel" id="phone" placeholder="+995 5XX XXX XXX" />
-          </div>
+          <PhoneInput
+            id="phone"
+            label="ტელეფონის ნომერი"
+            value={formData.phone}
+            onChange={handleChange}
+            error={errors.phone}
+          />
 
-          {/* 2 cols: City + Email */}
-          <div className="form-group">
-            <label htmlFor="city">ქალაქი</label>
-            <select id="city" defaultValue="">
-              <option value="" disabled>
-                აირჩიე ქალაქი
-              </option>
-              <option value="tbilisi">თბილისი</option>
-              <option value="batumi">ბათუმი</option>
-              <option value="kutaisi">ქუთაისი</option>
-              <option value="rustavi">რუსთავი</option>
-              <option value="gori">გორი</option>
-              <option value="zugdidi">ზუგდიდი</option>
-            </select>
-          </div>
+          <SelectInput
+            id="city"
+            label="ქალაქი"
+            value={formData.city}
+            onChange={handleChange}
+            options={CITY_OPTIONS}
+            placeholder="აირჩიე ქალაქი"
+            error={errors.city}
+          />
 
-          <div className="form-group">
-            <label htmlFor="email">ელ. ფოსტა</label>
-            <input type="email" id="email" placeholder="company@example.com" />
-          </div>
+          <TextInput
+            id="email"
+            label="ელ. ფოსტა"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="company@example.com"
+          />
 
-          {/* Full width: Address */}
-          <div className="form-group form-group--full">
-            <label htmlFor="address">მისამართი</label>
-            <input type="text" id="address" placeholder="ქუჩა, შენობა, ოფისი" />
-          </div>
+          <TextInput
+            id="address"
+            label="მისამართი"
+            value={formData.address}
+            onChange={handleChange}
+            error={errors.address}
+            placeholder="ქუჩა, შენობა, ოფისი"
+            fullWidth
+          />
 
-          {/* Full width: Short description */}
-          <div className="form-group form-group--full">
-            <label htmlFor="description">
-              კომპანიის მოკლე აღწერა
-              <span className="label-hint">
-                რამდენიმე წინადადებით აღწერე შენი კომპანია
-              </span>
-            </label>
-            <textarea
-              id="description"
-              placeholder="მაგ: ჩვენ ვართ ქართული ხელნაკეთი სამკაულების მწარმოებელი კომპანია, დაარსებული 2010 წელს..."
-              rows={3}
-            />
-          </div>
+          <TextareaInput
+            id="description"
+            label="კომპანიის მოკლე აღწერა"
+            hint="რამდენიმე წინადადებით აღწერე შენი კომპანია"
+            value={formData.description}
+            onChange={handleChange}
+            error={errors.description}
+            placeholder="მაგ: ჩვენ ვართ ქართული ხელნაკეთი სამკაულების მწარმოებელი კომპანია, დაარსებული 2010 წელს..."
+            rows={3}
+            fullWidth
+          />
 
-          {/* Full width: Terms + Submit */}
-          <div className="terms-container form-group--full">
-            <input type="checkbox" id="terms" />
-            <label htmlFor="terms">
-              ვეთანხმები <Link to="/terms">მომსახურების პირობებს</Link> და{" "}
-              <Link to="/privacy">კონფიდენციალურობის პოლიტიკას</Link>
-            </label>
-          </div>
+          <TermsCheckbox
+            id="terms"
+            checked={formData.terms}
+            onChange={handleChange}
+            error={errors.terms}
+          />
 
-          <button type="submit" className="create-account-btn form-group--full">
-            რეგისტრაცია
-          </button>
+          <div className="create-account-button form-group--full">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="create-account-btn"
+            >
+              {isLoading ? "მიმდინარეობს..." : "რეგისტრაცია"}
+            </button>
+          </div>
         </form>
-
-        {/* <div className="sign-in-container">
-          <p>
-            უკვე გაქვს ანგარიში? <Link to="/login">შესვლა</Link>
-          </p>
-        </div> */}
       </div>
 
       <div className="back-to-home">

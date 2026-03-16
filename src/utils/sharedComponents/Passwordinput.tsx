@@ -1,37 +1,36 @@
 import { useState } from "react";
-import { EyeOpen, EyeOff } from "./Eyeicons";
+import { EyeOpen, EyeOff } from "@/utils/sharedComponents/Eyeicons";
 
 interface PasswordInputProps {
   id: string;
-  value: string;
-  placeholder: string;
-  hasError: boolean;
-  errorMessage?: string;
   label: string;
+  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  error?: string;
+  fullWidth?: boolean;
 }
 
-function PasswordInput({
+export default function PasswordInput({
   id,
-  value,
-  placeholder,
-  hasError,
-  errorMessage,
   label,
+  value,
   onChange,
+  placeholder,
+  error,
+  fullWidth,
 }: PasswordInputProps) {
   const [show, setShow] = useState(false);
 
   return (
-    <div className="form-group">
+    <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>{label}</label>
-      <div className="input-password">
+      <div className={`input-password${error ? " input-error" : ""}`}>
         <input
           type={show ? "text" : "password"}
           id={id}
           value={value}
           onChange={onChange}
-          className={hasError ? "input-error" : ""}
           placeholder={placeholder}
         />
         <button
@@ -43,11 +42,7 @@ function PasswordInput({
           {show ? <EyeOff /> : <EyeOpen />}
         </button>
       </div>
-      {hasError && errorMessage && (
-        <span className="error-text">{errorMessage}</span>
-      )}
+      {error && <span className="error-text">{error}</span>}
     </div>
   );
 }
-
-export default PasswordInput;

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import "./login.scss";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import arrowLeft from "/assets/arrow-left-solid-full.svg";
 import type { LoginTypes } from "../../utils/types/userTypes";
@@ -12,11 +12,12 @@ import {
   type LoginFormErrors,
   useCheckIfUserIsLogin,
 } from "@/utils/validations/loginValidations";
+import TextInput from "@/utils/sharedComponents/Textinput";
+import PasswordInput from "@/utils/sharedComponents/PasswordInput";
 
 function Login() {
   useCheckIfUserIsLogin();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<LoginFormErrors>({});
 
@@ -28,10 +29,11 @@ function Login() {
     password: "",
   });
 
-  const handleFieldChange = (field: keyof LoginTypes, value: string) => {
-    setData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setData((prev) => ({ ...prev, [id]: value }));
+    if (errors[id as keyof LoginFormErrors]) {
+      setErrors((prev) => ({ ...prev, [id]: undefined }));
     }
   };
 
@@ -86,74 +88,25 @@ function Login() {
           <p>შედი შენს ანგარიშზე გასაგრძელებლად</p>
         </div>
 
-        <form noValidate onSubmit={handleLogin} className="login-form__inputs ">
-          <div className="form-field">
-            <label htmlFor="email">ელ. ფოსტა</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="მაგ: example@gmail.com"
-              value={data.email}
-              onChange={(e) => handleFieldChange("email", e.target.value)}
-              className={errors.email ? "input-error" : ""}
-            />
-            {errors.email && (
-              <span className="field-error">{errors.email}</span>
-            )}
-          </div>
+        <form noValidate onSubmit={handleLogin} className="login-form__inputs">
+          <TextInput
+            id="email"
+            label="ელ. ფოსტა"
+            type="email"
+            value={data.email}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="მაგ: example@gmail.com"
+          />
 
-          <div className="form-field">
-            <label htmlFor="password">პაროლი</label>
-            <div
-              className={`input-password ${errors.password ? "input-error" : ""}`}
-            >
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="შეიყვანე პაროლი"
-                value={data.password}
-                onChange={(e) => handleFieldChange("password", e.target.value)}
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowPassword((p) => !p)}
-                aria-label="პაროლის ჩვენება"
-              >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                    <line x1="1" y1="1" x2="23" y2="23" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <span className="field-error">{errors.password}</span>
-            )}
-          </div>
+          <PasswordInput
+            id="password"
+            label="პაროლი"
+            value={data.password}
+            onChange={handleChange}
+            error={errors.password}
+            placeholder="შეიყვანე პაროლი"
+          />
 
           <div className="forgot-password-container">
             <Link to="/forgot-password">პაროლი დაგავიწყდა?</Link>
