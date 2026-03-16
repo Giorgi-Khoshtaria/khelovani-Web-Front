@@ -15,7 +15,7 @@ import { useRateLimitCooldown } from "@/utils/limiters/requestLimiter";
 import { useCheckIfUserIsLogin } from "@/utils/validations/loginValidations";
 import TextInput from "@/utils/sharedComponents/Textinput";
 import PhoneInput from "@/utils/sharedComponents/Phoneinput";
-import PasswordInput from "@/utils/sharedComponents/PasswordInput";
+import PasswordInput from "@/utils/sharedComponents/Passwordinput";
 import SelectInput from "@/utils/sharedComponents/Selectinput";
 import TermsCheckbox from "@/utils/sharedComponents/Termscheckbox";
 import { CITY_OPTIONS } from "@/utils/sharedComponents/Cityoptions";
@@ -82,13 +82,15 @@ export default function Registration() {
         dateOfBirth: formData.dateOfBirth,
         city: formData.city,
         address: formData.address,
-        phone: `+995${formData.phone}`,
+        phone: formData.phone,
         email: formData.email,
         password: formData.password,
       };
 
       await registerUser(payload);
-      toast.success("ანგარიში წარმატებით შეიქმნა! გთხოვთ გაიაროთ ავტორიზაცია.");
+      toast.success(
+        "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
+      );
       setTimeout(() => navigate("/login"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

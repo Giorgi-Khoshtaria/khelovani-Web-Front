@@ -11,6 +11,7 @@ import Contact from "./page/contact/Contact";
 import Login from "./page/loginPage/Login";
 import Registration from "./page/registration/Registration";
 import PartnerRegistration from "./page/partnerRegistration/PartnerRegistration";
+import UserRegistrationVerify from "./page/verifications/userRegistrationVerify/UserRegistrationVerify";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,6 +29,7 @@ function App() {
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Registration /> },
     { path: "/become-partner", element: <PartnerRegistration /> },
+    { path: "/verify-user-registration", element: <UserRegistrationVerify /> },
   ]);
 
   return (
