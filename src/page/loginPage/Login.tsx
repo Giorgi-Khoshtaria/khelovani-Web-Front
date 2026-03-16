@@ -13,7 +13,7 @@ import {
   useCheckIfUserIsLogin,
 } from "@/utils/validations/loginValidations";
 import TextInput from "@/utils/sharedComponents/Textinput";
-import PasswordInput from "@/utils/sharedComponents/PasswordInput";
+import PasswordInput from "@/utils/sharedComponents/Passwordinput";
 
 function Login() {
   useCheckIfUserIsLogin();
