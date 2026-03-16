@@ -62,7 +62,6 @@ export default function Registration() {
     const validationErrors = validateRegistrationForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      toast.error("გთხოვთ შეასწოროთ ფორმაში არსებული შეცდომები");
       return;
     }
 
@@ -290,7 +289,11 @@ export default function Registration() {
                 <Link to="/privacy">კონფიდენციალურობის პოლიტიკას</Link>
               </label>
             </div>
-            {errors.terms && <span className="error-text">{errors.terms}</span>}
+            <div>
+              {errors.terms && (
+                <span className="error-text">{errors.terms}</span>
+              )}
+            </div>
           </div>
 
           <div className="create-account-button">
