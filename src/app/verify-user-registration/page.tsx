@@ -151,7 +151,17 @@ function VerifyContent() {
 
 export default function UserRegistrationVerify() {
   return (
-    <Suspense fallback={<div className="ev-page"><div className="ev-card"><div className="ev-loader"><p className="ev-loader__text">იტვირთება...</p></div></div></div>}>
+    <Suspense
+      fallback={
+        <div className="ev-page">
+          <div className="ev-card">
+            <div className="ev-loader">
+              <p className="ev-loader__text">იტვირთება...</p>
+            </div>
+          </div>
+        </div>
+      }
+    >
       <VerifyContent />
     </Suspense>
   );

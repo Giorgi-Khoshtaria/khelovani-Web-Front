@@ -1,4 +1,9 @@
 import { validatePhone } from "./shared/phone.validation";
+import {
+  validateEmail,
+  validateStrictPassword,
+  validateConfirmPassword,
+} from "./shared/fieldValidators";
 
 export interface RegistrationFormData {
   idNumber: string;
@@ -101,37 +106,21 @@ export const validateRegistrationForm = (
     errors.address = "მისამართი არ უნდა აღემატებოდეს 200 სიმბოლოს";
   }
 
-  // ── Email ─────────────────────────────────────────────────
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email) {
-    errors.email = "ელ-ფოსტა აუცილებელია";
-  } else if (!emailRegex.test(email)) {
-    errors.email = "შეიყვანეთ სწორი ელ-ფოსტის მისამართი";
-  }
+  // ── Email (shared) ────────────────────────────────────────
+  const emailError = validateEmail(email);
+  if (emailError) errors.email = emailError;
 
+  // ── Phone (shared) ────────────────────────────────────────
   const phoneError = validatePhone(formData.phone);
   if (phoneError) errors.phone = phoneError;
 
-  // ── Password ──────────────────────────────────────────────
-  if (!password) {
-    errors.password = "პაროლი აუცილებელია";
-  } else if (password.length < 8) {
-    errors.password = "პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს";
-  } else if (password.length > 30) {
-    errors.password = "პაროლი არ უნდა აღემატებოდეს 30 სიმბოლოს";
-  } else if (!/[A-Z]/.test(password)) {
-    errors.password = "პაროლი უნდა შეიცავდეს მინიმუმ 1 დიდ ასოს";
-  } else if (!/[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]/.test(password)) {
-    errors.password =
-      "პაროლი უნდა შეიცავდეს მინიმუმ 1 სპეციალურ სიმბოლოს (!@#$%...)";
-  }
+  // ── Password strict (shared) ──────────────────────────────
+  const passwordError = validateStrictPassword(password);
+  if (passwordError) errors.password = passwordError;
 
-  // ── Confirm Password ──────────────────────────────────────
-  if (!confirmPassword) {
-    errors.confirmPassword = "გაიმეორეთ პაროლი";
-  } else if (password !== confirmPassword) {
-    errors.confirmPassword = "პაროლები არ ემთხვევა";
-  }
+  // ── Confirm Password (shared) ─────────────────────────────
+  const confirmError = validateConfirmPassword(password, confirmPassword);
+  if (confirmError) errors.confirmPassword = confirmError;
 
   // ── Terms ─────────────────────────────────────────────────
   if (!terms) {
