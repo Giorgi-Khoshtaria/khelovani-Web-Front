@@ -12,6 +12,7 @@ import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
+import Image from "next/image";
 
 interface PartnerFormData {
   companyNameGe: string;
@@ -214,7 +215,7 @@ function PartnerRegistration() {
 
       <div className="back-to-home">
         <Link href="/">
-          <img src="/assets/arrow-left-solid-full.svg" alt="უკან" />
+          <Image src="/assets/arrow-left-solid-full.svg" alt="უკან" />
           მთავარ გვერდზე დაბრუნება
         </Link>
       </div>

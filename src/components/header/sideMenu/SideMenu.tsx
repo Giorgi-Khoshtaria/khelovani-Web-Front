@@ -1,6 +1,7 @@
 import Navigation from "../navigation-component/Navigation";
 import AuthActions from "../auth-component/AuthActions";
 import "./sideMenu.scss";
+import Image from "next/image";
 
 interface NavItem {
   title: string;
@@ -25,7 +26,7 @@ function SideMenu({ closeIcon, nav, lang, isOpen, onClose }: SideMenuProps) {
           onClick={onClose}
           aria-label="Close menu"
         >
-          <img src={closeIcon} alt="Close menu" />
+          <Image src={closeIcon} width={24} height={24} alt="Close menu" />
         </button>
       </div>
 

@@ -1,5 +1,6 @@
 @use "../../styles/colors.scss" as colors;
 @use "../../styles/defaultTexts.scss" as defaultTexts;
+@use "../../styles/inputs.scss";
 
 .registration-page {
   width: 100%;
@@ -49,88 +50,7 @@
   gap: 14px 20px;
 }
 
-// ── Form group ────────────────────────────────────────────
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  // spans both columns
-  &--full {
-    grid-column: 1 / -1;
-  }
-
-  label {
-    @extend .default-text;
-    color: colors.$color-text-primary;
-  }
-
-  input,
-  select {
-    @extend .default-text;
-    color: colors.$color-text-primary;
-    padding: 10px 14px;
-    border: 1px solid colors.$color-border;
-    border-radius: 12px;
-    outline: none;
-    background-color: colors.$color-white;
-    width: 100%;
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      border-color: colors.$color-text-primary;
-    }
-
-    &::placeholder {
-      color: colors.$color-text-secondary;
-      opacity: 0.6;
-    }
-  }
-
-  input[type="date"]:not(:valid) {
-    color: colors.$color-text-secondary;
-    opacity: 0.6;
-  }
-
-  select {
-    cursor: pointer;
-    appearance: auto;
-  }
-}
-
-// ── Password field with toggle ────────────────────────────
-.input-password {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  input {
-    padding-right: 42px;
-  }
-}
-
-.toggle-password {
-  position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: colors.$color-text-secondary;
-  transition: color 0.2s ease;
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  &:hover {
-    color: colors.$color-text-primary;
-  }
-}
+// ── Form group, input-password, toggle-password → see styles/_inputs.scss ──
 
 // ── Terms checkbox ────────────────────────────────────────
 .terms-container {
@@ -245,13 +165,4 @@
   }
 }
 
-// ── Validation Errors ─────────────────────────────────────
-.error-text {
-  color: #d32f2f;
-  font-size: 11px;
-  margin-top: 4px;
-}
-
-.input-error {
-  border-color: #d32f2f !important;
-}
+// ── Validation Errors → see styles/_inputs.scss ───────────

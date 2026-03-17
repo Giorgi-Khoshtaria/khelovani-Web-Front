@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "./mainPageHero.scss";
+import Image from "next/image";
 
 function MainPageHero() {
   const main_hero_text =
@@ -17,7 +18,13 @@ function MainPageHero() {
       ></span>
       <div className="hero__inner">
         <div className="hero__content">
-          <img className="hero__logo" src="/assets/logo.png" alt="logo" />
+          <Image
+            className="hero__logo"
+            src="/assets/logo.png"
+            width={150}
+            height={150}
+            alt="logo"
+          />
           <p className="hero__text">{main_hero_text}</p>
         </div>
 

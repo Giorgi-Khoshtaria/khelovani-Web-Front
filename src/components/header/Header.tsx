@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import "./header.scss";
 import { useState, useEffect } from "react";
@@ -39,7 +40,13 @@ function Header() {
     <>
       <header className={`header${scrolled ? " header--scrolled" : ""}`}>
         <Link href="/" className="header-logo">
-          <img className="logo" src="/assets/logo.png" alt="logo" />
+          <Image
+            className="logo"
+            src="/assets/logo.png"
+            width={150}
+            height={50}
+            alt="logo"
+          />
         </Link>
 
         <nav className="nav">
@@ -48,7 +55,12 @@ function Header() {
 
         <div className="header-actions">
           <div className="favorites-action">
-            <img src="/assets/favorite-icon.svg" alt="favoriteIcon" />
+            <Image
+              src="/assets/favorite-icon.svg"
+              width={24}
+              height={24}
+              alt="favoriteIcon"
+            />
           </div>
 
           <div className="lang-toggle">
@@ -71,7 +83,12 @@ function Header() {
             aria-label="Open menu"
             aria-expanded={menuOpen}
           >
-            <img src="/assets/burger-icon.svg" alt="Open menu" />
+            <Image
+              src="/assets/burger-icon.svg"
+              width={24}
+              height={24}
+              alt="Open menu"
+            />
           </button>
         </div>
       </header>

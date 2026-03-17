@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import "./registration.scss";
 import { useState } from "react";
@@ -260,7 +261,12 @@ export default function Registration() {
 
       <div className="back-to-home">
         <Link href="/">
-          <img src="/assets/arrow-left-solid-full.svg" alt="უკან" />
+          <Image
+            src="/assets/arrow-left-solid-full.svg"
+            width={24}
+            height={24}
+            alt="უკან"
+          />
           მთავარ გვერდზე დაბრუნება
         </Link>
       </div>
