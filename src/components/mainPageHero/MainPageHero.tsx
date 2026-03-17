@@ -1,5 +1,4 @@
-import logo from "/assets/logo.png";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import "./mainPageHero.scss";
 
 function MainPageHero() {
@@ -18,18 +17,18 @@ function MainPageHero() {
       ></span>
       <div className="hero__inner">
         <div className="hero__content">
-          <img className="hero__logo" src={logo} alt="logo" />
+          <img className="hero__logo" src="/assets/logo.png" alt="logo" />
           <p className="hero__text">{main_hero_text}</p>
         </div>
 
         <div className="hero__actions">
-          <Link to="/products" className="hero__btn hero__btn--primary">
+          <Link href="/products" className="hero__btn hero__btn--primary">
             აღმოაჩინე კოლექცია
           </Link>
-          <Link to="/partners" className="hero__btn hero__btn--secondary">
+          <Link href="/partners" className="hero__btn hero__btn--secondary">
             აღმოაჩინე პარტნიორები
           </Link>
-          <Link to="/become-partner" className="hero__btn hero__btn--ghost">
+          <Link href="/become-partner" className="hero__btn hero__btn--ghost">
             გახდი პარტნიორი
           </Link>
         </div>

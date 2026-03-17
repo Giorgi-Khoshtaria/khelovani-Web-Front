@@ -1,5 +1,5 @@
-@use "/src/utils/styles/colors.scss" as colors;
-@use "/src/utils/styles/defaultTexts.scss" as defaultTexts;
+@use "../../styles/colors.scss" as colors;
+@use "../../styles/defaultTexts.scss" as defaultTexts;
 
 .hero {
   position: relative;

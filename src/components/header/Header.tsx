@@ -1,12 +1,11 @@
+"use client";
+
 import "./header.scss";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Navigation from "./navigation-component/Navigation";
 import AuthActions from "./auth-component/AuthActions";
-import favoriteIcon from "/assets/favorite-icon.svg";
-import burgerIcon from "/assets/burger-icon.svg";
-import closeIcon from "/assets/close-icon.svg";
-import SideMenu from "./sideManu/sideManu";
+import SideMenu from "./sideMenu/SideMenu";
 
 function Header() {
   const [lang, setLang] = useState<"GE" | "EN">("GE");
@@ -39,7 +38,7 @@ function Header() {
   return (
     <>
       <header className={`header${scrolled ? " header--scrolled" : ""}`}>
-        <Link to="/" className="header-logo">
+        <Link href="/" className="header-logo">
           <img className="logo" src="/assets/logo.png" alt="logo" />
         </Link>
 
@@ -49,7 +48,7 @@ function Header() {
 
         <div className="header-actions">
           <div className="favorites-action">
-            <img src={favoriteIcon} alt="favoriteIcon" />
+            <img src="/assets/favorite-icon.svg" alt="favoriteIcon" />
           </div>
 
           <div className="lang-toggle">
@@ -72,7 +71,7 @@ function Header() {
             aria-label="Open menu"
             aria-expanded={menuOpen}
           >
-            <img src={burgerIcon} alt="Open menu" />
+            <img src="/assets/burger-icon.svg" alt="Open menu" />
           </button>
         </div>
       </header>
@@ -86,7 +85,7 @@ function Header() {
 
       {/* Side Menu */}
       <SideMenu
-        closeIcon={closeIcon}
+        closeIcon="/assets/close-icon.svg"
         nav={nav}
         lang={lang}
         isOpen={menuOpen}
