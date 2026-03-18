@@ -37,7 +37,6 @@ export const validateRegistrationForm = (
     confirmPassword,
     terms,
   } = formData;
-
   // ── ID Number ─────────────────────────────────────────────
   if (!idNumber) {
     errors.idNumber = "პირადი ნომერი აუცილებელია";

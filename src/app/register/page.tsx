@@ -15,13 +15,13 @@ import {
   type FormErrors,
 } from "@/lib/validations/RegistrationValidations";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
-import { useCheckIfUserIsLogin } from "@/lib/validations/loginValidations";
 import TextInput from "@/components/ui/TextInput";
 import PhoneInput from "@/components/ui/PhoneInput";
 import PasswordInput from "@/components/ui/PasswordInput";
 import SelectInput from "@/components/ui/SelectInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
+import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 
 const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",

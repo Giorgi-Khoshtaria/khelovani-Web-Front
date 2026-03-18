@@ -27,7 +27,7 @@ function VerifyContent() {
     const verify = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify-user-registration?token=${token}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify?token=${token}`,
         );
 
         const { status } = response.data;

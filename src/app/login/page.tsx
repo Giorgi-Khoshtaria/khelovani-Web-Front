@@ -13,10 +13,10 @@ import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
 import {
   validateLoginForm,
   type LoginFormErrors,
-  useCheckIfUserIsLogin,
 } from "@/lib/validations/loginValidations";
 import TextInput from "@/components/ui/TextInput";
 import PasswordInput from "@/components/ui/PasswordInput";
+import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 
 function Login() {
   useCheckIfUserIsLogin();
