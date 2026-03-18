@@ -12,9 +12,11 @@ import {
   type ForgotPasswordErrors,
 } from "@/lib/validations/forgotPasswordValidations";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
+import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 import Link from "next/link";
 
 function ForgotPassword() {
+  useCheckIfUserIsLogin();
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<ForgotPasswordErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -49,12 +51,12 @@ function ForgotPassword() {
 
     try {
       await forgotPassword(email);
+
       setSent(true);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ??
-          "მოთხოვნის გაგზავნა ვერ მოხერხდა";
+          error?.response?.data?.message ?? "მოთხოვნის გაგზავნა ვერ მოხერხდა";
         toast.error(message);
 
         if (error?.response?.status === 429) {
@@ -85,10 +87,14 @@ function ForgotPassword() {
           <>
             <h1 className="title">შეამოწმე ელ. ფოსტა</h1>
             <p>
-              პაროლის აღდგენის ბმული გაგზავნილია{" "}
-              <strong>{email}</strong>-ზე. შეამოწმე შენი შემოსული ფოსტა.
+              პაროლის აღდგენის ბმული გაგზავნილია <strong>{email}</strong>-ზე.
+              შეამოწმე შენი შემოსული ფოსტა.
             </p>
-            <Link href="/login" className="send-btn" style={{ textAlign: "center", textDecoration: "none" }}>
+            <Link
+              href="/login"
+              className="send-btn"
+              style={{ textAlign: "center", textDecoration: "none" }}
+            >
               შესვლის გვერდზე დაბრუნება
             </Link>
           </>
@@ -97,8 +103,8 @@ function ForgotPassword() {
           <>
             <h1 className="title">დაგავიწყდა პაროლი?</h1>
             <p>
-              შეიყვანე შენი მეილი და ჩვენ გამოგიგზავნით <br /> პაროლის
-              აღდგენის ბმულს
+              შეიყვანე შენი მეილი და ჩვენ გამოგიგზავნით <br /> პაროლის აღდგენის
+              ბმულს
             </p>
             <form action="" className="form" onSubmit={handleSubmit} noValidate>
               <TextInput

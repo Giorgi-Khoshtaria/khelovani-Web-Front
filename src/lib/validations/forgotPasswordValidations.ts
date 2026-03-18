@@ -33,9 +33,11 @@ export function validateResetPasswordForm(data: {
   const passwordError = validatePassword(data.password);
   if (passwordError) errors.password = passwordError;
 
-  const confirmError = validateConfirmPassword(data.password, data.confirmPassword);
+  const confirmError = validateConfirmPassword(
+    data.password,
+    data.confirmPassword,
+  );
   if (confirmError) errors.confirmPassword = confirmError;
 
   return errors;
 }
-
