@@ -6,30 +6,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Image from "next/image";
 import TextInput from "@/components/ui/TextInput";
 import PhoneInput from "@/components/ui/PhoneInput";
 import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
-import Image from "next/image";
-
-interface PartnerFormData {
-  companyNameGe: string;
-  companyNameEn: string;
-  identificationCode: string;
-  contactPerson: string;
-  phone: string;
-  city: string;
-  email: string;
-  address: string;
-  description: string;
-  terms: boolean;
-}
-
-interface PartnerFormErrors {
-  [key: string]: string | undefined;
-}
+import {
+  validatePartnerForm,
+  type PartnerFormData,
+} from "@/lib/validations/becomePartnerValidations";
+import { useFormHandler } from "@/lib/hooks/useFormHandler";
 
 const INITIAL_FORM: PartnerFormData = {
   companyNameGe: "",
@@ -46,31 +34,20 @@ const INITIAL_FORM: PartnerFormData = {
 
 function PartnerRegistration() {
   const router = useRouter();
-  const [formData, setFormData] = useState<PartnerFormData>(INITIAL_FORM);
-  const [errors, setErrors] = useState<PartnerFormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    const { id, value, type } = e.target;
-    const checked =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
-
-    setFormData((prev) => ({
-      ...prev,
-      [id]: type === "checkbox" ? checked : value,
-    }));
-
-    if (errors[id]) {
-      setErrors((prev) => ({ ...prev, [id]: undefined }));
-    }
-  };
+  const { formData, errors, setErrors, handleChange } =
+    useFormHandler<PartnerFormData>(INITIAL_FORM);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationErrors = validatePartnerForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -80,7 +57,13 @@ function PartnerRegistration() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const responseData = error?.response?.data;
-        if (responseData?.message) {
+        if (responseData?.errors && Array.isArray(responseData.errors)) {
+          responseData.errors.forEach(
+            (err: { field: string; message: string }) => {
+              toast.error(err.message);
+            },
+          );
+        } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
           toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
@@ -215,7 +198,12 @@ function PartnerRegistration() {
 
       <div className="back-to-home">
         <Link href="/">
-          <Image src="/assets/arrow-left-solid-full.svg" alt="უკან" />
+          <Image
+            src="/assets/arrow-left-solid-full.svg"
+            width={24}
+            height={24}
+            alt="უკან"
+          />
           მთავარ გვერდზე დაბრუნება
         </Link>
       </div>

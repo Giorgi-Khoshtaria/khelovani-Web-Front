@@ -1,168 +1,57 @@
 @use "../../styles/colors.scss" as colors;
 @use "../../styles/defaultTexts.scss" as defaultTexts;
 @use "../../styles/inputs.scss";
+@use "../../styles/auth.scss";
 
 .registration-page {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  min-height: 100vh;
-  background-color: colors.$color-bg-page;
+  @extend .auth-page;
 }
 
 .registration-page__form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 36px;
-  background-color: colors.$color-white;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 780px; // wider to accommodate 2 columns
+  @extend .auth-card;
+  max-width: 780px; 
 }
 
-// ── Header ────────────────────────────────────────────────
 .registration-content {
-  h2 {
-    @extend .large-text;
-    color: colors.$color-text-primary;
-    text-align: center;
-  }
-
-  p {
-    @extend .default-text;
-    color: colors.$color-text-secondary;
-    font-weight: 300;
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 24px;
-  }
+  @extend .auth-content;
 }
 
-// ── Form grid ─────────────────────────────────────────────
 .registration-form__inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr; // 2 equal columns on wide screens
+  grid-template-columns: 1fr 1fr;
   gap: 14px 20px;
 }
 
-// ── Form group, input-password, toggle-password → see styles/_inputs.scss ──
-
-// ── Terms checkbox ────────────────────────────────────────
 .terms-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-
-  input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    cursor: pointer;
-    accent-color: colors.$color-text-primary;
-  }
-
-  label {
-    @extend .default-text;
-    color: colors.$color-text-secondary;
-    cursor: pointer;
-    line-height: 1.5;
-
-    a {
-      color: colors.$color-text-primary;
-      font-weight: 600;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+  @extend .auth-terms-container;
 }
 
-// ── Submit button ─────────────────────────────────────────
 .create-account-btn {
-  @extend .default-text;
-  width: 100%;
-  padding: 13px;
-  background-color: colors.$color-text-primary;
-  color: colors.$color-white;
-  border: none;
-  border-radius: 12px;
-  outline: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: colors.$color-text-secondary;
-  }
+  @extend .auth-submit-btn;
 }
 
 .create-account-button {
   grid-column: 1 / -1;
 }
 
-// ── Sign in link ──────────────────────────────────────────
 .sign-in-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 4px;
-
-  p {
-    @extend .default-text;
-    color: colors.$color-text-secondary;
-
-    a {
-      color: colors.$color-text-primary;
-      font-weight: 600;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
+  @extend .auth-footer-link;
 }
 
-// ── Back to home ──────────────────────────────────────────
 .back-to-home {
-  margin-top: 20px;
-
-  a {
-    @extend .default-text;
-    color: colors.$color-text-secondary;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
-  }
+  @extend .auth-back-home;
 }
 
-// ── Responsive: single column on mobile ──────────────────
 @media (max-width: 600px) {
   .registration-page__form {
     padding: 24px 20px;
   }
 
   .registration-form__inputs {
-    grid-template-columns: 1fr; // back to single column
+    grid-template-columns: 1fr; 
   }
 
-  // all items naturally span the single column, but be explicit:
   .form-group--full {
     grid-column: 1;
   }
 }
-
-// ── Validation Errors → see styles/_inputs.scss ───────────
