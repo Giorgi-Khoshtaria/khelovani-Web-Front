@@ -12,9 +12,9 @@ import type { UserTypes } from "@/lib/types/userTypes";
 import {
   validateRegistrationForm,
   type RegistrationFormData,
-  type FormErrors,
 } from "@/lib/validations/RegistrationValidations";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
+import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import TextInput from "@/components/ui/TextInput";
 import PhoneInput from "@/components/ui/PhoneInput";
 import PasswordInput from "@/components/ui/PasswordInput";
@@ -40,29 +40,13 @@ const INITIAL_FORM: RegistrationFormData = {
 export default function Registration() {
   useCheckIfUserIsLogin();
   const router = useRouter();
-  const [formData, setFormData] = useState<RegistrationFormData>(INITIAL_FORM);
-  const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const { formData, setFormData, errors, setErrors, handleChange } =
+    useFormHandler(INITIAL_FORM);
 
   const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
     useRateLimitCooldown(120);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { id, value, type } = e.target;
-    const checked =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
-
-    setFormData((prev) => ({
-      ...prev,
-      [id]: type === "checkbox" ? checked : value,
-    }));
-
-    if (errors[id]) {
-      setErrors((prev) => ({ ...prev, [id]: "" }));
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,6 +137,7 @@ export default function Registration() {
             label="სახელი და გვარი (ქართულად)"
             value={formData.nameGe}
             onChange={handleChange}
+            error={errors.nameGe}
             placeholder="სახელი გვარი"
           />
 

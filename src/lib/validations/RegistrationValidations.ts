@@ -1,8 +1,12 @@
-import { validatePhone } from "./shared/phone.validation";
 import {
   validateEmail,
   validateStrictPassword,
   validateConfirmPassword,
+  validatePhone,
+  validateCity,
+  validateAddress,
+  validateNameEn,
+  validateNameGe,
 } from "./shared/fieldValidators";
 
 export interface RegistrationFormData {
@@ -46,27 +50,13 @@ export const validateRegistrationForm = (
     errors.idNumber = "პირადი ნომერი უნდა შედგებოდეს ზუსტად 11 ციფრისგან";
   }
 
-  // ── Name (English) ────────────────────────────────────────
-  if (!nameEn) {
-    errors.nameEn = "სახელი (ლათინურად) აუცილებელია";
-  } else if (!/^[a-zA-Z\s]+$/.test(nameEn.trim())) {
-    errors.nameEn = "სახელი (ლათინურად) უნდა შეიცავდეს მხოლოდ ლათინურ ასოებს";
-  } else if (nameEn.trim().length < 2) {
-    errors.nameEn = "სახელი (ლათინურად) უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს";
-  } else if (nameEn.trim().length > 200) {
-    errors.nameEn = "სახელი (ლათინურად) არ უნდა აღემატებოდეს 200 სიმბოლოს";
-  }
+  // ── Name (Georgian) - optional ────────────────────────────
+  const nameGeError = validateNameGe(nameGe, false);
+  if (nameGeError) errors.nameGe = nameGeError;
 
-  // ── Name (Georgian) ───────────────────────────────────────
-  if (nameGe && nameGe.trim().length > 0) {
-    if (!/^[\u10D0-\u10FF\s]+$/.test(nameGe.trim())) {
-      errors.nameGe = "სახელი (ქართულად) უნდა შეიცავდეს მხოლოდ ქართულ ასოებს";
-    } else if (nameGe.trim().length < 2) {
-      errors.nameGe = "სახელი (ქართულად) უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს";
-    } else if (nameGe.trim().length > 200) {
-      errors.nameGe = "სახელი (ქართულად) არ უნდა აღემატებოდეს 200 სიმბოლოს";
-    }
-  }
+  // ── Name (English) - required ─────────────────────────────
+  const nameEnError = validateNameEn(nameEn, true);
+  if (nameEnError) errors.nameEn = nameEnError;
 
   // ── Date of Birth ─────────────────────────────────────────
   if (!dateOfBirth) {
