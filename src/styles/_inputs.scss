@@ -19,7 +19,8 @@
   }
 
   input,
-  select {
+  select,
+  textarea {
     @extend .default-text;
     color: colors.$color-text-primary;
     padding: 10px 14px;
@@ -38,6 +39,11 @@
       color: colors.$color-text-secondary;
       opacity: 0.6;
     }
+  }
+
+  textarea {
+    padding: 15px;
+    resize: vertical;
   }
 
   input[type="date"]:not(:valid) {
