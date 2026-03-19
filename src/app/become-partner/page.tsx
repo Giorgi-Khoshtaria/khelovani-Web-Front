@@ -18,7 +18,7 @@ import {
   type PartnerFormData,
 } from "@/lib/validations/becomePartnerValidations";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
-
+import { partnerRegisterRequest } from "@/lib/requests/partnerRequests/partnerAuth.req";
 const INITIAL_FORM: PartnerFormData = {
   companyNameGe: "",
   companyNameEn: "",
@@ -52,6 +52,7 @@ function PartnerRegistration() {
 
     try {
       // add your partner register request here
+      await partnerRegisterRequest(formData);
       toast.success("განაცხადი წარმატებით გაიგზავნა!");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
@@ -173,7 +174,7 @@ function PartnerRegistration() {
             onChange={handleChange}
             error={errors.description}
             placeholder="მაგ: ჩვენ ვართ ქართული ხელნაკეთი სამკაულების მწარმოებელი კომპანია, დაარსებული 2010 წელს..."
-            rows={3}
+            rows={5}
             fullWidth
           />
 
