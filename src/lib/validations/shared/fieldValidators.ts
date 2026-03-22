@@ -105,11 +105,22 @@ export const validatePhone = (phone?: string): string | null => {
 // shared/fieldValidators.ts - add this
 export const validateAddress = (address: string): string | null => {
   if (!address) return "მისამართი აუცილებელია";
-  if (!/^[\u10D0-\u10FFa-zA-Z0-9\s,.\-/#]+$/.test(address.trim()))
-    return "მისამართი უნდა შეიცავდეს მხოლოდ ქართულ ან ლათინურ სიმბოლოებს";
+  if (!/^[\u10D0-\u10FF0-9\s,.\-/#]+$/.test(address.trim()))
+    return "მისამართი უნდა შეიცავდეს მხოლოდ ქართულ სიმბოლოებს";
   if (address.trim().length < 5)
     return "მისამართი უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს";
   if (address.trim().length > 200)
     return "მისამართი არ უნდა აღემატებოდეს 200 სიმბოლოს";
+  return null;
+};
+
+export const validateAddressEn = (addressEn: string): string | null => {
+  if (!addressEn) return "მისამართი (ინგლისურად) აუცილებელია";
+  if (!/^[a-zA-Z0-9\s,.\-/#]+$/.test(addressEn.trim()))
+    return "მისამართი (ინგლისურად) უნდა შეიცავდეს მხოლოდ ლათინურ სიმბოლოებს";
+  if (addressEn.trim().length < 5)
+    return "მისამართი (ინგლისურად) უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს";
+  if (addressEn.trim().length > 200)
+    return "მისამართი (ინგლისურად) არ უნდა აღემატებოდეს 200 სიმბოლოს";
   return null;
 };

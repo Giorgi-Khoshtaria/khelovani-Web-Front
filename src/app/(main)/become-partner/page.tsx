@@ -28,6 +28,7 @@ const INITIAL_FORM: PartnerFormData = {
   city: "",
   email: "",
   address: "",
+  addressEn: "",
   description: "",
   terms: false,
 };
@@ -163,7 +164,15 @@ function PartnerRegistration() {
             onChange={handleChange}
             error={errors.address}
             placeholder="ქუჩა, შენობა, ოფისი"
-            fullWidth
+          />
+
+          <TextInput
+            id="addressEn"
+            label="მისამართი (ინგლისურად)"
+            value={formData.addressEn}
+            onChange={handleChange}
+            error={errors.addressEn}
+            placeholder="Street, Building, Office"
           />
 
           <TextareaInput

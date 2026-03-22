@@ -1,7 +1,7 @@
-@use "../../styles/colors.scss" as colors;
-@use "../../styles/defaultTexts.scss" as defaultTexts;
-@use "../../styles/inputs.scss";
-@use "../../styles/auth.scss";
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/inputs.scss";
+@use "@/styles/auth.scss";
 
 .login-page {
   @extend .auth-page;

@@ -3,6 +3,7 @@ import {
   validatePhone,
   validateCity,
   validateAddress,
+  validateAddressEn,
   validateNameEn,
   validateNameGe,
 } from "./shared/fieldValidators";
@@ -16,6 +17,7 @@ export interface PartnerFormData {
   city: string;
   email: string;
   address: string;
+  addressEn: string;
   description: string;
   terms: boolean;
 }
@@ -31,6 +33,7 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
     contactPerson,
     email,
     address,
+    addressEn,
     description,
     city,
     terms,
@@ -76,16 +79,12 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
   if (emailError) errors.email = emailError;
 
   // ── Address ───────────────────────────────────────────────
-  if (!address) {
-    errors.address = "მისამართი აუცილებელია";
-  } else if (!/^[\u10D0-\u10FFa-zA-Z0-9\s,.\-/#]+$/.test(address.trim())) {
-    errors.address =
-      "მისამართი უნდა შეიცავდეს მხოლოდ ქართულ ან ლათინურ სიმბოლოებს";
-  } else if (address.trim().length < 5) {
-    errors.address = "მისამართი უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს";
-  } else if (address.trim().length > 200) {
-    errors.address = "მისამართი არ უნდა აღემატებოდეს 200 სიმბოლოს";
-  }
+  const addressError = validateAddress(address);
+  if (addressError) errors.address = addressError;
+
+  // ── Address En ───────────────────────────────────────────
+  const addressEnError = validateAddressEn(addressEn);
+  if (addressEnError) errors.addressEn = addressEnError;
 
   // ── Description ───────────────────────────────────────────
   if (!description) {

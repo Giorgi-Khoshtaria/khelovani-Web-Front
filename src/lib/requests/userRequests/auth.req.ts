@@ -51,4 +51,3 @@ export const resetPassword = async (token: string, password: string) => {
     throw error;
   }
 };
-

@@ -1,7 +1,7 @@
-@use "../../styles/colors.scss" as colors;
-@use "../../styles/defaultTexts.scss" as defaultTexts;
-@use "../../styles/inputs.scss";
-@use "../../styles/auth.scss";
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/inputs.scss";
+@use "@/styles/auth.scss";
 
 .registration-page {
   @extend .auth-page;
@@ -9,7 +9,7 @@
 
 .registration-page__form {
   @extend .auth-card;
-  max-width: 780px; 
+  max-width: 780px;
 }
 
 .registration-content {
@@ -48,7 +48,7 @@
   }
 
   .registration-form__inputs {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
   }
 
   .form-group--full {
