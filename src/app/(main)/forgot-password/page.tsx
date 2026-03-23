@@ -14,6 +14,7 @@ import {
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
 import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 import Link from "next/link";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 function ForgotPassword() {
   useCheckIfUserIsLogin();
@@ -21,6 +22,11 @@ function ForgotPassword() {
   const [errors, setErrors] = useState<ForgotPasswordErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [sent, setSent] = useState(false);
+
+  const { t: tPages } = useClientTranslation("pages");
+  const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tNav } = useClientTranslation("navigation");
+  const { t: tCommon } = useClientTranslation("common");
 
   const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
     useRateLimitCooldown(120);
@@ -56,14 +62,14 @@ function ForgotPassword() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ?? "მოთხოვნის გაგზავნა ვერ მოხერხდა";
+          error?.response?.data?.message ?? (tPages("forgot_password.error") || "მოთხოვნის გაგზავნა ვერ მოხერხდა");
         toast.error(message);
 
         if (error?.response?.status === 429) {
           startCooldown();
         }
       } else {
-        toast.error("სერვერთან დაკავშირება ვერ მოხერხდა");
+        toast.error(tPages("forgot_password.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა");
       }
     } finally {
       setIsLoading(false);
@@ -85,36 +91,33 @@ function ForgotPassword() {
         {sent ? (
           // ── Success state ──────────────────────────────────
           <>
-            <h1 className="title">შეამოწმე ელ. ფოსტა</h1>
+            <h1 className="title">{tPages("forgot_password.sent_title")}</h1>
             <p>
-              პაროლის აღდგენის ბმული გაგზავნილია <strong>{email}</strong>-ზე.
-              შეამოწმე შენი შემოსული ფოსტა.
+              {tPages("forgot_password.sent_sub")}{" "}
+              <strong>{email}</strong>
             </p>
             <Link
               href="/login"
               className="send-btn"
               style={{ textAlign: "center", textDecoration: "none" }}
             >
-              შესვლის გვერდზე დაბრუნება
+              {tNav("back_to_login") || "შესვლის გვერდზე დაბრუნება"}
             </Link>
           </>
         ) : (
           // ── Form state ────────────────────────────────────
           <>
-            <h1 className="title">დაგავიწყდა პაროლი?</h1>
-            <p>
-              შეიყვანე შენი მეილი და ჩვენ გამოგიგზავნით <br /> პაროლის აღდგენის
-              ბმულს
-            </p>
+            <h1 className="title">{tPages("forgot_password.title")}</h1>
+            <p>{tPages("forgot_password.subtitle")}</p>
             <form action="" className="form" onSubmit={handleSubmit} noValidate>
               <TextInput
                 id="email"
-                label="ელ. ფოსტა"
+                label={tInputs("label.email")}
                 type="email"
                 value={email}
                 onChange={handleChange}
                 error={errors.email}
-                placeholder="company@example.com"
+                placeholder={tInputs("placeholder.email")}
               />
 
               <button
@@ -125,12 +128,12 @@ function ForgotPassword() {
                 {isCooldownActive
                   ? cooldownText
                   : isLoading
-                    ? "იგზავნება..."
-                    : "გაგზავნა"}
+                    ? tCommon("loading") || "იგზავნება..."
+                    : tCommon("submit") || "გაგზავნა"}
               </button>
             </form>
             <Link href="/login" className="back-link">
-              შესვლის გვერდზე დაბრუნება
+              {tNav("back_to_login") || "შესვლის გვერდზე დაბრუნება"}
             </Link>
           </>
         )}

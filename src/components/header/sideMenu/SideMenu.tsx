@@ -1,23 +1,15 @@
-import Navigation from "../navigation-component/Navigation";
+import Navigation, { NavItem } from "../navigation-component/Navigation";
 import AuthActions from "../auth-component/AuthActions";
 import "./sideMenu.scss";
 import Image from "next/image";
 
-interface NavItem {
-  title: string;
-  titleEn: string;
-  path: string;
-}
-
 interface SideMenuProps {
   closeIcon: string;
-  nav: NavItem[];
-  lang: "GE" | "EN";
   isOpen: boolean;
   onClose: () => void;
 }
 
-function SideMenu({ closeIcon, nav, lang, isOpen, onClose }: SideMenuProps) {
+function SideMenu({ closeIcon, isOpen, onClose }: SideMenuProps) {
   return (
     <div className={`side-menu ${isOpen ? "side-menu--open" : ""}`}>
       <div className="side-menu__header">
@@ -31,11 +23,11 @@ function SideMenu({ closeIcon, nav, lang, isOpen, onClose }: SideMenuProps) {
       </div>
 
       <div className="side-menu__nav">
-        <Navigation nav={nav} lang={lang} mobile={true} />
+        <Navigation mobile={true} />
       </div>
 
       <div className="side-menu__auth">
-        <AuthActions lang={lang} mobile={true} />
+        <AuthActions mobile={true} />
       </div>
     </div>
   );

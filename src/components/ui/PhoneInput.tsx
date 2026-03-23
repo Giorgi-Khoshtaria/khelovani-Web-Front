@@ -1,3 +1,5 @@
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+
 interface PhoneInputProps {
   id: string;
   label: string;
@@ -15,6 +17,8 @@ export default function PhoneInput({
   error,
   fullWidth,
 }: PhoneInputProps) {
+  const { t } = useClientTranslation("inputs");
+
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>{label}</label>
@@ -27,7 +31,7 @@ export default function PhoneInput({
           placeholder="+995 5XX XXX XXX"
         />
       </div>
-      {error && <span className="error-text">{error}</span>}
+      {error && <span className="error-text">{t(error)}</span>}
     </div>
   );
 }

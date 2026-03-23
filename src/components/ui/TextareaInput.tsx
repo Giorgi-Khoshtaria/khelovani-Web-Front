@@ -1,3 +1,5 @@
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+
 interface TextareaInputProps {
   id: string;
   label: string;
@@ -21,6 +23,8 @@ export default function TextareaInput({
   rows = 3,
   fullWidth,
 }: TextareaInputProps) {
+  const { t } = useClientTranslation("inputs");
+
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>
@@ -35,7 +39,7 @@ export default function TextareaInput({
         placeholder={placeholder}
         rows={rows}
       />
-      {error && <span className="error-text">{error}</span>}
+      {error && <span className="error-text">{t(error)}</span>}
     </div>
   );
 }

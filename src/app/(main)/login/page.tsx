@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import type { LoginTypes } from "@/lib/types/userTypes";
 import { loginUser } from "@/lib/requests/userRequests/auth.req";
+import { useAuth } from "@/contexts/AuthContext";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
 import {
   validateLoginForm,
@@ -20,7 +22,14 @@ import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 
 function Login() {
   useCheckIfUserIsLogin();
+  const { login } = useAuth();
   const router = useRouter();
+
+  const { t: tPages } = useClientTranslation("pages");
+  const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tNav } = useClientTranslation("navigation");
+  const { t: tCommon } = useClientTranslation("common");
+
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<LoginFormErrors>({});
 
@@ -57,15 +66,16 @@ function Login() {
       const response = await loginUser(data);
 
       if (response.token) {
-        localStorage.setItem("access-token", response.token);
+        login(response.token);
       }
 
-      toast.success("წარმატებით შეხვედით სისტემაში");
+      toast.success(tPages("login.success") || "წარმატებით შეხვედით სისტემაში");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ?? "შეცდომა შევიდა სისტემაში";
+          error?.response?.data?.message ??
+          (tPages("login.error") || "შეცდომა შევიდა სისტემაში");
         toast.error(message);
 
         if (error?.response?.status === 429) {
@@ -74,9 +84,11 @@ function Login() {
           return;
         }
       } else if (error instanceof Error && error.message === "Network Error") {
-        toast.error("სერვერთან დაკავშირება ვერ მოხერხდა");
+        toast.error(
+          tPages("login.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა",
+        );
       } else {
-        toast.error("შეცდომა შევიდა სისტემაში");
+        toast.error(tPages("login.error") || "შეცდომა შევიდა სისტემაში");
       }
 
       setIsLoading(false);
@@ -87,32 +99,32 @@ function Login() {
     <div className="login-page">
       <div className="login-page__form">
         <div className="login-content">
-          <h2>კეთილი იყოს თქვენი მობრძანება</h2>
-          <p>შედი შენს ანგარიშზე გასაგრძელებლად</p>
+          <h2>{tPages("login.title")}</h2>
+          <p>{tPages("login.subtitle")}</p>
         </div>
 
         <form noValidate onSubmit={handleLogin} className="login-form__inputs">
           <TextInput
             id="email"
-            label="ელ. ფოსტა"
+            label={tInputs("label.email")}
             type="email"
             value={data.email}
             onChange={handleChange}
             error={errors.email}
-            placeholder="მაგ: example@gmail.com"
+            placeholder={tInputs("placeholder.email")}
           />
 
           <PasswordInput
             id="password"
-            label="პაროლი"
+            label={tInputs("label.password")}
             value={data.password}
             onChange={handleChange}
             error={errors.password}
-            placeholder="შეიყვანე პაროლი"
+            placeholder={tInputs("placeholder.password")}
           />
 
           <div className="forgot-password-container">
-            <Link href="/forgot-password">პაროლი დაგავიწყდა?</Link>
+            <Link href="/forgot-password">{tNav("forgot_password")}</Link>
           </div>
 
           <div className="sign-in-button">
@@ -120,15 +132,15 @@ function Login() {
               {isCooldownActive
                 ? cooldownText
                 : isLoading
-                  ? "მიმდინარეობს..."
-                  : "შესვლა"}
+                  ? tCommon("loading")
+                  : tNav("login")}
             </button>
           </div>
         </form>
 
         <div className="register-container">
-          <p>არ გაქვს ანგარიში?</p>
-          <Link href="/register">რეგისტრაცია</Link>
+          <p>{tNav("no_account")}</p>
+          <Link href="/register">{tNav("register")}</Link>
         </div>
       </div>
 
@@ -140,7 +152,7 @@ function Login() {
             height={24}
             alt="უკან"
           />
-          მთავარ გვერდზე დაბრუნება
+          {tNav("back_to_home")}
         </Link>
       </div>
     </div>

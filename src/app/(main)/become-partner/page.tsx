@@ -19,6 +19,7 @@ import {
 } from "@/lib/validations/becomePartnerValidations";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import { partnerRegisterRequest } from "@/lib/requests/partnerRequests/partnerAuth.req";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 const INITIAL_FORM: PartnerFormData = {
   companyNameGe: "",
   companyNameEn: "",
@@ -37,6 +38,11 @@ function PartnerRegistration() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { t: tPages } = useClientTranslation("pages");
+  const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tNav } = useClientTranslation("navigation");
+  const { t: tCommon } = useClientTranslation("common");
+
   const { formData, errors, setErrors, handleChange } =
     useFormHandler<PartnerFormData>(INITIAL_FORM);
 
@@ -54,7 +60,7 @@ function PartnerRegistration() {
     try {
       // add your partner register request here
       await partnerRegisterRequest(formData);
-      toast.success("განაცხადი წარმატებით გაიგზავნა!");
+      toast.success(tPages("become_partner.success") || "განაცხადი წარმატებით გაიგზავნა!");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -68,10 +74,10 @@ function PartnerRegistration() {
         } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
-          toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+          toast.error(tPages("become_partner.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
         }
       } else {
-        toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        toast.error(tPages("become_partner.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
       }
     } finally {
       setIsLoading(false);
@@ -82,8 +88,8 @@ function PartnerRegistration() {
     <div className="registration-page">
       <div className="registration-page__form">
         <div className="registration-content">
-          <h2>პარტნიორის რეგისტრაცია</h2>
-          <p>შეავსე ფორმა და გახდი ჩვენი პლატფორმის პარტნიორი</p>
+          <h2>{tPages("become_partner.title")}</h2>
+          <p>{tPages("become_partner.subtitle")}</p>
         </div>
 
         <form
@@ -93,16 +99,16 @@ function PartnerRegistration() {
         >
           <TextInput
             id="companyNameGe"
-            label="კომპანიის სახელი (ქართულად)"
+            label={tInputs("label.company_name_ge") || "კომპანიის სახელი (ქართულად)"}
             value={formData.companyNameGe}
             onChange={handleChange}
             error={errors.companyNameGe}
-            placeholder="კომპანიის სახელი"
+            placeholder={tInputs("placeholder.company_name")}
           />
 
           <TextInput
             id="companyNameEn"
-            label="კომპანიის სახელი (ლათინურად)"
+            label={tInputs("label.company_name_en") || "კომპანიის სახელი (ლათინურად)"}
             value={formData.companyNameEn}
             onChange={handleChange}
             error={errors.companyNameEn}
@@ -111,27 +117,27 @@ function PartnerRegistration() {
 
           <TextInput
             id="identificationCode"
-            label="საიდენტიფიკაციო კოდი"
+            label={tInputs("label.identification_code")}
             value={formData.identificationCode}
             onChange={handleChange}
             error={errors.identificationCode}
-            placeholder="9-ნიშნა საიდენტიფიკაციო კოდი"
+            placeholder={tInputs("placeholder.id_code")}
             maxLength={9}
             fullWidth
           />
 
           <TextInput
             id="contactPerson"
-            label="საკონტაქტო პირის სახელი"
+            label={tInputs("label.contact_person")}
             value={formData.contactPerson}
             onChange={handleChange}
             error={errors.contactPerson}
-            placeholder="სახელი გვარი"
+            placeholder={tInputs("placeholder.full_name")}
           />
 
           <PhoneInput
             id="phone"
-            label="ტელეფონის ნომერი"
+            label={tInputs("label.phone")}
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
@@ -139,36 +145,36 @@ function PartnerRegistration() {
 
           <SelectInput
             id="city"
-            label="ქალაქი"
+            label={tInputs("label.city")}
             value={formData.city}
             onChange={handleChange}
             options={CITY_OPTIONS}
-            placeholder="აირჩიე ქალაქი"
+            placeholder={tInputs("placeholder.city")}
             error={errors.city}
           />
 
           <TextInput
             id="email"
-            label="ელ. ფოსტა"
+            label={tInputs("label.email")}
             type="email"
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
-            placeholder="company@example.com"
+            placeholder={tInputs("placeholder.email")}
           />
 
           <TextInput
             id="address"
-            label="მისამართი"
+            label={tInputs("label.address")}
             value={formData.address}
             onChange={handleChange}
             error={errors.address}
-            placeholder="ქუჩა, შენობა, ოფისი"
+            placeholder={tInputs("placeholder.address")}
           />
 
           <TextInput
             id="addressEn"
-            label="მისამართი (ინგლისურად)"
+            label={tInputs("label.address_en") || "მისამართი (ინგლისურად)"}
             value={formData.addressEn}
             onChange={handleChange}
             error={errors.addressEn}
@@ -177,12 +183,12 @@ function PartnerRegistration() {
 
           <TextareaInput
             id="description"
-            label="კომპანიის მოკლე აღწერა"
-            hint="რამდენიმე წინადადებით აღწერე შენი კომპანია"
+            label={tInputs("label.description")}
+            hint={tInputs("hint.description") || "რამდენიმე წინადადებით აღწერე შენი კომპანია"}
             value={formData.description}
             onChange={handleChange}
             error={errors.description}
-            placeholder="მაგ: ჩვენ ვართ ქართული ხელნაკეთი სამკაულების მწარმოებელი კომპანია, დაარსებული 2010 წელს..."
+            placeholder={tInputs("placeholder.description")}
             rows={5}
             fullWidth
           />
@@ -200,7 +206,7 @@ function PartnerRegistration() {
               disabled={isLoading}
               className="create-account-btn"
             >
-              {isLoading ? "მიმდინარეობს..." : "რეგისტრაცია"}
+              {isLoading ? tCommon("loading") || "მიმდინარეობს..." : tNav("register") || "რეგისტრაცია"}
             </button>
           </div>
         </form>
@@ -214,7 +220,7 @@ function PartnerRegistration() {
             height={24}
             alt="უკან"
           />
-          მთავარ გვერდზე დაბრუნება
+          {tNav("back_to_home") || "მთავარ გვერდზე დაბრუნება"}
         </Link>
       </div>
     </div>

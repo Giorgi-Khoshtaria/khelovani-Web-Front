@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.scss";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "ხელოვანი — ქართული ხელნაკეთი ნივთები",
@@ -17,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="ka">
       <body>
-        {children}
+        <LanguageProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </LanguageProvider>
         <ToastContainer
           position="top-right"
           autoClose={2000}

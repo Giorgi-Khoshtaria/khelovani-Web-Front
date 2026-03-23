@@ -1,10 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import "./mainPageHero.scss";
 import Image from "next/image";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 function MainPageHero() {
-  const main_hero_text =
-    "აღმოაჩინეთ ნამდვილი ქართული ხელოვნება და ხელნაკეთი ნივთები, რომლებიც შექმნილია ოსტატი ხელოსნების მიერ. თითოეული ნამუშევარი მოგვითხრობს ტრადიციის, უნარებისა და კულტურული მემკვიდრეობის ისტორიას, რომელიც თაობიდან თაობას გადაეცემა.";
+  const { t: tPages } = useClientTranslation("pages");
+  const { t: tNav } = useClientTranslation("navigation");
 
   return (
     <section className="hero">
@@ -25,18 +28,18 @@ function MainPageHero() {
             height={150}
             alt="logo"
           />
-          <p className="hero__text">{main_hero_text}</p>
+          <p className="hero__text">{tPages("home.hero_description")}</p>
         </div>
 
         <div className="hero__actions">
           <Link href="/products" className="hero__btn hero__btn--primary">
-            აღმოაჩინე კოლექცია
+            {tPages("home.discover_collection")}
           </Link>
           <Link href="/partners" className="hero__btn hero__btn--secondary">
-            აღმოაჩინე პარტნიორები
+            {tPages("home.discover_partners")}
           </Link>
           <Link href="/become-partner" className="hero__btn hero__btn--ghost">
-            გახდი პარტნიორი
+            {tNav("become_partner")}
           </Link>
         </div>
       </div>

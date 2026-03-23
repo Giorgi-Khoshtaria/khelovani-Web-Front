@@ -22,6 +22,7 @@ import SelectInput from "@/components/ui/SelectInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
 import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",
@@ -41,6 +42,11 @@ export default function Registration() {
   useCheckIfUserIsLogin();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const { t: tPages } = useClientTranslation("pages");
+  const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tNav } = useClientTranslation("navigation");
+  const { t: tCommon } = useClientTranslation("common");
 
   const { formData, setFormData, errors, setErrors, handleChange } =
     useFormHandler(INITIAL_FORM);
@@ -76,7 +82,7 @@ export default function Registration() {
 
       await registerUser(payload);
       toast.success(
-        "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
+        tPages("register.success") || "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
       );
       setTimeout(() => router.push("/login"), 2000);
     } catch (error: unknown) {
@@ -96,12 +102,12 @@ export default function Registration() {
         } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
-          toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+          toast.error(tPages("register.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
         }
       } else if (error instanceof Error && error.message === "Network Error") {
-        toast.error("სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით");
+        toast.error(tPages("register.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით");
       } else {
-        toast.error("რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        toast.error(tPages("register.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
       }
     } finally {
       setIsLoading(false);
@@ -112,8 +118,8 @@ export default function Registration() {
     <div className="registration-page">
       <div className="registration-page__form">
         <div className="registration-content">
-          <h2>ანგარიშის შექმნა</h2>
-          <p>შემოგვიერთდი და აღმოაჩინე ქართული ხელოსნური ნივთები</p>
+          <h2>{tPages("register.title")}</h2>
+          <p>{tPages("register.subtitle")}</p>
         </div>
 
         <form
@@ -123,27 +129,27 @@ export default function Registration() {
         >
           <TextInput
             id="idNumber"
-            label="პირადი ნომერი *"
+            label={tInputs("label.id_number")}
             value={formData.idNumber}
             onChange={handleChange}
             error={errors.idNumber}
-            placeholder="11-ნიშნა პირადი ნომერი"
+            placeholder={tInputs("placeholder.id_number")}
             maxLength={11}
             fullWidth
           />
 
           <TextInput
             id="nameGe"
-            label="სახელი და გვარი (ქართულად)"
+            label={tInputs("label.full_name_ge")}
             value={formData.nameGe}
             onChange={handleChange}
             error={errors.nameGe}
-            placeholder="სახელი გვარი"
+            placeholder={tInputs("placeholder.full_name")}
           />
 
           <TextInput
             id="nameEn"
-            label="სახელი და გვარი (ლათინურად) *"
+            label={tInputs("label.full_name_en")}
             value={formData.nameEn}
             onChange={handleChange}
             error={errors.nameEn}
@@ -152,17 +158,17 @@ export default function Registration() {
 
           <TextInput
             id="email"
-            label="ელ-ფოსტა *"
+            label={tInputs("label.email")}
             type="email"
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
-            placeholder="example@mail.com"
+            placeholder={tInputs("placeholder.email")}
           />
 
           <PhoneInput
             id="phone"
-            label="ტელეფონის ნომერი *"
+            label={tInputs("label.phone")}
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
@@ -170,7 +176,7 @@ export default function Registration() {
 
           <TextInput
             id="dateOfBirth"
-            label="დაბადების თარიღი *"
+            label={tInputs("label.date_of_birth")}
             type="date"
             value={formData.dateOfBirth}
             onChange={handleChange}
@@ -179,40 +185,40 @@ export default function Registration() {
 
           <SelectInput
             id="city"
-            label="ქალაქი *"
+            label={tInputs("label.city")}
             value={formData.city}
             onChange={handleChange}
             options={CITY_OPTIONS}
-            placeholder="აირჩიე ქალაქი"
+            placeholder={tInputs("placeholder.city")}
             error={errors.city}
           />
 
           <TextInput
             id="address"
-            label="მისამართი *"
+            label={tInputs("label.address")}
             value={formData.address}
             onChange={handleChange}
             error={errors.address}
-            placeholder="ქუჩა, შენობა, ბინა"
+            placeholder={tInputs("placeholder.address")}
             fullWidth
           />
 
           <PasswordInput
             id="password"
-            label="პაროლი *"
+            label={tInputs("label.password")}
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
-            placeholder="შექმენი ძლიერი პაროლი"
+            placeholder={tInputs("placeholder.password")}
           />
 
           <PasswordInput
             id="confirmPassword"
-            label="გაიმეორე პაროლი *"
+            label={tInputs("label.confirm_password") || "გაიმეორე პაროლი"}
             value={formData.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
-            placeholder="ხელახლა შეიყვანე პაროლი"
+            placeholder={tInputs("placeholder.confirm_password")}
           />
 
           <TermsCheckbox
@@ -231,15 +237,15 @@ export default function Registration() {
               {isCooldownActive
                 ? cooldownText
                 : isLoading
-                  ? "მიმდინარეობს..."
-                  : "ანგარიშის შექმნა"}
+                  ? tCommon("loading")
+                  : tNav("register")}
             </button>
           </div>
         </form>
 
         <div className="sign-in-container">
           <p>
-            უკვე გაქვს ანგარიში? <Link href="/login">შესვლა</Link>
+            {tNav("already_account")} <Link href="/login">{tNav("login")}</Link>
           </p>
         </div>
       </div>
@@ -252,7 +258,7 @@ export default function Registration() {
             height={24}
             alt="უკან"
           />
-          მთავარ გვერდზე დაბრუნება
+          {tNav("back_to_home")}
         </Link>
       </div>
     </div>

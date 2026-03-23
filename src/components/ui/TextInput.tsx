@@ -1,3 +1,5 @@
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+
 interface TextInputProps {
   id: string;
   label: string;
@@ -21,6 +23,8 @@ export default function TextInput({
   maxLength,
   fullWidth,
 }: TextInputProps) {
+  const { t } = useClientTranslation("inputs");
+
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>{label}</label>
@@ -33,7 +37,7 @@ export default function TextInput({
         placeholder={placeholder}
         maxLength={maxLength}
       />
-      {error && <span className="error-text">{error}</span>}
+      {error && <span className="error-text">{t(error)}</span>}
     </div>
   );
 }

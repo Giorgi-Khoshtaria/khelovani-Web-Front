@@ -7,9 +7,10 @@ import Link from "next/link";
 import Navigation from "./navigation-component/Navigation";
 import AuthActions from "./auth-component/AuthActions";
 import SideMenu from "./sideMenu/SideMenu";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function Header() {
-  const [lang, setLang] = useState<"GE" | "EN">("GE");
+  const { lang, setLang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -28,14 +29,6 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const nav = [
-    { title: "მთავარი", titleEn: "Home", path: "/" },
-    { title: "ჩვენ შესახებ", titleEn: "About", path: "/about" },
-    { title: "პროდუქტები", titleEn: "Products", path: "/products" },
-    { title: "პარტნიორები", titleEn: "Partners", path: "/partners" },
-    { title: "კონტაქტი", titleEn: "Contact", path: "/contact" },
-  ];
-
   return (
     <>
       <header className={`header${scrolled ? " header--scrolled" : ""}`}>
@@ -50,7 +43,7 @@ function Header() {
         </Link>
 
         <nav className="nav">
-          <Navigation nav={nav} lang={lang} />
+          <Navigation />
         </nav>
 
         <div className="header-actions">
@@ -66,15 +59,15 @@ function Header() {
           <div className="lang-toggle">
             <select
               value={lang}
-              onChange={(e) => setLang(e.target.value as "GE" | "EN")}
+              onChange={(e) => setLang(e.target.value as "ge" | "en")}
             >
-              <option value="GE">GE</option>
-              <option value="EN">EN</option>
+              <option value="ge">GE</option>
+              <option value="en">EN</option>
             </select>
           </div>
 
           <div className="auth-action-section">
-            <AuthActions lang={lang} />
+            <AuthActions />
           </div>
 
           <button
@@ -103,8 +96,6 @@ function Header() {
       {/* Side Menu */}
       <SideMenu
         closeIcon="/assets/close-icon.svg"
-        nav={nav}
-        lang={lang}
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
       />

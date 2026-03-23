@@ -11,14 +11,14 @@ export const validateNameGe = (
   required = false,
 ): string | null => {
   if (!nameGe || nameGe.trim().length === 0) {
-    return required ? "სახელი (ქართულად) აუცილებელია" : null;
+    return required ? "validation.name_ge_required" : null;
   }
   if (!/^[\u10D0-\u10FF\s]+$/.test(nameGe.trim()))
-    return "სახელი (ქართულად) უნდა შეიცავდეს მხოლოდ ქართულ ასოებს";
+    return "validation.name_ge_letters";
   if (nameGe.trim().length < 2)
-    return "სახელი (ქართულად) უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს";
+    return "validation.name_ge_min";
   if (nameGe.trim().length > 200)
-    return "სახელი (ქართულად) არ უნდა აღემატებოდეს 200 სიმბოლოს";
+    return "validation.name_ge_max";
   return null;
 };
 
@@ -27,14 +27,14 @@ export const validateNameEn = (
   required = true,
 ): string | null => {
   if (!nameEn || nameEn.trim().length === 0) {
-    return required ? "სახელი (ლათინურად) აუცილებელია" : null;
+    return required ? "validation.name_en_required" : null;
   }
   if (!/^[a-zA-Z\s]+$/.test(nameEn.trim()))
-    return "სახელი (ლათინურად) უნდა შეიცავდეს მხოლოდ ლათინურ ასოებს";
+    return "validation.name_en_letters";
   if (nameEn.trim().length < 2)
-    return "სახელი (ლათინურად) უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს";
+    return "validation.name_en_min";
   if (nameEn.trim().length > 200)
-    return "სახელი (ლათინურად) არ უნდა აღემატებოდეს 200 სიმბოლოს";
+    return "validation.name_en_max";
   return null;
 };
 // ── Email ─────────────────────────────────────────────────────────────────────
@@ -42,8 +42,8 @@ export const validateNameEn = (
  * Returns an error string when the email is invalid, or null when it's fine.
  */
 export function validateEmail(email: string): string | null {
-  if (!email) return "ელ. ფოსტა სავალდებულოა";
-  if (!EMAIL_REGEX.test(email)) return "შეიყვანეთ სწორი ელ. ფოსტის მისამართი";
+  if (!email) return "validation.email_required";
+  if (!EMAIL_REGEX.test(email)) return "validation.email_invalid";
   return null;
 }
 
@@ -53,12 +53,12 @@ export function validateEmail(email: string): string | null {
  * Used by: login, reset-password.
  */
 export function validatePassword(password: string): string | null {
-  if (!password) return "პაროლი სავალდებულოა";
+  if (!password) return "validation.password_required";
   if (password.length < PASSWORD_MIN_LENGTH)
-    return `პაროლი უნდა შეიცავდეს მინიმუმ ${PASSWORD_MIN_LENGTH} სიმბოლოს`;
+    return "validation.password_min";
   if (!/[a-zA-Z]/.test(password))
-    return "პაროლი უნდა შეიცავდეს მინიმუმ ერთ ასოს";
-  if (!/[0-9]/.test(password)) return "პაროლი უნდა შეიცავდეს მინიმუმ ერთ ციფრს";
+    return "validation.password_lowercase";
+  if (!/[0-9]/.test(password)) return "validation.password_number";
   return null;
 }
 
@@ -68,14 +68,14 @@ export function validatePassword(password: string): string | null {
  * Used by: registration.
  */
 export function validateStrictPassword(password: string): string | null {
-  if (!password) return "პაროლი აუცილებელია";
+  if (!password) return "validation.password_required";
   if (password.length < PASSWORD_MIN_LENGTH)
-    return "პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს";
-  if (password.length > 30) return "პაროლი არ უნდა აღემატებოდეს 30 სიმბოლოს";
+    return "validation.password_min";
+  if (password.length > 30) return "validation.password_max";
   if (!/[A-Z]/.test(password))
-    return "პაროლი უნდა შეიცავდეს მინიმუმ 1 დიდ ასოს";
+    return "validation.password_uppercase";
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password))
-    return "პაროლი უნდა შეიცავდეს მინიმუმ 1 სპეციალურ სიმბოლოს (!@#$%...)";
+    return "validation.password_special";
   return null;
 }
 
@@ -87,40 +87,40 @@ export function validateConfirmPassword(
   password: string,
   confirmPassword: string,
 ): string | null {
-  if (!confirmPassword) return "გაიმეორეთ პაროლი";
-  if (confirmPassword !== password) return "პაროლები არ ემთხვევა";
+  if (!confirmPassword) return "validation.confirm_password";
+  if (confirmPassword !== password) return "validation.password_mismatch";
   return null;
 }
 // shared/fieldValidators.ts - add this
 export const validateCity = (city: string): string | null => {
-  if (!city) return "აირჩიეთ ქალაქი";
+  if (!city) return "validation.city_required";
   return null;
 };
 export const validatePhone = (phone?: string): string | null => {
-  if (!phone || phone.trim() === "") return "ტელეფონის ნომერი სავალდებულოა";
+  if (!phone || phone.trim() === "") return "validation.phone_required";
   if (!/^5\d{2}\s?\d{3}\s?\d{3}$/.test(phone.trim()))
-    return "ტელეფონის ნომერი უნდა იყოს ფორმატში: 5XX XXX XXX";
+    return "validation.phone_format";
   return null;
 };
 // shared/fieldValidators.ts - add this
 export const validateAddress = (address: string): string | null => {
-  if (!address) return "მისამართი აუცილებელია";
+  if (!address) return "validation.address_required";
   if (!/^[\u10D0-\u10FF0-9\s,.\-/#]+$/.test(address.trim()))
-    return "მისამართი უნდა შეიცავდეს მხოლოდ ქართულ სიმბოლოებს";
+    return "validation.address_ge_letters";
   if (address.trim().length < 5)
-    return "მისამართი უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს";
+    return "validation.address_min";
   if (address.trim().length > 200)
-    return "მისამართი არ უნდა აღემატებოდეს 200 სიმბოლოს";
+    return "validation.address_max";
   return null;
 };
 
 export const validateAddressEn = (addressEn: string): string | null => {
-  if (!addressEn) return "მისამართი (ინგლისურად) აუცილებელია";
+  if (!addressEn) return "validation.address_en_required";
   if (!/^[a-zA-Z0-9\s,.\-/#]+$/.test(addressEn.trim()))
-    return "მისამართი (ინგლისურად) უნდა შეიცავდეს მხოლოდ ლათინურ სიმბოლოებს";
+    return "validation.address_en_letters";
   if (addressEn.trim().length < 5)
-    return "მისამართი (ინგლისურად) უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს";
+    return "validation.address_min";
   if (addressEn.trim().length > 200)
-    return "მისამართი (ინგლისურად) არ უნდა აღემატებოდეს 200 სიმბოლოს";
+    return "validation.address_max";
   return null;
 };

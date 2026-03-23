@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 interface TermsCheckboxProps {
   id: string;
@@ -6,7 +7,6 @@ interface TermsCheckboxProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   termsTo?: string;
-  privacyTo?: string;
 }
 
 export default function TermsCheckbox({
@@ -15,18 +15,19 @@ export default function TermsCheckbox({
   onChange,
   error,
   termsTo = "/terms",
-  privacyTo = "/privacy",
 }: TermsCheckboxProps) {
+  const { t: tNav } = useClientTranslation("navigation");
+  const { t: tInputs } = useClientTranslation("inputs");
+
   return (
     <div className="terms-container form-group--full">
       <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
         <input type="checkbox" id={id} checked={checked} onChange={onChange} />
         <label htmlFor={id}>
-          ვეთანხმები <Link href={termsTo}>მომსახურების პირობებს</Link> და{" "}
-          <Link href={privacyTo}>კონფიდენციალურობის პოლიტიკას</Link>
+          <Link href={termsTo}>{tNav("terms_link")}</Link>
         </label>
       </div>
-      {error && <span className="error-text">{error}</span>}
+      {error && <span className="error-text">{tInputs(error)}</span>}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { EyeOpen, EyeOff } from "@/components/ui/EyeIcons";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 interface PasswordInputProps {
   id: string;
@@ -22,6 +23,7 @@ export default function PasswordInput({
   error,
   fullWidth,
 }: PasswordInputProps) {
+  const { t } = useClientTranslation("inputs");
   const [show, setShow] = useState(false);
 
   return (
@@ -44,7 +46,7 @@ export default function PasswordInput({
           {show ? <EyeOff /> : <EyeOpen />}
         </button>
       </div>
-      {error && <span className="error-text">{error}</span>}
+      {error && <span className="error-text">{t(error)}</span>}
     </div>
   );
 }

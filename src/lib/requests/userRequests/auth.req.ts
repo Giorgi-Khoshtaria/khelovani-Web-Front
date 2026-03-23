@@ -1,11 +1,9 @@
-import axios from "axios";
+import api from "@/lib/api";
 import type { UserTypes, LoginTypes } from "@/lib/types/userTypes";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const registerUser = async (data: UserTypes) => {
   try {
-    const response = await axios.post(`${API_URL}/api/user/register`, data);
+    const response = await api.post(`/api/user/register`, data);
     return response.data;
   } catch (error) {
     console.error("Error registering user::", error);
@@ -15,7 +13,7 @@ export const registerUser = async (data: UserTypes) => {
 
 export const loginUser = async (data: LoginTypes) => {
   try {
-    const response = await axios.post(`${API_URL}/api/user/login`, data, {
+    const response = await api.post(`/api/user/login`, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -29,7 +27,7 @@ export const loginUser = async (data: LoginTypes) => {
 
 export const forgotPassword = async (email: string) => {
   try {
-    const response = await axios.post(`${API_URL}/api/user/forgot-password`, {
+    const response = await api.post(`/api/user/forgot-password`, {
       email,
     });
     return response.data;
@@ -41,7 +39,7 @@ export const forgotPassword = async (email: string) => {
 
 export const resetPassword = async (token: string, password: string) => {
   try {
-    const response = await axios.post(`${API_URL}/api/user/reset-password`, {
+    const response = await api.post(`/api/user/reset-password`, {
       token,
       password,
     });

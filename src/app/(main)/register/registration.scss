@@ -9,7 +9,7 @@
 
 .registration-page__form {
   @extend .auth-card;
-  max-width: 780px;
+  @extend .auth-card--wide;
 }
 
 .registration-content {
@@ -17,9 +17,7 @@
 }
 
 .registration-form__inputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 20px;
+  @extend .auth-form-grid;
 }
 
 .terms-container {
@@ -40,18 +38,4 @@
 
 .back-to-home {
   @extend .auth-back-home;
-}
-
-@media (max-width: 600px) {
-  .registration-page__form {
-    padding: 24px 20px;
-  }
-
-  .registration-form__inputs {
-    grid-template-columns: 1fr;
-  }
-
-  .form-group--full {
-    grid-column: 1;
-  }
 }

@@ -1,3 +1,5 @@
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+
 interface SelectOption {
   value: string;
   label: string;
@@ -24,6 +26,8 @@ export default function SelectInput({
   error,
   fullWidth,
 }: SelectInputProps) {
+  const { t } = useClientTranslation("inputs");
+
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
       <label htmlFor={id}>{label}</label>
@@ -44,7 +48,7 @@ export default function SelectInput({
           </option>
         ))}
       </select>
-      {error && <span className="error-text">{error}</span>}
+      {error && <span className="error-text">{t(error)}</span>}
     </div>
   );
 }
