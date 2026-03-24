@@ -11,15 +11,29 @@ export const metadata: Metadata = {
     "აღმოაჩინეთ ნამდვილი ქართული ხელოვნება და ხელნაკეთი ნივთები, შექმნილი ოსტატი ხელოსნების მიერ.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let translations = {};
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/admin/translations`,
+      { cache: "no-store" }, // ensures fresh translations or use revalidate if static
+    );
+    const data = await response.json();
+    if (data.success && data.data.grouped) {
+      translations = data.data.grouped;
+    }
+  } catch (error) {
+    console.error("Failed to fetch translations in layout:", error);
+  }
+
   return (
     <html lang="ka">
       <body>
-        <LanguageProvider>
+        <LanguageProvider initialTranslations={translations}>
           <AuthProvider>{children}</AuthProvider>
         </LanguageProvider>
         <ToastContainer

@@ -1,21 +1,20 @@
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import api from "@/lib/api";
+import { useLanguage } from "@/contexts/LanguageContext";
 import "./navigation.scss";
-import { Lang } from "@/lib/types/lang.types";
 
-import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-
-export interface NavItem {
+interface MenuItem {
+  _id: string;
+  label: { ka: string; en: string };
+  href: string;
+  order: number;
+  isActive: boolean;
+}
+interface NavItem {
   key: string;
   path: string;
 }
-
-const pathMap: Record<string, string> = {
-  home: "/",
-  about: "/about",
-  products: "/products",
-  partners: "/partners",
-  contact: "/contact",
-};
 
 interface NavigationProps {
   nav?: NavItem[];
@@ -23,17 +22,44 @@ interface NavigationProps {
 }
 
 function Navigation({ nav, mobile }: NavigationProps) {
-  const { t, translations } = useClientTranslation("navigation");
+  const [dynamicItems, setDynamicItems] = useState<MenuItem[]>([]);
+  const { lang } = useLanguage();
 
-  const items = nav || Object.keys(translations)
-    .filter((key) => pathMap[key])
-    .map((key) => ({ key, path: pathMap[key] }));
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const response = await api.get("/api/menu");
+        const activeItems = (response.data as MenuItem[])
+          .filter((item) => item.isActive)
+          .sort((a, b) => a.order - b.order);
+        setDynamicItems(activeItems);
+      } catch (err) {
+        console.error("Failed to fetch menu:", err);
+      }
+    };
+    fetchMenu();
+  }, []);
+
+  // Standard static override fallback
+  if (nav) {
+    return (
+      <ul className={`navigation ${mobile ? "mobile" : ""}`}>
+        {nav.map((item) => (
+          <li key={item.path}>
+            <Link href={item.path}>{item.key}</Link>
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <ul className={`navigation ${mobile ? "mobile" : ""}`}>
-      {items.map((item) => (
-        <li key={item.path}>
-          <Link href={item.path}>{t(item.key)}</Link>
+      {dynamicItems.map((item) => (
+        <li key={item._id}>
+          <Link href={item.href}>
+            {lang === "ge" ? item.label.ka : item.label.en}
+          </Link>
         </li>
       ))}
     </ul>

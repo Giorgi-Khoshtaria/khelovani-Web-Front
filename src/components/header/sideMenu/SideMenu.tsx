@@ -1,4 +1,4 @@
-import Navigation, { NavItem } from "../navigation-component/Navigation";
+import Navigation from "../navigation-component/Navigation";
 import AuthActions from "../auth-component/AuthActions";
 import "./sideMenu.scss";
 import Image from "next/image";
