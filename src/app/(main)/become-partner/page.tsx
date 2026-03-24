@@ -19,6 +19,7 @@ import {
 } from "@/lib/validations/becomePartnerValidations";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import { partnerRegisterRequest } from "@/lib/requests/partnerRequests/partnerAuth.req";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 const INITIAL_FORM: PartnerFormData = {
   companyNameGe: "",
@@ -42,6 +43,8 @@ function PartnerRegistration() {
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
   const { t: tCommon } = useClientTranslation("common");
+  const { t: tAlerts } = useClientTranslation("alerts");
+  const { lang } = useLanguage();
 
   const { formData, errors, setErrors, handleChange } =
     useFormHandler<PartnerFormData>(INITIAL_FORM);
@@ -59,8 +62,8 @@ function PartnerRegistration() {
 
     try {
       // add your partner register request here
-      await partnerRegisterRequest(formData);
-      toast.success(tPages("become_partner.success") || "განაცხადი წარმატებით გაიგზავნა!");
+      await partnerRegisterRequest(formData, lang);
+      toast.success(tAlerts("partner_registered") || "განაცხადი წარმატებით გაიგზავნა!");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -74,12 +77,19 @@ function PartnerRegistration() {
         } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
-          toast.error(tPages("become_partner.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+          toast.error(
+            tAlerts("registration_error") ||
+              "რეგისტრაციის დროს დაფიქსირდა შეცდომა",
+          );
         }
       } else {
-        toast.error(tPages("become_partner.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        toast.error(
+          tAlerts("registration_error") ||
+            "რეგისტრაციის დროს დაფიქსირდა შეცდომა",
+        );
       }
-    } finally {
+    }
+ finally {
       setIsLoading(false);
     }
   };
@@ -99,7 +109,9 @@ function PartnerRegistration() {
         >
           <TextInput
             id="companyNameGe"
-            label={tInputs("label.company_name_ge") || "კომპანიის სახელი (ქართულად)"}
+            label={
+              tInputs("label.company_name_ge") || "კომპანიის სახელი (ქართულად)"
+            }
             value={formData.companyNameGe}
             onChange={handleChange}
             error={errors.companyNameGe}
@@ -108,7 +120,9 @@ function PartnerRegistration() {
 
           <TextInput
             id="companyNameEn"
-            label={tInputs("label.company_name_en") || "კომპანიის სახელი (ლათინურად)"}
+            label={
+              tInputs("label.company_name_en") || "კომპანიის სახელი (ლათინურად)"
+            }
             value={formData.companyNameEn}
             onChange={handleChange}
             error={errors.companyNameEn}
@@ -184,7 +198,6 @@ function PartnerRegistration() {
           <TextareaInput
             id="description"
             label={tInputs("label.description")}
-            hint={tInputs("hint.description") || "რამდენიმე წინადადებით აღწერე შენი კომპანია"}
             value={formData.description}
             onChange={handleChange}
             error={errors.description}
@@ -206,7 +219,9 @@ function PartnerRegistration() {
               disabled={isLoading}
               className="create-account-btn"
             >
-              {isLoading ? tCommon("loading") || "მიმდინარეობს..." : tNav("register") || "რეგისტრაცია"}
+              {isLoading
+                ? tCommon("loading") || "მიმდინარეობს..."
+                : tNav("register") || "რეგისტრაცია"}
             </button>
           </div>
         </form>

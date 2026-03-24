@@ -7,6 +7,8 @@ import {
   validateAddress,
   validateNameEn,
   validateNameGe,
+  validateIdNumber,
+  validateDateOfBirth,
 } from "./shared/fieldValidators";
 
 export interface RegistrationFormData {
@@ -42,13 +44,8 @@ export const validateRegistrationForm = (
     terms,
   } = formData;
   // ── ID Number ─────────────────────────────────────────────
-  if (!idNumber) {
-    errors.idNumber = "პირადი ნომერი აუცილებელია";
-  } else if (!/^\d+$/.test(idNumber)) {
-    errors.idNumber = "პირადი ნომერი უნდა შეიცავდეს მხოლოდ ციფრებს";
-  } else if (idNumber.length !== 11) {
-    errors.idNumber = "პირადი ნომერი უნდა შედგებოდეს ზუსტად 11 ციფრისგან";
-  }
+  const idError = validateIdNumber(idNumber);
+  if (idError) errors.idNumber = idError;
 
   // ── Name (Georgian) - optional ────────────────────────────
   const nameGeError = validateNameGe(nameGe, false);
@@ -59,40 +56,21 @@ export const validateRegistrationForm = (
   if (nameEnError) errors.nameEn = nameEnError;
 
   // ── Date of Birth ─────────────────────────────────────────
-  if (!dateOfBirth) {
-    errors.dateOfBirth = "აირჩიეთ დაბადების თარიღი";
-  } else {
-    const today = new Date();
-    const dob = new Date(dateOfBirth);
-    const age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    const dayDiff = today.getDate() - dob.getDate();
-
-    const preciseAge =
-      monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
-
-    if (preciseAge < 18) {
-      errors.dateOfBirth = "რეგისტრაციისთვის საჭიროა მინიმუმ 18 წელი";
-    } else if (preciseAge > 100) {
-      errors.dateOfBirth = "გთხოვთ შეიყვანოთ სწორი დაბადების თარიღი";
-    }
-  }
+  const dobError = validateDateOfBirth(dateOfBirth);
+  if (dobError) errors.dateOfBirth = dobError;
 
   // ── City ──────────────────────────────────────────────────
   if (!city) {
-    errors.city = "აირჩიეთ ქალაქი";
+    errors.city = "validation.city_required";
   }
 
   // ── Address ───────────────────────────────────────────────
   if (!address) {
-    errors.address = "მისამართი აუცილებელია";
-  } else if (!/^[\u10D0-\u10FFa-zA-Z0-9\s,.\-/#]+$/.test(address.trim())) {
-    errors.address =
-      "მისამართი უნდა შეიცავდეს მხოლოდ ქართულ ან ლათინურ სიმბოლოებს";
+    errors.address = "validation.address_required";
   } else if (address.trim().length < 5) {
-    errors.address = "მისამართი უნდა შეიცავდეს მინიმუმ 5 სიმბოლოს";
+    errors.address = "validation.address_min";
   } else if (address.trim().length > 200) {
-    errors.address = "მისამართი არ უნდა აღემატებოდეს 200 სიმბოლოს";
+    errors.address = "validation.address_max";
   }
 
   // ── Email (shared) ────────────────────────────────────────
@@ -113,7 +91,7 @@ export const validateRegistrationForm = (
 
   // ── Terms ─────────────────────────────────────────────────
   if (!terms) {
-    errors.terms = "თქვენ უნდა დაეთანხმოთ წესებს და პირობებს";
+    errors.terms = "validation.terms_required";
   }
 
   return errors;

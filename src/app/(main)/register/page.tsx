@@ -23,6 +23,7 @@ import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
 import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",
@@ -47,6 +48,8 @@ export default function Registration() {
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
   const { t: tCommon } = useClientTranslation("common");
+  const { t: tAlerts } = useClientTranslation("alerts");
+  const { lang } = useLanguage();
 
   const { formData, setFormData, errors, setErrors, handleChange } =
     useFormHandler(INITIAL_FORM);
@@ -80,9 +83,9 @@ export default function Registration() {
         password: formData.password,
       };
 
-      await registerUser(payload);
+      await registerUser(payload, lang);
       toast.success(
-        tPages("register.success") || "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
+        tAlerts("account_created") || "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
       );
       setTimeout(() => router.push("/login"), 2000);
     } catch (error: unknown) {
@@ -102,12 +105,12 @@ export default function Registration() {
         } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
-          toast.error(tPages("register.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+          toast.error(tAlerts("registration_error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
         }
       } else if (error instanceof Error && error.message === "Network Error") {
-        toast.error(tPages("register.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით");
+        toast.error(tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით");
       } else {
-        toast.error(tPages("register.error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        toast.error(tAlerts("registration_error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
       }
     } finally {
       setIsLoading(false);

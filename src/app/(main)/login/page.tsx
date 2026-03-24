@@ -12,6 +12,7 @@ import { loginUser } from "@/lib/requests/userRequests/auth.req";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   validateLoginForm,
   type LoginFormErrors,
@@ -19,6 +20,7 @@ import {
 import TextInput from "@/components/ui/TextInput";
 import PasswordInput from "@/components/ui/PasswordInput";
 import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
+import { useFormHandler } from "@/lib/hooks/useFormHandler";
 
 function Login() {
   useCheckIfUserIsLogin();
@@ -29,25 +31,18 @@ function Login() {
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
   const { t: tCommon } = useClientTranslation("common");
+  const { t: tAlerts } = useClientTranslation("alerts");
+  const { lang } = useLanguage();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<LoginFormErrors>({});
 
   const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
     useRateLimitCooldown(120);
 
-  const [data, setData] = useState<LoginTypes>({
+  const { formData: data, errors, setErrors, handleChange } = useFormHandler<LoginTypes>({
     email: "",
     password: "",
   });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setData((prev) => ({ ...prev, [id]: value }));
-    if (errors[id as keyof LoginFormErrors]) {
-      setErrors((prev) => ({ ...prev, [id]: undefined }));
-    }
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,19 +58,19 @@ function Login() {
     setIsLoading(true);
 
     try {
-      const response = await loginUser(data);
+      const response = await loginUser(data, lang);
 
       if (response.token) {
         login(response.token);
       }
 
-      toast.success(tPages("login.success") || "წარმატებით შეხვედით სისტემაში");
+      toast.success(tAlerts("login_success") || "წარმატებით შეხვედით სისტემაში");
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
           error?.response?.data?.message ??
-          (tPages("login.error") || "შეცდომა შევიდა სისტემაში");
+          (tAlerts("login_error") || "შეცდომა შევიდა სისტემაში");
         toast.error(message);
 
         if (error?.response?.status === 429) {
@@ -85,10 +80,10 @@ function Login() {
         }
       } else if (error instanceof Error && error.message === "Network Error") {
         toast.error(
-          tPages("login.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა",
+          tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა",
         );
       } else {
-        toast.error(tPages("login.error") || "შეცდომა შევიდა სისტემაში");
+        toast.error(tAlerts("login_error") || "შეცდომა შევიდა სისტემაში");
       }
 
       setIsLoading(false);

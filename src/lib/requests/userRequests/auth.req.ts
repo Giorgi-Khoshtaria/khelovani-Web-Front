@@ -1,9 +1,11 @@
 import api from "@/lib/api";
 import type { UserTypes, LoginTypes } from "@/lib/types/userTypes";
 
-export const registerUser = async (data: UserTypes) => {
+export const registerUser = async (data: UserTypes, lang: string) => {
   try {
-    const response = await api.post(`/api/user/register`, data);
+    const response = await api.post(`/api/user/register`, data, {
+      params: { lang },
+    });
     return response.data;
   } catch (error) {
     console.error("Error registering user::", error);
@@ -11,12 +13,13 @@ export const registerUser = async (data: UserTypes) => {
   }
 };
 
-export const loginUser = async (data: LoginTypes) => {
+export const loginUser = async (data: LoginTypes, lang: string) => {
   try {
     const response = await api.post(`/api/user/login`, data, {
       headers: {
         "Content-Type": "application/json",
       },
+      params: { lang },
     });
     return response.data;
   } catch (error) {
@@ -25,11 +28,15 @@ export const loginUser = async (data: LoginTypes) => {
   }
 };
 
-export const forgotPassword = async (email: string) => {
+export const forgotPassword = async (email: string, lang: string) => {
   try {
-    const response = await api.post(`/api/user/forgot-password`, {
-      email,
-    });
+    const response = await api.post(
+      `/api/user/forgot-password`,
+      { email },
+      {
+        params: { lang },
+      },
+    );
     return response.data;
   } catch (error) {
     console.error("Error sending forgot-password email:", error);
@@ -37,12 +44,19 @@ export const forgotPassword = async (email: string) => {
   }
 };
 
-export const resetPassword = async (token: string, password: string) => {
+export const resetPassword = async (
+  token: string,
+  password: string,
+  lang: string,
+) => {
   try {
-    const response = await api.post(`/api/user/reset-password`, {
-      token,
-      password,
-    });
+    const response = await api.post(
+      `/api/user/reset-password`,
+      { token, password },
+      {
+        params: { lang },
+      },
+    );
     return response.data;
   } catch (error) {
     console.error("Error resetting password:", error);

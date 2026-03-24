@@ -124,3 +124,38 @@ export const validateAddressEn = (addressEn: string): string | null => {
     return "validation.address_max";
   return null;
 };
+
+// ── ID Number ─────────────────────────────────────────────────────────────
+export function validateIdNumber(idNumber: string): string | null {
+  if (!idNumber) return "validation.id_number_required";
+  if (!/^\d+$/.test(idNumber)) return "validation.id_number_digits";
+  if (idNumber.length !== 11) return "validation.id_number_length";
+  return null;
+}
+
+// ── Date of Birth ─────────────────────────────────────────────────────────
+export function validateDateOfBirth(dateOfBirth: string): string | null {
+  if (!dateOfBirth) return "validation.date_of_birth_required";
+
+  const today = new Date();
+  const dob = new Date(dateOfBirth);
+  const age = today.getFullYear() - dob.getFullYear();
+  const monthDiff = today.getMonth() - dob.getMonth();
+  const dayDiff = today.getDate() - dob.getDate();
+
+  const preciseAge =
+    monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
+
+  if (preciseAge < 18) return "validation.age_min_18";
+  if (preciseAge > 100) return "validation.age_invalid";
+
+  return null;
+}
+
+// ── Identification Code ───────────────────────────────────────────────────
+export function validateIdentificationCode(code: string): string | null {
+  if (!code) return "validation.id_code_required";
+  if (!/^\d+$/.test(code)) return "validation.id_code_digits";
+  if (code.length !== 9) return "validation.id_code_length";
+  return null;
+}

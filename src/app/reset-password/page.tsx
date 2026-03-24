@@ -9,6 +9,8 @@ import "./reset-password.scss";
 import PasswordInput from "@/components/ui/PasswordInput";
 import { resetPassword } from "@/lib/requests/userRequests/auth.req";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import {
   validateResetPasswordForm,
   type ResetPasswordErrors,
@@ -20,18 +22,20 @@ function ResetPasswordContent() {
   const token = searchParams.get("token");
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
+  const [isLoading, setIsLoading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const { formData, errors, setErrors, handleChange } = useFormHandler({
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState<ResetPasswordErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [done, setDone] = useState(false);
 
   const { t: tPages } = useClientTranslation("pages");
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
   const { t: tCommon } = useClientTranslation("common");
+  const { t: tAlerts } = useClientTranslation("alerts");
+  const { lang } = useLanguage();
 
   // No token in URL → show error immediately
   if (!token) {
@@ -57,8 +61,8 @@ function ResetPasswordContent() {
                 />
               </svg>
             </div>
-            <h1>{tPages("reset_password.invalid_link") || "ბმული არასწორია"}</h1>
-            <p>{tPages("reset_password.invalid_link_sub") || "პაროლის აღდგენის ბმული არასწორია ან ვადა გასულია."}</p>
+            <h1>{tPages("reset_password.invalid_title") || "ბმული არასწორია"}</h1>
+            <p>{tPages("reset_password.invalid_sub") || "პაროლის აღდგენის ბმული არასწორია ან ვადა გასულია."}</p>
             <Link href="/forgot-password">{tPages("reset_password.try_again") || "ახლიდან სცადე"}</Link>
           </div>
         </div>
@@ -66,17 +70,6 @@ function ResetPasswordContent() {
     );
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-    if (errors[id as keyof ResetPasswordErrors]) {
-      setErrors((prev) => ({ ...prev, [id]: undefined }));
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,17 +83,17 @@ function ResetPasswordContent() {
     setIsLoading(true);
 
     try {
-      await resetPassword(token, formData.password);
+      await resetPassword(token, formData.password, lang);
       setDone(true);
-      toast.success(tPages("reset_password.success") || "პაროლი წარმატებით შეიცვალა");
+      toast.success(tAlerts("password_changed") || "პაროლი წარმატებით შეიცვალა");
       setTimeout(() => router.push("/login"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ?? (tPages("reset_password.error") || "პაროლის შეცვლა ვერ მოხერხდა");
+          error?.response?.data?.message ?? (tAlerts("request_failed") || "პაროლის შეცვლა ვერ მოხერხდა");
         toast.error(message);
       } else {
-        toast.error(tPages("reset_password.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა");
+        toast.error(tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა");
       }
     } finally {
       setIsLoading(false);

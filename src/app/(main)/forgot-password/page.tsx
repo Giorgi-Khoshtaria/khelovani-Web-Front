@@ -15,39 +15,35 @@ import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
 import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 import Link from "next/link";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useFormHandler } from "@/lib/hooks/useFormHandler";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function ForgotPassword() {
   useCheckIfUserIsLogin();
-  const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState<ForgotPasswordErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [sent, setSent] = useState(false);
+
+  const { formData: data, errors, setErrors, handleChange } = useFormHandler<{ email: string }>({
+    email: "",
+  });
 
   const { t: tPages } = useClientTranslation("pages");
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
   const { t: tCommon } = useClientTranslation("common");
+  const { t: tAlerts } = useClientTranslation("alerts");
+  const { lang } = useLanguage();
 
   const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
     useRateLimitCooldown(120);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
-  ) => {
-    setEmail(e.target.value);
-    if (errors.email) {
-      setErrors({});
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validationErrors = validateForgotPasswordForm({ email });
+    const validationErrors = validateForgotPasswordForm(data);
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+      setErrors(validationErrors as Record<string, string>);
       return;
     }
 
@@ -56,20 +52,20 @@ function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      await forgotPassword(email);
+      await forgotPassword(data.email, lang);
 
       setSent(true);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ?? (tPages("forgot_password.error") || "მოთხოვნის გაგზავნა ვერ მოხერხდა");
+          error?.response?.data?.message ?? (tAlerts("request_failed") || "მოთხოვნის გაგზავნა ვერ მოხერხდა");
         toast.error(message);
 
         if (error?.response?.status === 429) {
           startCooldown();
         }
       } else {
-        toast.error(tPages("forgot_password.network_error") || "სერვერთან დაკავშირება ვერ მოხერხდა");
+        toast.error(tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა");
       }
     } finally {
       setIsLoading(false);
@@ -94,7 +90,7 @@ function ForgotPassword() {
             <h1 className="title">{tPages("forgot_password.sent_title")}</h1>
             <p>
               {tPages("forgot_password.sent_sub")}{" "}
-              <strong>{email}</strong>
+              <strong>{data.email}</strong>
             </p>
             <Link
               href="/login"
@@ -114,7 +110,7 @@ function ForgotPassword() {
                 id="email"
                 label={tInputs("label.email")}
                 type="email"
-                value={email}
+                value={data.email}
                 onChange={handleChange}
                 error={errors.email}
                 placeholder={tInputs("placeholder.email")}

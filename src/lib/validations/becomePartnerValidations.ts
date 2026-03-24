@@ -6,6 +6,7 @@ import {
   validateAddressEn,
   validateNameEn,
   validateNameGe,
+  validateIdentificationCode,
 } from "./shared/fieldValidators";
 
 export interface PartnerFormData {
@@ -47,23 +48,16 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
   const companyNameEnError = validateNameEn(companyNameEn, true);
   if (companyNameEnError) errors.companyNameEn = companyNameEnError;
   // ── Identification Code ───────────────────────────────────
-  if (!identificationCode) {
-    errors.identificationCode = "საიდენტიფიკაციო კოდი აუცილებელია";
-  } else if (!/^\d+$/.test(identificationCode)) {
-    errors.identificationCode =
-      "საიდენტიფიკაციო კოდი უნდა შეიცავდეს მხოლოდ ციფრებს";
-  } else if (identificationCode.length !== 9) {
-    errors.identificationCode =
-      "საიდენტიფიკაციო კოდი უნდა შედგებოდეს ზუსტად 9 ციფრისგან";
-  }
+  const idCodeError = validateIdentificationCode(identificationCode);
+  if (idCodeError) errors.identificationCode = idCodeError;
 
   // ── Contact Person ────────────────────────────────────────
   if (!contactPerson) {
-    errors.contactPerson = "საკონტაქტო პირის სახელი აუცილებელია";
+    errors.contactPerson = "validation.contact_required";
   } else if (contactPerson.trim().length < 2) {
-    errors.contactPerson = "სახელი უნდა შეიცავდეს მინიმუმ 2 სიმბოლოს";
+    errors.contactPerson = "validation.contact_min";
   } else if (contactPerson.trim().length > 200) {
-    errors.contactPerson = "სახელი არ უნდა აღემატებოდეს 200 სიმბოლოს";
+    errors.contactPerson = "validation.contact_max";
   }
 
   // ── Phone (shared) ────────────────────────────────────────
@@ -88,16 +82,16 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
 
   // ── Description ───────────────────────────────────────────
   if (!description) {
-    errors.description = "კომპანიის აღწერა აუცილებელია";
+    errors.description = "validation.description_required";
   } else if (description.trim().length < 10) {
-    errors.description = "აღწერა უნდა შეიცავდეს მინიმუმ 10 სიმბოლოს";
+    errors.description = "validation.description_min";
   } else if (description.trim().length > 1000) {
-    errors.description = "აღწერა არ უნდა აღემატებოდეს 1000 სიმბოლოს";
+    errors.description = "validation.description_max";
   }
 
   // ── Terms ─────────────────────────────────────────────────
   if (!terms) {
-    errors.terms = "თქვენ უნდა დაეთანხმოთ წესებს და პირობებს";
+    errors.terms = "validation.terms_required";
   }
 
   return errors;
