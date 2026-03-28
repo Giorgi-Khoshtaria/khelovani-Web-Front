@@ -1,4 +1,4 @@
-import MainPageHero from "@/components/mainPageHero/MainPageHero";
+import MainPageHero from "@/components/mainPage/mainPageHero/MainPageHero";
 
 export default function HomePage() {
   return (

@@ -4,16 +4,22 @@ import "react-toastify/dist/ReactToastify.css";
 import "./globals.scss";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { cookies } from "next/headers";
+import { Lang } from "@/lib/types/lang.types";
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const initialLang = (cookieStore.get("lang")?.value as Lang) || "ge";
   let translations: Record<string, any> = {};
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const translationsUrl = apiUrl ? `${apiUrl}/api/admin/translations` : null;
+  const translationsUrl = apiUrl
+    ? `${apiUrl}/api/admin/translations?limit=0`
+    : null;
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -71,9 +77,12 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="ka">
+    <html lang={initialLang === "ge" ? "ka" : "en"}>
       <body>
-        <LanguageProvider initialTranslations={translations}>
+        <LanguageProvider
+          initialTranslations={translations}
+          initialLang={initialLang}
+        >
           <AuthProvider>{children}</AuthProvider>
         </LanguageProvider>
         <ToastContainer
