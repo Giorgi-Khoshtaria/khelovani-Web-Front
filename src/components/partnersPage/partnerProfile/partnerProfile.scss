@@ -1,0 +1,194 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/animations.scss";
+
+.partner-profile {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px 100px;
+  animation: fadeInPage 0.6s ease-out forwards;
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+
+  &__loading, &__error {
+    @extend .large-text;
+    text-align: center;
+    padding: 100px 20px;
+    color: colors.$color-text-secondary;
+    width: 100%;
+  }
+
+  // Left Sidebar (Only Image)
+  &__left {
+    flex: 0 0 400px;
+    position: sticky;
+    top: 100px;
+  }
+
+  &__photo, &__photo-placeholder {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__photo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-secondary;
+    font-size: 80px;
+    color: colors.$color-walnut;
+    opacity: 0.5;
+    border: 1px solid rgba(colors.$color-border, 0.4);
+  }
+
+  // Right Main Content (Single Card)
+  &__right {
+    flex: 1;
+  }
+
+  &__card {
+    background: colors.$color-white;
+    border-radius: 16px;
+    padding: 48px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(colors.$color-border, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(colors.$color-black, 0.08);
+      border-color: rgba(colors.$color-walnut, 0.3);
+    }
+  }
+
+  &__name {
+    @extend .huge-text;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: colors.$color-text-primary;
+    margin-bottom: 24px;
+  }
+
+  &__metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  &__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    @extend .medium-text;
+    color: colors.$color-text-secondary;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      color: colors.$color-walnut;
+      flex-shrink: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      
+      &:hover {
+        color: colors.$color-walnut;
+      }
+    }
+  }
+
+  &__about {
+    margin-bottom: 40px;
+  }
+
+  &__section-title {
+    @extend .large-text;
+    font-size: 20px;
+    font-weight: 700;
+    color: colors.$color-text-primary;
+    margin-bottom: 16px;
+  }
+
+  &__description {
+    @extend .medium-text;
+    line-height: 1.8;
+    color: colors.$color-text-secondary;
+    white-space: pre-wrap;
+  }
+
+  &__socials-section {
+    margin-top: 32px;
+  }
+
+  &__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: colors.$color-bg-page;
+      color: colors.$color-text-secondary;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      &:hover {
+        background: colors.$color-espresso;
+        color: colors.$color-white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(colors.$color-espresso, 0.2);
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    gap: 32px;
+
+    &__left {
+      width: 100%;
+      flex: none;
+      position: relative;
+      top: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    &__photo, &__photo-placeholder {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: auto; // let it depend on image size instead of rigid ratio if preferred, or keep 4/5
+    }
+
+    &__card {
+      padding: 32px 24px;
+    }
+  }
+}
+
