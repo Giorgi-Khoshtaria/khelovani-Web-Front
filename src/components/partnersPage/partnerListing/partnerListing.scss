@@ -1,0 +1,249 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/animations.scss";
+
+.partner-listing {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px 100px;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+
+  &__search {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    
+    &-input {
+      @extend .default-text;
+      width: 100%;
+      padding: 16px 24px;
+      padding-left: 50px;
+      border-radius: 12px;
+      border: 1px solid rgba(colors.$color-walnut, 0.2);
+      background-color: colors.$color-white;
+      color: colors.$color-text-primary;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(colors.$color-espresso, 0.05);
+
+      &:focus {
+        outline: none;
+        border-color: colors.$color-walnut;
+        box-shadow: 0 4px 20px rgba(colors.$color-walnut, 0.15);
+      }
+      
+      &::placeholder {
+        color: colors.$color-text-secondary;
+      }
+    }
+
+    &-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: colors.$color-text-secondary;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__loading {
+    @extend .medium-text;
+    text-align: center;
+    color: colors.$color-text-secondary;
+    padding: 60px 0;
+  }
+
+  &__empty {
+    @extend .medium-text;
+    text-align: center;
+    color: colors.$color-text-secondary;
+    padding: 60px 0;
+    background: rgba(colors.$color-white, 0.5);
+    border-radius: 16px;
+    border: 1px dashed rgba(colors.$color-walnut, 0.3);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+    margin-bottom: 60px;
+  }
+
+  &__card {
+    background: colors.$color-white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(colors.$color-border, 0.5);
+    box-shadow: 0 4px 12px rgba(colors.$color-black, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeIn 0.5s ease-out forwards;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(colors.$color-black, 0.1);
+      border-color: rgba(colors.$color-walnut, 0.3);
+    }
+  }
+
+  &__card-image {
+    width: 100%;
+    height: 240px;
+    background: colors.$color-bg-secondary;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__card-placeholder {
+    @extend .huge-text;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: colors.$color-walnut;
+    opacity: 0.5;
+  }
+
+  &__card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  &__name {
+    @extend .large-text;
+    font-size: 22px;
+    color: colors.$color-text-primary;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  &__location {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 24px;
+    text-align: left;
+    line-height: 1.4;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  }
+
+  &__socials {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    margin-top: auto;
+    
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(colors.$color-bg-accent, 0.3);
+      color: colors.$color-text-secondary;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: colors.$color-walnut;
+        color: colors.$color-white;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  &__link {
+    @extend .default-text;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background-color: colors.$color-bg-page;
+    color: colors.$color-text-primary;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid colors.$color-border;
+
+    &:hover {
+      background-color: colors.$color-walnut;
+      color: colors.$color-white;
+      border-color: colors.$color-walnut;
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+
+    button {
+      @extend .default-text;
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(colors.$color-walnut, 0.2);
+      background-color: colors.$color-white;
+      color: colors.$color-espresso;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        background-color: colors.$color-walnut;
+        color: colors.$color-white;
+        border-color: colors.$color-walnut;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    span {
+      @extend .default-text;
+      color: colors.$color-text-secondary;
+      font-weight: 500;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .partner-listing {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

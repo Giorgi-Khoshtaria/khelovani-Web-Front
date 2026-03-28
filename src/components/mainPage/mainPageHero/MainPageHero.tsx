@@ -11,6 +11,11 @@ function MainPageHero() {
 
   return (
     <section className="hero">
+      <div className="hero__bg-fx">
+        <div className="hero__gradient hero__gradient--1"></div>
+        <div className="hero__gradient hero__gradient--2"></div>
+        <div className="hero__noise"></div>
+      </div>
       <span
         className="hero__bg-element hero__bg-element--1"
         aria-hidden="true"
