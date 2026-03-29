@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "@/lib/api";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
@@ -45,16 +45,25 @@ const SocialLink = ({ url, type }: { url?: string, type: keyof typeof SVGS }) =>
   );
 };
 
-export default function PartnerListing() {
+interface PartnerListingProps {
+  initialPartners?: Partner[];
+  initialTotalPages?: number;
+}
+
+export default function PartnerListing({
+  initialPartners = [],
+  initialTotalPages = 1,
+}: PartnerListingProps) {
   const { lang } = useLanguage();
   const { t: tPages } = useClientTranslation("pages");
   const { t: tCommon } = useClientTranslation("common");
-  const [partners, setPartners] = useState<Partner[]>([]);
+  const [partners, setPartners] = useState<Partner[]>(initialPartners);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [isLoading, setIsLoading] = useState(false);
+  const isFirstMount = useRef(true);
 
   // Debounce search input
   useEffect(() => {
@@ -68,6 +77,11 @@ export default function PartnerListing() {
 
   // Fetch partners
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
     const fetchPartners = async () => {
       setIsLoading(true);
       try {
