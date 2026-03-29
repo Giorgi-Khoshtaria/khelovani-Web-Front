@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "@/lib/api";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import "./partnerProfile.scss";
 
-interface Partner {
+export interface Partner {
   _id: string;
   companyNameGe: string;
   companyNameEn: string;
@@ -41,17 +41,30 @@ const SocialLink = ({ url, type }: { url?: string, type: keyof typeof SVGS }) =>
   );
 };
 
-export default function PartnerProfile({ id }: { id: string }) {
+export default function PartnerProfile({
+  id,
+  initialData = null,
+}: {
+  id: string;
+  initialData?: Partner | null;
+}) {
   const { lang } = useLanguage();
   const { t: tPages } = useClientTranslation("pages");
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tCommon } = useClientTranslation("common");
-  const [partner, setPartner] = useState<Partner | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [partner, setPartner] = useState<Partner | null>(initialData);
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState("");
+  const isFirstMount = useRef(true);
 
   useEffect(() => {
+    if (isFirstMount.current && initialData) {
+      isFirstMount.current = false;
+      return;
+    }
+
     const fetchPartner = async () => {
+      setIsLoading(true);
       try {
         const res = await api.get<Partner>(`/api/partner/${id}`);
         setPartner(res.data);
