@@ -21,6 +21,7 @@ export interface PartnerFormData {
   addressEn: string;
   description: string;
   terms: boolean;
+  category?: string;
 }
 
 export type FormErrors = Record<string, string>;
@@ -87,6 +88,11 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
     errors.description = "validation.description_min";
   } else if (description.trim().length > 1000) {
     errors.description = "validation.description_max";
+  }
+
+  // ── Category ─────────────────────────────────────────────
+  if (!formData.category || formData.category.trim() === "") {
+    errors.category = "validation.category_required";
   }
 
   // ── Terms ─────────────────────────────────────────────────

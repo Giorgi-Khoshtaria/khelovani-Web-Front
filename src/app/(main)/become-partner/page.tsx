@@ -13,6 +13,7 @@ import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
+import { CATEGORY_OPTIONS } from "@/components/ui/CategoryOptions";
 import {
   validatePartnerForm,
   type PartnerFormData,
@@ -28,6 +29,7 @@ const INITIAL_FORM: PartnerFormData = {
   contactPerson: "",
   phone: "",
   city: "",
+  category: "",
   email: "",
   address: "",
   addressEn: "",
@@ -165,6 +167,16 @@ function PartnerRegistration() {
             options={CITY_OPTIONS}
             placeholder={tInputs("placeholder.city")}
             error={errors.city}
+          />
+
+          <SelectInput
+            id="category"
+            label={tInputs("label.category") || "კატეგორია"}
+            value={formData.category ?? ""}
+            onChange={handleChange}
+            options={CATEGORY_OPTIONS}
+            placeholder={tInputs("placeholder.category") || "აირჩიეთ კატეგორია"}
+            error={errors.category}
           />
 
           <TextInput

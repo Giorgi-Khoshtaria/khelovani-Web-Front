@@ -11,41 +11,74 @@ function MainPageHero() {
 
   return (
     <section className="hero">
-      <div className="hero__bg-fx">
-        <div className="hero__gradient hero__gradient--1"></div>
-        <div className="hero__gradient hero__gradient--2"></div>
-        <div className="hero__noise"></div>
+      {/* ── Background layer ── */}
+      <div className="hero__bg" aria-hidden="true">
+        <div className="hero__orb hero__orb--1" />
+        <div className="hero__orb hero__orb--2" />
+        <div className="hero__orb hero__orb--3" />
+        <div className="hero__grid" />
+        <div className="hero__noise" />
       </div>
-      <span
-        className="hero__bg-element hero__bg-element--1"
-        aria-hidden="true"
-      ></span>
-      <span
-        className="hero__bg-element hero__bg-element--2"
-        aria-hidden="true"
-      ></span>
+
+      {/* ── Floating rings decoration ── */}
+      <span className="hero__ring hero__ring--1" aria-hidden="true" />
+      <span className="hero__ring hero__ring--2" aria-hidden="true" />
+
+      {/* ── Main content ── */}
       <div className="hero__inner">
-        <div className="hero__content">
-          <Image
-            className="hero__logo"
-            src="/assets/logo.png"
-            width={150}
-            height={150}
-            alt="logo"
-          />
-          <p className="hero__text">{tPages("home.hero_description")}</p>
+        <Image
+          className="hero__logo"
+          src="/assets/logo.png"
+          width={200}
+          height={200}
+          alt="logo"
+          priority
+        />
+
+        <p className="hero__description">{tPages("home.hero_description")}</p>
+
+        <div className="hero__divider" aria-hidden="true">
+          <span />
+          <span className="hero__divider-gem" />
+          <span />
         </div>
 
         <div className="hero__actions">
           <Link href="/products" className="hero__btn hero__btn--primary">
-            {tPages("home.discover_collection")}
+            <span>{tPages("home.discover_collection")}</span>
+            <svg
+              className="hero__btn-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </Link>
+
           <Link href="/partners" className="hero__btn hero__btn--secondary">
             {tPages("home.discover_partners")}
           </Link>
+
           <Link href="/become-partner" className="hero__btn hero__btn--ghost">
             {tNav("become_partner")}
           </Link>
+        </div>
+      </div>
+
+      {/* ── Scroll hint ── */}
+      <div className="hero__scroll" aria-hidden="true">
+        <div className="hero__scroll-track">
+          <div className="hero__scroll-thumb" />
         </div>
       </div>
     </section>
