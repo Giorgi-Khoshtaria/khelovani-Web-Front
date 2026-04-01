@@ -1,0 +1,91 @@
+import Link from "next/link";
+import { PartnerCardProps } from "@/lib/types/partnerTypes";
+import { Icons } from "../constants";
+import { SocialLinks } from "./SocialLinks";
+import "./partnerCard.scss";
+
+export default function PartnerCard({ partner, lang, index }: PartnerCardProps) {
+  const name =
+    lang === "ge" ? partner.companyNameGe : partner.companyNameEn;
+  const address =
+    lang === "ge"
+      ? partner.address
+      : partner.addressEn || partner.address;
+
+  const cityLabel = partner.city
+    ? partner.city.charAt(0).toUpperCase() + partner.city.slice(1)
+    : null;
+
+  return (
+    <article
+      className="partner-card"
+      style={{ animationDelay: `${(index % 6) * 60}ms` }}
+    >
+      {/* ── Image / placeholder ── */}
+      <div className="partner-card__image">
+        {partner.profilePhoto ? (
+          <img src={partner.profilePhoto} alt={name} loading="lazy" />
+        ) : (
+          <div className="partner-card__placeholder" aria-hidden="true">
+            {name.charAt(0).toUpperCase()}
+          </div>
+        )}
+        {partner.category && (
+          <span className="partner-card__category">{partner.category}</span>
+        )}
+      </div>
+
+      {/* ── Body ── */}
+      <div className="partner-card__body">
+        <div className="partner-card__header">
+          <h3 className="partner-card__name">{name}</h3>
+          <div className="partner-card__rating">
+            <span className="partner-card__stars">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <span
+                  key={s}
+                  className={`partner-card__star${
+                    s <= Math.round(partner.rating || 0)
+                      ? " partner-card__star--on"
+                      : ""
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </span>
+            <span className="partner-card__rating-count">
+              ({partner.reviewCount || 0})
+            </span>
+          </div>
+        </div>
+
+        {(cityLabel || address) && (
+          <p className="partner-card__location">
+            <span className="partner-card__location-icon">{Icons.location}</span>
+            <span>
+              {cityLabel}
+              {cityLabel && address ? ", " : ""}
+              {address}
+            </span>
+          </p>
+        )}
+
+        <SocialLinks
+          website={partner.website}
+          facebook={partner.facebook}
+          instagram={partner.instagram}
+          tiktok={partner.tiktok}
+        />
+
+        <Link
+          href={`/partners/${partner._id}`}
+          className="partner-card__cta"
+        >
+          <span>პროფილის ნახვა</span>
+          {Icons.arrowRight}
+        </Link>
+      </div>
+    </article>
+  );
+}

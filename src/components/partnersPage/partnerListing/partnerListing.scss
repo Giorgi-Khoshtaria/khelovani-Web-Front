@@ -2,248 +2,249 @@
 @use "@/styles/defaultTexts.scss" as defaultTexts;
 @use "@/styles/animations.scss";
 
+// ─────────────────────────────────────────────────────────────
+// Root section
+// ─────────────────────────────────────────────────────────────
+
 .partner-listing {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 60px 20px 100px;
+  padding: 48px 24px 100px;
 
-  &__header {
-    display: flex;
-    flex-direction: column;
+  // ── Mobile bar (filter toggle + count) ─────────────────
+
+  &__mobile-bar {
+    display: none;
     align-items: center;
-    margin-bottom: 60px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    @media (max-width: 1024px) { display: flex; }
   }
 
-  &__search {
-    width: 100%;
-    max-width: 500px;
-    position: relative;
-    
-    &-input {
-      @extend .default-text;
-      width: 100%;
-      padding: 16px 24px;
-      padding-left: 50px;
-      border-radius: 12px;
-      border: 1px solid rgba(colors.$color-walnut, 0.2);
-      background-color: colors.$color-white;
-      color: colors.$color-text-primary;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(colors.$color-espresso, 0.05);
+  &__filter-btn {
+    @extend .default-text;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(colors.$color-walnut, 0.25);
+    background: colors.$color-white;
+    color: colors.$color-espresso;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
 
-      &:focus {
-        outline: none;
-        border-color: colors.$color-walnut;
-        box-shadow: 0 4px 20px rgba(colors.$color-walnut, 0.15);
-      }
-      
-      &::placeholder {
-        color: colors.$color-text-secondary;
-      }
-    }
+    svg { width: 16px; height: 16px; }
 
-    &-icon {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: colors.$color-text-secondary;
-      width: 20px;
-      height: 20px;
+    &:hover {
+      background: colors.$color-bg-secondary;
+      border-color: rgba(colors.$color-walnut, 0.4);
     }
   }
 
-  &__loading {
-    @extend .medium-text;
-    text-align: center;
-    color: colors.$color-text-secondary;
-    padding: 60px 0;
+  &__filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: colors.$color-deep-red;
+    color: colors.$color-white;
+    font-size: 10px;
+    font-weight: 700;
   }
 
-  &__empty {
-    @extend .medium-text;
-    text-align: center;
+  &__count {
+    @extend .default-text;
+    font-size: 13px;
     color: colors.$color-text-secondary;
-    padding: 60px 0;
-    background: rgba(colors.$color-white, 0.5);
-    border-radius: 16px;
-    border: 1px dashed rgba(colors.$color-walnut, 0.3);
   }
+
+  // ── Two-column layout ──────────────────────────────────
+
+  &__layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+  }
+
+  // ── Main content area ──────────────────────────────────
+
+  &__main {
+    flex: 1;
+    min-width: 0; // prevent flex blowout
+  }
+
+  // ── Results bar ────────────────────────────────────────
+
+  &__results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(colors.$color-border, 0.5);
+  }
+
+  &__results-text {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    font-size: 14px;
+
+    strong { color: colors.$color-espresso; }
+  }
+
+  &__clear-all {
+    @extend .default-text;
+    font-size: 12px;
+    font-weight: 600;
+    color: colors.$color-walnut;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+
+    &:hover { background: rgba(colors.$color-walnut, 0.08); }
+  }
+
+  // ── Cards grid ─────────────────────────────────────────
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 32px;
-    margin-bottom: 60px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
   }
 
-  &__card {
-    background: colors.$color-white;
-    border-radius: 20px;
+  &__error {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    border: 1px solid rgba(colors.$color-border, 0.5);
-    box-shadow: 0 4px 12px rgba(colors.$color-black, 0.05);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeIn 0.5s ease-out forwards;
-
-    &:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 24px rgba(colors.$color-black, 0.1);
-      border-color: rgba(colors.$color-walnut, 0.3);
-    }
-  }
-
-  &__card-image {
-    width: 100%;
-    height: 240px;
-    background: colors.$color-bg-secondary;
-    position: relative;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  &__card-placeholder {
-    @extend .huge-text;
-    width: 100%;
-    height: 100%;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    color: colors.$color-walnut;
-    opacity: 0.5;
-  }
-
-  &__card-content {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  &__name {
-    @extend .large-text;
-    font-size: 22px;
-    color: colors.$color-text-primary;
-    margin-bottom: 12px;
-    text-align: left;
-  }
-
-  &__location {
-    @extend .default-text;
+    gap: 16px;
+    padding: 80px 24px;
+    text-align: center;
     color: colors.$color-text-secondary;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 24px;
-    text-align: left;
-    line-height: 1.4;
 
-    svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-  }
+    button {
+      @extend .default-text;
+      padding: 9px 24px;
+      border-radius: 8px;
+      border: 1px solid colors.$color-walnut;
+      background: transparent;
+      color: colors.$color-walnut;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
 
-  &__socials {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    margin-top: auto;
-    
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(colors.$color-bg-accent, 0.3);
-      color: colors.$color-text-secondary;
-      transition: all 0.3s ease;
-      
       &:hover {
         background: colors.$color-walnut;
         color: colors.$color-white;
       }
-
-      svg {
-        width: 18px;
-        height: 18px;
-      }
     }
   }
 
-  &__link {
-    @extend .default-text;
-    width: 100%;
+  // ── Loading ────────────────────────────────────────────
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 80px 0;
+    color: colors.$color-text-secondary;
+    font-size: 14px;
+  }
+
+  &__spinner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid rgba(colors.$color-walnut, 0.15);
+    border-top-color: colors.$color-walnut;
+    animation: spin 0.75s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  // ── Empty state ────────────────────────────────────────
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 80px 24px;
+    border-radius: 14px;
+    border: 1.5px dashed rgba(colors.$color-walnut, 0.25);
+    background: rgba(colors.$color-white, 0.6);
+  }
+
+  &__empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(colors.$color-bg-accent, 0.4);
+    color: colors.$color-walnut;
+    opacity: 0.6;
+
+    svg { width: 24px; height: 24px; }
+  }
+
+  &__empty-title {
+    @extend .medium-text;
+    color: colors.$color-text-secondary;
     text-align: center;
-    display: inline-block;
-    padding: 12px 24px;
-    border-radius: 12px;
-    background-color: colors.$color-bg-page;
-    color: colors.$color-text-primary;
-    text-decoration: none;
+  }
+
+  &__empty-reset {
+    @extend .default-text;
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(colors.$color-walnut, 0.3);
+    background: transparent;
+    color: colors.$color-walnut;
     font-weight: 600;
-    transition: all 0.3s ease;
-    border: 1px solid colors.$color-border;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
 
     &:hover {
-      background-color: colors.$color-walnut;
+      background: colors.$color-walnut;
       color: colors.$color-white;
-      border-color: colors.$color-walnut;
-    }
-  }
-
-  &__pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-
-    button {
-      @extend .default-text;
-      padding: 10px 24px;
-      border-radius: 8px;
-      border: 1px solid rgba(colors.$color-walnut, 0.2);
-      background-color: colors.$color-white;
-      color: colors.$color-espresso;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &:hover:not(:disabled) {
-        background-color: colors.$color-walnut;
-        color: colors.$color-white;
-        border-color: colors.$color-walnut;
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-
-    span {
-      @extend .default-text;
-      color: colors.$color-text-secondary;
-      font-weight: 500;
     }
   }
 }
 
-@media (max-width: 768px) {
+// ─── Responsive ───────────────────────────────────────────────
+
+@media (max-width: 1024px) {
+  .partner-listing__layout {
+    // sidebar moves off-canvas; main takes full width
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
   .partner-listing {
-    &__grid {
-      grid-template-columns: 1fr;
-    }
+    padding: 24px 16px 80px;
+  }
+
+  .partner-listing__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }

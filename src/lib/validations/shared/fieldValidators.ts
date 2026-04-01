@@ -15,10 +15,8 @@ export const validateNameGe = (
   }
   if (!/^[\u10D0-\u10FF\s]+$/.test(nameGe.trim()))
     return "validation.name_ge_letters";
-  if (nameGe.trim().length < 2)
-    return "validation.name_ge_min";
-  if (nameGe.trim().length > 200)
-    return "validation.name_ge_max";
+  if (nameGe.trim().length < 2) return "validation.name_ge_min";
+  if (nameGe.trim().length > 200) return "validation.name_ge_max";
   return null;
 };
 
@@ -29,12 +27,9 @@ export const validateNameEn = (
   if (!nameEn || nameEn.trim().length === 0) {
     return required ? "validation.name_en_required" : null;
   }
-  if (!/^[a-zA-Z\s]+$/.test(nameEn.trim()))
-    return "validation.name_en_letters";
-  if (nameEn.trim().length < 2)
-    return "validation.name_en_min";
-  if (nameEn.trim().length > 200)
-    return "validation.name_en_max";
+  if (!/^[a-zA-Z\s]+$/.test(nameEn.trim())) return "validation.name_en_letters";
+  if (nameEn.trim().length < 2) return "validation.name_en_min";
+  if (nameEn.trim().length > 200) return "validation.name_en_max";
   return null;
 };
 // ── Email ─────────────────────────────────────────────────────────────────────
@@ -54,10 +49,8 @@ export function validateEmail(email: string): string | null {
  */
 export function validatePassword(password: string): string | null {
   if (!password) return "validation.password_required";
-  if (password.length < PASSWORD_MIN_LENGTH)
-    return "validation.password_min";
-  if (!/[a-zA-Z]/.test(password))
-    return "validation.password_lowercase";
+  if (password.length < PASSWORD_MIN_LENGTH) return "validation.password_min";
+  if (!/[a-zA-Z]/.test(password)) return "validation.password_lowercase";
   if (!/[0-9]/.test(password)) return "validation.password_number";
   return null;
 }
@@ -69,11 +62,9 @@ export function validatePassword(password: string): string | null {
  */
 export function validateStrictPassword(password: string): string | null {
   if (!password) return "validation.password_required";
-  if (password.length < PASSWORD_MIN_LENGTH)
-    return "validation.password_min";
+  if (password.length < PASSWORD_MIN_LENGTH) return "validation.password_min";
   if (password.length > 30) return "validation.password_max";
-  if (!/[A-Z]/.test(password))
-    return "validation.password_uppercase";
+  if (!/[A-Z]/.test(password)) return "validation.password_uppercase";
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password))
     return "validation.password_special";
   return null;
@@ -107,10 +98,8 @@ export const validateAddress = (address: string): string | null => {
   if (!address) return "validation.address_required";
   if (!/^[\u10D0-\u10FF0-9\s,.\-/#]+$/.test(address.trim()))
     return "validation.address_ge_letters";
-  if (address.trim().length < 5)
-    return "validation.address_min";
-  if (address.trim().length > 200)
-    return "validation.address_max";
+  if (address.trim().length < 5) return "validation.address_min";
+  if (address.trim().length > 200) return "validation.address_max";
   return null;
 };
 
@@ -118,10 +107,8 @@ export const validateAddressEn = (addressEn: string): string | null => {
   if (!addressEn) return "validation.address_en_required";
   if (!/^[a-zA-Z0-9\s,.\-/#]+$/.test(addressEn.trim()))
     return "validation.address_en_letters";
-  if (addressEn.trim().length < 5)
-    return "validation.address_min";
-  if (addressEn.trim().length > 200)
-    return "validation.address_max";
+  if (addressEn.trim().length < 5) return "validation.address_min";
+  if (addressEn.trim().length > 200) return "validation.address_max";
   return null;
 };
 
