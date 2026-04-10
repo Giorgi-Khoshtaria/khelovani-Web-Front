@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import api from "@/apiCalls/api";
 import type { UserTypes, LoginTypes } from "@/lib/types/userTypes";
 
 export const registerUser = async (data: UserTypes, lang: string) => {
@@ -60,6 +60,17 @@ export const resetPassword = async (
     return response.data;
   } catch (error) {
     console.error("Error resetting password:", error);
+    throw error;
+  }
+};
+export const verifyUser = async (token: string) => {
+  try {
+    const response = await api.get(`/api/user/verify`, {
+      params: { token },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying user:", error);
     throw error;
   }
 };

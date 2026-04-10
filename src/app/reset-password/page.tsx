@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import "./reset-password.scss";
 import PasswordInput from "@/components/ui/PasswordInput";
-import { resetPassword } from "@/lib/requests/userRequests/auth.req";
+import { resetPassword } from "@/apiCalls/userRequests/auth.req";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
@@ -61,15 +61,21 @@ function ResetPasswordContent() {
                 />
               </svg>
             </div>
-            <h1>{tPages("reset_password.invalid_title") || "ბმული არასწორია"}</h1>
-            <p>{tPages("reset_password.invalid_sub") || "პაროლის აღდგენის ბმული არასწორია ან ვადა გასულია."}</p>
-            <Link href="/forgot-password">{tPages("reset_password.try_again") || "ახლიდან სცადე"}</Link>
+            <h1>
+              {tPages("reset_password.invalid_title") || "ბმული არასწორია"}
+            </h1>
+            <p>
+              {tPages("reset_password.invalid_sub") ||
+                "პაროლის აღდგენის ბმული არასწორია ან ვადა გასულია."}
+            </p>
+            <Link href="/forgot-password">
+              {tPages("reset_password.try_again") || "ახლიდან სცადე"}
+            </Link>
           </div>
         </div>
       </div>
     );
   }
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,15 +91,21 @@ function ResetPasswordContent() {
     try {
       await resetPassword(token, formData.password, lang);
       setDone(true);
-      toast.success(tAlerts("password_changed") || "პაროლი წარმატებით შეიცვალა");
+      toast.success(
+        tAlerts("password_changed") || "პაროლი წარმატებით შეიცვალა",
+      );
       setTimeout(() => router.push("/login"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ?? (tAlerts("request_failed") || "პაროლის შეცვლა ვერ მოხერხდა");
+          error?.response?.data?.message ??
+          (tAlerts("request_failed") || "პაროლის შეცვლა ვერ მოხერხდა");
         toast.error(message);
       } else {
-        toast.error(tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა");
+        toast.error(
+          tAlerts("server_connection_failed") ||
+            "სერვერთან დაკავშირება ვერ მოხერხდა",
+        );
       }
     } finally {
       setIsLoading(false);
@@ -123,8 +135,13 @@ function ResetPasswordContent() {
                 />
               </svg>
             </div>
-            <h1>{tPages("reset_password.success_title") || "პაროლი შეიცვალა!"}</h1>
-            <p>{tPages("reset_password.success_sub") || "შეგიძლია ახლა შეხვიდე სისტემაში ახალი პაროლით."}</p>
+            <h1>
+              {tPages("reset_password.success_title") || "პაროლი შეიცვალა!"}
+            </h1>
+            <p>
+              {tPages("reset_password.success_sub") ||
+                "შეგიძლია ახლა შეხვიდე სისტემაში ახალი პაროლით."}
+            </p>
             <Link href="/login">{tNav("login") || "შესვლა"}</Link>
           </div>
         </div>
@@ -151,8 +168,13 @@ function ResetPasswordContent() {
           </svg>
         </div>
 
-        <h1 className="title">{tPages("reset_password.title") || "ახალი პაროლი"}</h1>
-        <p>{tPages("reset_password.subtitle") || "შეიყვანე ახალი პაროლი შენი ანგარიშისთვის"}</p>
+        <h1 className="title">
+          {tPages("reset_password.title") || "ახალი პაროლი"}
+        </h1>
+        <p>
+          {tPages("reset_password.subtitle") ||
+            "შეიყვანე ახალი პაროლი შენი ანგარიშისთვის"}
+        </p>
 
         <form className="form" onSubmit={handleSubmit} noValidate>
           <PasswordInput
@@ -170,15 +192,15 @@ function ResetPasswordContent() {
             value={formData.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
-            placeholder={tInputs("placeholder.confirm_password") || "გაიმეორე ახალი პაროლი"}
+            placeholder={
+              tInputs("placeholder.confirm_password") || "გაიმეორე ახალი პაროლი"
+            }
           />
 
-          <button
-            className="reset-btn"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? tCommon("loading") || "მიმდინარეობს..." : tPages("reset_password.submit") || "პაროლის შეცვლა"}
+          <button className="reset-btn" type="submit" disabled={isLoading}>
+            {isLoading
+              ? tCommon("loading") || "მიმდინარეობს..."
+              : tPages("reset_password.submit") || "პაროლის შეცვლა"}
           </button>
         </form>
       </div>

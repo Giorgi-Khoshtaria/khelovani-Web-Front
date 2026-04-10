@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
 import type { LoginTypes } from "@/lib/types/userTypes";
-import { loginUser } from "@/lib/requests/userRequests/auth.req";
+import { loginUser } from "@/apiCalls/userRequests/auth.req";
 import { useAuth } from "@/contexts/AuthContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
@@ -39,7 +39,12 @@ function Login() {
   const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
     useRateLimitCooldown(120);
 
-  const { formData: data, errors, setErrors, handleChange } = useFormHandler<LoginTypes>({
+  const {
+    formData: data,
+    errors,
+    setErrors,
+    handleChange,
+  } = useFormHandler<LoginTypes>({
     email: "",
     password: "",
   });
@@ -64,7 +69,9 @@ function Login() {
         login(response.token);
       }
 
-      toast.success(tAlerts("login_success") || "წარმატებით შეხვედით სისტემაში");
+      toast.success(
+        tAlerts("login_success") || "წარმატებით შეხვედით სისტემაში",
+      );
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -80,7 +87,8 @@ function Login() {
         }
       } else if (error instanceof Error && error.message === "Network Error") {
         toast.error(
-          tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა",
+          tAlerts("server_connection_failed") ||
+            "სერვერთან დაკავშირება ვერ მოხერხდა",
         );
       } else {
         toast.error(tAlerts("login_error") || "შეცდომა შევიდა სისტემაში");

@@ -1,29 +1,22 @@
 import "./partnerspage.scss";
 import PartnersHero from "@/components/partnersPage/partnersHero/PartnersHero";
 import PartnerListing from "@/components/partnersPage/partnerListing/PartnerListing";
+import { getPartners } from "@/apiCalls/partnerRequests/partner.req";
 
-async function getInitialPartners() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/partner?page=1&limit=12`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return { data: [], totalPages: 1 };
-    return res.json();
-  } catch (error) {
-    console.error("Failed SSR to fetch partners", error);
-    return { data: [], totalPages: 1 };
-  }
-}
+export const dynamic = "force-dynamic";
 
 export default async function PartnersPage() {
-  const initialData = await getInitialPartners();
+  const initialData = await getPartners({ page: 1, limit: 12 }).catch(() => ({
+    data: [],
+    totalPages: 1,
+  }));
 
   return (
     <div className="partners-page">
       <PartnersHero />
-      <PartnerListing 
-        initialPartners={initialData.data} 
-        initialTotalPages={initialData.totalPages} 
+      <PartnerListing
+        initialPartners={initialData.data}
+        initialTotalPages={initialData.totalPages}
       />
     </div>
   );

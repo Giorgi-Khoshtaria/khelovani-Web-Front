@@ -1,21 +1,15 @@
 import PartnerProfile from "@/components/partnersPage/partnerProfile/PartnerProfile";
+import { getPartnerById } from "@/apiCalls/partnerRequests/partner.req";
 
-async function getPartnerData(id: string) {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/partner/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    return res.json();
-  } catch (error) {
-    console.error("Failed SSR to fetch partner", error);
-    return null;
-  }
-}
+export const dynamic = "force-dynamic";
 
-export default async function PartnerProfilePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PartnerProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
-  const initialData = await getPartnerData(id);
+  const initialData = await getPartnerById(id).catch(() => null);
 
   return (
     <main style={{ minHeight: "100vh", backgroundColor: "#f9f8f6" }}>

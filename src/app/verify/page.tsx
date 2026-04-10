@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import "./UserRegistrationVerify.scss";
+import { verifyUser } from "@/apiCalls/userRequests/auth.req";
 
 type Stage = "loading" | "success" | "already" | "error";
 
@@ -26,11 +27,9 @@ function VerifyContent() {
 
     const verify = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify?token=${token}`,
-        );
+        const data = await verifyUser(token);
 
-        const { status } = response.data;
+        const { status } = data;
         setStage(status === "already_verified" ? "already" : "success");
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { registerUser } from "@/lib/requests/userRequests/auth.req";
+import { registerUser } from "@/apiCalls/userRequests/auth.req";
 import type { UserTypes } from "@/lib/types/userTypes";
 import {
   validateRegistrationForm,
@@ -85,7 +85,8 @@ export default function Registration() {
 
       await registerUser(payload, lang);
       toast.success(
-        tAlerts("account_created") || "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
+        tAlerts("account_created") ||
+          "ანგარიში წარმატებით შეიქმნა! გთხოვთ დაადასტუროთ თქვენი მეილი",
       );
       setTimeout(() => router.push("/login"), 2000);
     } catch (error: unknown) {
@@ -105,12 +106,21 @@ export default function Registration() {
         } else if (responseData?.message) {
           toast.error(responseData.message);
         } else {
-          toast.error(tAlerts("registration_error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+          toast.error(
+            tAlerts("registration_error") ||
+              "რეგისტრაციის დროს დაფიქსირდა შეცდომა",
+          );
         }
       } else if (error instanceof Error && error.message === "Network Error") {
-        toast.error(tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით");
+        toast.error(
+          tAlerts("server_connection_failed") ||
+            "სერვერთან დაკავშირება ვერ მოხერხდა. სცადეთ მოგვიანებით",
+        );
       } else {
-        toast.error(tAlerts("registration_error") || "რეგისტრაციის დროს დაფიქსირდა შეცდომა");
+        toast.error(
+          tAlerts("registration_error") ||
+            "რეგისტრაციის დროს დაფიქსირდა შეცდომა",
+        );
       }
     } finally {
       setIsLoading(false);

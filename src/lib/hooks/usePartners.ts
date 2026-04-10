@@ -1,12 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import api from "@/lib/api";
 import axios from "axios";
-import {
-  Partner,
-  PaginatedPartnerResponse,
-  PartnerFilterState,
-} from "@/lib/types/partnerTypes";
-
+import { Partner, PartnerFilterState } from "@/lib/types/partnerTypes";
+import { getPartners } from "@/apiCalls/partnerRequests/partner.req";
 /**
  * Senior-level hook for managing partner data with server-side filtering.
  * Features:
@@ -16,7 +11,7 @@ import {
  */
 export function usePartners(
   initialPartners: Partner[],
-  initialTotalPages: number
+  initialTotalPages: number,
 ) {
   const [partners, setPartners] = useState<Partner[]>(initialPartners);
   const [page, setPage] = useState(1);
@@ -57,19 +52,16 @@ export function usePartners(
       setError(null);
 
       try {
-        const { data } = await api.get<PaginatedPartnerResponse>(
-          "/api/partner",
+        const data = await getPartners(
           {
-            signal: abortController.signal,
-            params: {
-              search: debouncedSearch || undefined,
-              city: filters.city || undefined,
-              category: filters.category || undefined,
-              minRating: filters.minRating || undefined,
-              page,
-              limit: 12,
-            },
-          }
+            search: debouncedSearch || undefined,
+            city: filters.city || undefined,
+            category: filters.category || undefined,
+            minRating: filters.minRating || undefined,
+            page,
+            limit: 12,
+          },
+          abortController.signal,
         );
         setPartners(data.data);
         setTotalPages(data.totalPages);
@@ -89,12 +81,18 @@ export function usePartners(
     fetchPartners();
 
     return () => abortController.abort();
-  }, [debouncedSearch, filters.city, filters.category, filters.minRating, page]);
+  }, [
+    debouncedSearch,
+    filters.city,
+    filters.category,
+    filters.minRating,
+    page,
+  ]);
 
   // ── Actions ───────────────────────────────────────────────
   const updateFilter = <K extends keyof PartnerFilterState>(
     key: K,
-    value: PartnerFilterState[K]
+    value: PartnerFilterState[K],
   ) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
     if (key !== "search") setPage(1);

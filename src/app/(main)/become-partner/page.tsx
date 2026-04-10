@@ -26,7 +26,7 @@ import {
   type PartnerFormData,
 } from "@/lib/validations/becomePartnerValidations";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
-import { partnerRegisterRequest } from "@/lib/requests/partnerRequests/partnerAuth.req";
+import { partnerRegisterRequest } from "@/apiCalls/partnerRequests/partnerAuth.req";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 const INITIAL_FORM: PartnerFormData = {
@@ -72,7 +72,9 @@ function PartnerRegistration() {
     try {
       // add your partner register request here
       await partnerRegisterRequest(formData, lang);
-      toast.success(tAlerts("partner_registered") || "განაცხადი წარმატებით გაიგზავნა!");
+      toast.success(
+        tAlerts("partner_registered") || "განაცხადი წარმატებით გაიგზავნა!",
+      );
       setTimeout(() => router.push("/"), 2000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -97,8 +99,7 @@ function PartnerRegistration() {
             "რეგისტრაციის დროს დაფიქსირდა შეცდომა",
         );
       }
-    }
- finally {
+    } finally {
       setIsLoading(false);
     }
   };

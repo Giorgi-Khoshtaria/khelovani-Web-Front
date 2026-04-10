@@ -6,7 +6,7 @@ import TextInput from "@/components/ui/TextInput";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { forgotPassword } from "@/lib/requests/userRequests/auth.req";
+import { forgotPassword } from "@/apiCalls/userRequests/auth.req";
 import {
   validateForgotPasswordForm,
   type ForgotPasswordErrors,
@@ -23,7 +23,12 @@ function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const { formData: data, errors, setErrors, handleChange } = useFormHandler<{ email: string }>({
+  const {
+    formData: data,
+    errors,
+    setErrors,
+    handleChange,
+  } = useFormHandler<{ email: string }>({
     email: "",
   });
 
@@ -36,7 +41,6 @@ function ForgotPassword() {
 
   const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
     useRateLimitCooldown(120);
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,14 +62,18 @@ function ForgotPassword() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
-          error?.response?.data?.message ?? (tAlerts("request_failed") || "მოთხოვნის გაგზავნა ვერ მოხერხდა");
+          error?.response?.data?.message ??
+          (tAlerts("request_failed") || "მოთხოვნის გაგზავნა ვერ მოხერხდა");
         toast.error(message);
 
         if (error?.response?.status === 429) {
           startCooldown();
         }
       } else {
-        toast.error(tAlerts("server_connection_failed") || "სერვერთან დაკავშირება ვერ მოხერხდა");
+        toast.error(
+          tAlerts("server_connection_failed") ||
+            "სერვერთან დაკავშირება ვერ მოხერხდა",
+        );
       }
     } finally {
       setIsLoading(false);
@@ -89,8 +97,7 @@ function ForgotPassword() {
           <>
             <h1 className="title">{tPages("forgot_password.sent_title")}</h1>
             <p>
-              {tPages("forgot_password.sent_sub")}{" "}
-              <strong>{data.email}</strong>
+              {tPages("forgot_password.sent_sub")} <strong>{data.email}</strong>
             </p>
             <Link
               href="/login"

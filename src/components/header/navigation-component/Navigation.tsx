@@ -1,16 +1,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import api from "@/lib/api";
+import { getMenu, MenuItem } from "@/apiCalls/menu/menu.req";
 import { useLanguage } from "@/contexts/LanguageContext";
 import "./navigation.scss";
-
-interface MenuItem {
-  _id: string;
-  label: { ka: string; en: string };
-  href: string;
-  order: number;
-  isActive: boolean;
-}
 interface NavItem {
   key: string;
   path: string;
@@ -28,8 +20,8 @@ function Navigation({ nav, mobile }: NavigationProps) {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await api.get("/api/menu");
-        const activeItems = (response.data as MenuItem[])
+        const data = await getMenu();
+        const activeItems = (data as MenuItem[])
           .filter((item) => item.isActive)
           .sort((a, b) => a.order - b.order);
         setDynamicItems(activeItems);
