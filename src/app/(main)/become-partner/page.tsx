@@ -13,7 +13,14 @@ import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
-import { CATEGORY_OPTIONS } from "@/components/ui/CategoryOptions";
+import { PRODUCT_CATEGORY_LABELS } from "@/components/partnersPage/partnerListing/constants";
+
+const CATEGORY_OPTIONS = Object.entries(PRODUCT_CATEGORY_LABELS).map(
+  ([value, label]) => ({
+    value,
+    label: label.ge, // Defaulting to Georgian for the form as per existing logic
+  }),
+);
 import {
   validatePartnerForm,
   type PartnerFormData,

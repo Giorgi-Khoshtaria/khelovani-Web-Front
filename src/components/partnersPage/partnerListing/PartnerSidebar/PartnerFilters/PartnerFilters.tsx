@@ -1,4 +1,4 @@
-import { CATEGORIES, CITIES, Icons } from "../../constants";
+import { CITIES, Icons, PRODUCT_CATEGORY_LABELS } from "../../constants";
 import "./partnerFilters.scss";
 
 const STAR_RATINGS = [5, 4, 3, 2, 1] as const;
@@ -26,17 +26,17 @@ export default function PartnerFilters({
       <div className="partner-filters__group">
         <span className="partner-filters__label">კატეგორია</span>
         <div className="partner-filters__chips">
-          {CATEGORIES.map((cat) => (
+          {Object.entries(PRODUCT_CATEGORY_LABELS).map(([value, label]) => (
             <button
-              key={cat.value}
+              key={value}
               className={`partner-filters__chip${
-                category === cat.value ? " partner-filters__chip--active" : ""
+                category === value ? " partner-filters__chip--active" : ""
               }`}
               onClick={() =>
-                onCategoryChange(category === cat.value ? "" : cat.value)
+                onCategoryChange(category === value ? "" : value)
               }
             >
-              {cat.labelGe}
+              {label.ge}
             </button>
           ))}
         </div>
