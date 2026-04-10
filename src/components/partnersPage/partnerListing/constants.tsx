@@ -1,37 +1,42 @@
 // ─── Category enum (matches backend Organisation schema) ──────
 
-export const CATEGORY_ENUM = [
-  "handcraft",
-  "jewelry",
-  "ceramics",
-  "textile",
-  "wood",
-  "food",
-  "art",
-  "leather",
-  "enamel",
-] as const;
+import { ProductCategory } from "@/lib/types/itemsCategory.enum";
 
-export type CategoryValue = (typeof CATEGORY_ENUM)[number];
+export type CategoryValue = ProductCategory;
 
 export interface Category {
   value: CategoryValue;
   labelGe: string;
   labelEn: string;
 }
-
-export const CATEGORIES: Category[] = [
-  { value: "handcraft", labelGe: "ხელნაკეთობა", labelEn: "Handcraft" },
-  { value: "jewelry", labelGe: "სამკაულები", labelEn: "Jewelry" },
-  { value: "ceramics", labelGe: "კერამიკა", labelEn: "Ceramics" },
-  { value: "textile", labelGe: "ტექსტილი", labelEn: "Textile" },
-  { value: "wood", labelGe: "ხე-ტყე", labelEn: "Wood" },
-  { value: "food", labelGe: "საკვები და სასმელი", labelEn: "Food & Drinks" },
-  { value: "art", labelGe: "ხელოვნება", labelEn: "Art" },
-  { value: "leather", labelGe: "ტყავი", labelEn: "Leather" },
-  { value: "enamel", labelGe: "მინანქარი", labelEn: "Enamel" },
-];
-
+export const PRODUCT_CATEGORY_LABELS: Record<
+  ProductCategory,
+  { ge: string; en: string }
+> = {
+  [ProductCategory.JEWELRY]: { ge: "სამკაული", en: "Jewelry" },
+  [ProductCategory.CERAMICS]: { ge: "კერამიკა", en: "Ceramics" },
+  [ProductCategory.TEXTILE]: { ge: "ტექსტილი", en: "Textile" },
+  [ProductCategory.WOODWORK]: { ge: "ხის ნაკეთობები", en: "Woodwork" },
+  [ProductCategory.PAINTING]: { ge: "ფერწერა", en: "Painting" },
+  [ProductCategory.SCULPTURE]: { ge: "ქანდაკება", en: "Sculpture" },
+  [ProductCategory.LEATHERWORK]: { ge: "ტყავის ნაკეთობები", en: "Leatherwork" },
+  [ProductCategory.GLASSWORK]: { ge: "მინის ნაკეთობები", en: "Glasswork" },
+  [ProductCategory.EMBROIDERY]: { ge: "ნაქარგობა", en: "Embroidery" },
+  [ProductCategory.METALWORK]: { ge: "ლითონის ნაკეთობები", en: "Metalwork" },
+  [ProductCategory.FELTWORK]: { ge: "თექა", en: "Feltwork" },
+  [ProductCategory.KNITTING]: { ge: "ნაქსოვი", en: "Knitting" },
+  [ProductCategory.CANDLES]: { ge: "სანთლები", en: "Candles" },
+  [ProductCategory.PHOTOGRAPHY]: { ge: "ფოტოგრაფია", en: "Photography" },
+  [ProductCategory.PRINTMAKING]: {
+    ge: "გრაფიკა / გრავიურა",
+    en: "Printmaking",
+  },
+  [ProductCategory.PAPER_ART]: { ge: "ქაღალდის ხელოვნება", en: "Paper Art" },
+  [ProductCategory.HOME_DECOR]: { ge: "სახლის დეკორი", en: "Home Decor" },
+  [ProductCategory.ACCESSORIES]: { ge: "აქსესუარები", en: "Accessories" },
+  [ProductCategory.TOYS]: { ge: "სათამაშოები", en: "Toys" },
+  [ProductCategory.OTHER]: { ge: "სხვა", en: "Other" },
+};
 // ─── Cities (matches backend Organisation city enum) ─────────
 
 export interface City {
