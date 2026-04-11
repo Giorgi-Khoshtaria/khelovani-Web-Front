@@ -8,8 +8,13 @@ import Navigation from "./navigation-component/Navigation";
 import AuthActions from "./auth-component/AuthActions";
 import SideMenu from "./sideMenu/SideMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { MenuItem } from "@/apiCalls/menu/menu.req";
 
-function Header() {
+interface HeaderProps {
+  menuItems?: MenuItem[];
+}
+
+function Header({ menuItems = [] }: HeaderProps) {
   const { lang, setLang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -43,7 +48,7 @@ function Header() {
         </Link>
 
         <nav className="nav">
-          <Navigation />
+          <Navigation menuItems={menuItems} />
         </nav>
 
         <div className="header-actions">
@@ -93,11 +98,11 @@ function Header() {
         aria-hidden="true"
       />
 
-      {/* Side Menu */}
       <SideMenu
         closeIcon="/assets/close-icon.svg"
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
+        menuItems={menuItems}
       />
     </>
   );
