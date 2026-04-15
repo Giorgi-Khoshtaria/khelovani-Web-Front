@@ -1,0 +1,209 @@
+@use "sass:color";
+@use "@/styles/colors" as *;
+@use "@/styles/defaultTexts" as *;
+@use "@/styles/animations.scss";
+
+.product-listing {
+  background-color: $color-bg-page;
+  padding: 40px 20px 80px;
+
+  &.animate-in {
+    animation: fadeInPage 0.8s ease-out forwards;
+  }
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease-out 0.3s both;
+  }
+
+  &__filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    max-width: 700px;
+  }
+
+  &__search {
+    position: relative;
+    flex: 1;
+    
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    input {
+      @extend .default-text;
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      background-color: $color-white;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      color: $color-text-primary;
+
+      &::placeholder {
+        color: $color-text-secondary;
+      }
+
+      &:focus {
+        border-color: $color-text-primary;
+        box-shadow: 0 0 0 3px rgba($color-text-primary, 0.05);
+      }
+    }
+  }
+
+  &__category-select {
+    select {
+      @extend .default-text;
+      padding: 12px 36px 12px 16px;
+      border: 1px solid $color-border;
+      border-radius: 8px;
+      background-color: $color-white;
+      color: $color-text-primary;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      min-width: 200px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      /* Custom dropdown arrow */
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234B5563%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px top 50%;
+      background-size: 10px auto;
+
+      &:focus {
+        border-color: $color-text-primary;
+        box-shadow: 0 0 0 3px rgba($color-text-primary, 0.05);
+      }
+    }
+  }
+
+  &__favs-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: $color-white;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    span {
+      @extend .default-text;
+      font-weight: 500;
+      color: $color-text-primary;
+    }
+
+    &:hover {
+      border-color: $color-text-secondary;
+      background-color: color.scale($color-white, $lightness: -2%);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    
+    // Staggered Entrance for Product Cards
+    > div, > a {
+      animation: fadeUp 0.6s ease-out both;
+      
+      @for $i from 1 through 12 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{0.2 + ($i * 0.08)}s;
+        }
+      }
+    }
+  }
+
+  &__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 0;
+    animation: fadeIn 0.8s ease-out both;
+    
+    p {
+      @extend .medium-text;
+      color: $color-text-secondary;
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+
+    button {
+      background-color: $color-white;
+      border: 1px solid $color-border;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: $color-text-primary;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: color.scale($color-white, $lightness: -4%);
+      }
+
+      &:disabled {
+        color: $color-text-secondary;
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    span {
+      @extend .default-text;
+      color: $color-text-secondary;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .product-listing {
+    &__toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    &__filters {
+      flex-direction: column;
+      max-width: 100%;
+      
+      .product-listing__search,
+      .product-listing__category-select select {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+@use "@/styles/colors" as *;
+@use "@/styles/defaultTexts" as *;
+@use "@/styles/animations.scss";
+
+.products-hero {
+  background-color: $color-bg-page;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-bottom: 1px solid $color-border;
+  min-height: 42vh; // Slightly increased for a more premium look
+  position: relative;
+  overflow: hidden;
+  animation: fadeInPage 0.8s ease-out forwards;
+
+  // Premium background elements
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 70%;
+    height: 150%;
+    background: radial-gradient(circle, rgba($color-bg-secondary, 0.4) 0%, rgba(255,255,255,0) 70%);
+    z-index: 0;
+    pointer-events: none;
+    animation: gradientSpin 30s linear infinite; // Added animation to background
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  &__title {
+    @extend .huge-text;
+    color: $color-text-primary;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+    
+    // Use a neutral earthy tone for the accent instead of red
+    span {
+      color: $color-walnut;
+    }
+  }
+
+  &__description {
+    @extend .medium-text;
+    color: $color-text-secondary;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+    animation: fadeUp 0.8s ease-out 0.4s both; // Staggered delay
+  }
+}
