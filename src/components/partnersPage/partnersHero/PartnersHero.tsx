@@ -18,27 +18,23 @@ function PartnersHero() {
       </div>
 
       {/* ── Decorative side lines ── */}
-      <div className="ph__lines ph__lines--left" aria-hidden="true">
+      {/* <div className="ph__lines ph__lines--left" aria-hidden="true">
         <span /><span /><span />
       </div>
       <div className="ph__lines ph__lines--right" aria-hidden="true">
         <span /><span /><span />
       </div>
 
-      {/* ── Corner accents ── */}
       <span className="ph__corner ph__corner--tl" aria-hidden="true" />
-      <span className="ph__corner ph__corner--br" aria-hidden="true" />
+      <span className="ph__corner ph__corner--br" aria-hidden="true" /> */}
 
-      {/* ── Content ── */}
       <div className="ph__inner">
-        <div className="ph__badge">
+        {/* <div className="ph__badge">
           <span className="ph__badge-dot" />
           <span className="ph__badge-label">Partners</span>
-        </div>
+        </div> */}
 
-        <h1 className="ph__title">
-          {tPages("partnersPage.hero_title")}
-        </h1>
+        <h1 className="ph__title">{tPages("partnersPage.hero_title")}</h1>
 
         <p className="ph__subtitle">
           {tPages("partnersPage.hero_description")}

@@ -11,15 +11,12 @@ interface AuthActionsProps {
 function AuthActions({ mobile }: AuthActionsProps) {
   const { t } = useClientTranslation("navigation");
   const { isAuthenticated, logout } = useAuth();
-  const { lang } = useLanguage();
-
-  const logoutText = lang === "ge" ? "გასვლა" : "Logout";
 
   if (isAuthenticated) {
     return (
       <div className={`auth-action ${mobile ? "mobile" : ""}`}>
         <button onClick={logout} className="logout-btn">
-          {logoutText}
+          {t("logout")}
         </button>
       </div>
     );

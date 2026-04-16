@@ -26,9 +26,9 @@ export default function PartnerPagination({
   }
 
   return (
-    <nav className="partner-pagination" aria-label="Pagination">
+    <nav className="custom-pagination" aria-label="Pagination">
       <button
-        className="partner-pagination__btn"
+        className="custom-pagination__btn"
         onClick={() => onPageChange(Math.max(1, page - 1))}
         disabled={page === 1}
         aria-label={prevLabel}
@@ -36,19 +36,19 @@ export default function PartnerPagination({
         <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        {prevLabel}
+        <span>{prevLabel}</span>
       </button>
 
-      <div className="partner-pagination__pages">
+      <div className="custom-pagination__pages">
         {pages.map((p, i) =>
           p === "…" ? (
-            <span key={`ellipsis-${i}`} className="partner-pagination__ellipsis">
+            <span key={`ellipsis-${i}`} className="custom-pagination__ellipsis">
               …
             </span>
           ) : (
             <button
               key={p}
-              className={`partner-pagination__page${p === page ? " partner-pagination__page--active" : ""}`}
+              className={`custom-pagination__page${p === page ? " custom-pagination__page--active" : ""}`}
               onClick={() => onPageChange(p as number)}
               aria-current={p === page ? "page" : undefined}
             >
@@ -59,12 +59,12 @@ export default function PartnerPagination({
       </div>
 
       <button
-        className="partner-pagination__btn"
+        className="custom-pagination__btn"
         onClick={() => onPageChange(Math.min(totalPages, page + 1))}
         disabled={page === totalPages}
         aria-label={nextLabel}
       >
-        {nextLabel}
+        <span>{nextLabel}</span>
         <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>

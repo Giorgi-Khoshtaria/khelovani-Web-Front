@@ -7,7 +7,6 @@ import { getProducts } from "@/apiCalls/productRequests/product.req";
 import {
   IProduct,
   ProductCategory,
-  PRODUCT_CATEGORY_LABELS,
 } from "@/lib/types/productTypes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
@@ -16,6 +15,7 @@ import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import ProductSearch from "../ProductSearch/ProductSearch";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import ProductFavorites from "../ProductFavorites/ProductFavorites";
+import ProductPagination from "../ProductPagination/ProductPagination";
 
 interface ProductListingProps {
   initialProducts: IProduct[];
@@ -127,25 +127,14 @@ export default function ProductListing({
           )}
         </div>
 
-        {/* Pagination placeholder (if there are more pages) */}
-        {!loading && totalPages > 1 && (
-          <div className="product-listing__pagination">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-            >
-              Previous
-            </button>
-            <span>
-              Page {page} of {totalPages}
-            </span>
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            >
-              Next
-            </button>
-          </div>
+        {/* Pagination component */}
+        {!loading && (
+          <ProductPagination 
+            page={page} 
+            totalPages={totalPages} 
+            onPageChange={setPage}
+            isLoading={loading}
+          />
         )}
       </div>
     </section>

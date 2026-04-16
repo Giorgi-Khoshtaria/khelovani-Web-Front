@@ -22,6 +22,7 @@ export default function PartnerListing({
   initialTotalPages = 1,
 }: PartnerListingProps) {
   const { lang } = useLanguage();
+  const { t: tCommon } = useClientTranslation("common");
   const { t: tPages } = useClientTranslation("pages");
 
   const {
@@ -50,7 +51,7 @@ export default function PartnerListing({
           onClick={() => setSidebarOpen(true)}
         >
           {Icons.filter}
-          ფილტრი
+          {tCommon("filter")}
           {activeFiltersCount > 0 && (
             <span className="partner-listing__filter-count">
               {activeFiltersCount}
@@ -58,7 +59,7 @@ export default function PartnerListing({
           )}
         </button>
         <span className="partner-listing__count">
-          {partners.length} პარტნიორი
+          {partners.length} {tCommon("partners")}
         </span>
       </div>
 
@@ -81,7 +82,7 @@ export default function PartnerListing({
           {/* Results bar */}
           <div className="partner-listing__results-bar">
             <p className="partner-listing__results-text">
-              {partners.length} პარტნიორი
+              {partners.length} {tCommon("partners")}
               {filters.search && (
                 <>
                   {" "}
@@ -94,7 +95,7 @@ export default function PartnerListing({
                 className="partner-listing__clear-all"
                 onClick={clearFilters}
               >
-                ყველა ფილტრის გასუფთავება
+                {tCommon("clear_all_filter")}
               </button>
             )}
           </div>
@@ -103,12 +104,12 @@ export default function PartnerListing({
           {isLoading ? (
             <div className="partner-listing__loading">
               <div className="partner-listing__spinner" />
-              <span>იტვირთება...</span>
+              <span>{tCommon("loading")}</span>
             </div>
           ) : error ? (
             <div className="partner-listing__error">
               <p>{error}</p>
-              <button onClick={clearFilters}>სცადეთ თავიდან</button>
+              <button onClick={clearFilters}>{tCommon("try_again")}</button>
             </div>
           ) : partners.length > 0 ? (
             <div className="partner-listing__grid">
@@ -133,7 +134,7 @@ export default function PartnerListing({
                   className="partner-listing__empty-reset"
                   onClick={clearFilters}
                 >
-                  ფილტრების გასუფთავება
+                  {tCommon("clear_all_filter")}{" "}
                 </button>
               )}
             </div>
@@ -144,8 +145,8 @@ export default function PartnerListing({
             page={page}
             totalPages={totalPages}
             onPageChange={setPage}
-            prevLabel={tPages("partner_listing.prev") || "წინა"}
-            nextLabel={tPages("partner_listing.next") || "შემდეგი"}
+            prevLabel={tCommon("listing.prev") || "წინა"}
+            nextLabel={tCommon("listing.next") || "შემდეგი"}
           />
         </main>
       </div>

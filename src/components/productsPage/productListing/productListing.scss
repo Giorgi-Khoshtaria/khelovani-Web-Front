@@ -64,40 +64,6 @@
       color: $color-text-secondary;
     }
   }
-
-  &__pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 24px;
-
-    button {
-      background-color: $color-white;
-      border: 1px solid $color-border;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      color: $color-text-primary;
-      font-weight: 500;
-      transition: background-color 0.2s ease;
-
-      &:hover:not(:disabled) {
-        background-color: color.scale($color-white, $lightness: -4%);
-      }
-
-      &:disabled {
-        color: $color-text-secondary;
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-
-    span {
-      @extend .default-text;
-      color: $color-text-secondary;
-    }
-  }
 }
 
 // Responsive adjustments

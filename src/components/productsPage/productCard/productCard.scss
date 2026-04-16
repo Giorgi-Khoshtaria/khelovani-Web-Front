@@ -96,6 +96,9 @@
     color: $color-text-secondary;
     margin-bottom: 4px;
     text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__title {
@@ -104,6 +107,9 @@
     font-weight: 600;
     margin: 0 0 4px 0;
     line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__author {

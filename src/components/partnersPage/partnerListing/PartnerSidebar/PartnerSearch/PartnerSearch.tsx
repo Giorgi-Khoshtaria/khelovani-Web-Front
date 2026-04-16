@@ -8,10 +8,11 @@ interface PartnerSearchProps {
 }
 
 export default function PartnerSearch({ value, onChange }: PartnerSearchProps) {
-  const { t } = useClientTranslation("inputs");
+  const { t: tCommon } = useClientTranslation("common");
+  const { t: tInputs } = useClientTranslation("inputs");
   return (
     <div className="partner-search">
-      <label className="partner-search__label">{t("search")}</label>
+      <label className="partner-search__label">{tCommon("search")}</label>
       <div className="partner-search__wrap">
         <span className="partner-search__icon" aria-hidden="true">
           {Icons.search}
@@ -19,7 +20,7 @@ export default function PartnerSearch({ value, onChange }: PartnerSearchProps) {
         <input
           className="partner-search__input"
           type="text"
-          placeholder={t("partner_listing.search_placeholder")}
+          placeholder={tInputs("partner_listing.search_placeholder")}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-label="Search partners"

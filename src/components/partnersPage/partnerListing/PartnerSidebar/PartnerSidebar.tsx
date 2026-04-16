@@ -3,6 +3,7 @@ import { Icons } from "../constants";
 import PartnerSearch from "./PartnerSearch/PartnerSearch";
 import PartnerFilters from "./PartnerFilters/PartnerFilters";
 import "./partnerSidebar.scss";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 export default function PartnerSidebar({
   filters,
@@ -15,14 +16,12 @@ export default function PartnerSidebar({
   onClearAll,
   onClose,
 }: PartnerSidebarProps) {
+  const { t: tCommon } = useClientTranslation("common");
+
   return (
     <>
       {isOpen && (
-        <div
-          className="ps-overlay"
-          onClick={onClose}
-          aria-hidden="true"
-        />
+        <div className="ps-overlay" onClick={onClose} aria-hidden="true" />
       )}
 
       <aside
@@ -33,7 +32,7 @@ export default function PartnerSidebar({
         <div className="ps__header">
           <h2 className="ps__title">
             {Icons.filter}
-            ფილტრი
+            {tCommon("filter")}
             {activeCount > 0 && (
               <span className="ps__badge">{activeCount}</span>
             )}

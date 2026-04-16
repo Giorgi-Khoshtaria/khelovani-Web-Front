@@ -3,18 +3,21 @@ import { PartnerCardProps } from "@/lib/types/partnerTypes";
 import { Icons } from "../constants";
 import { SocialLinks } from "./SocialLinks";
 import "./partnerCard.scss";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
-export default function PartnerCard({ partner, lang, index }: PartnerCardProps) {
-  const name =
-    lang === "ge" ? partner.companyNameGe : partner.companyNameEn;
+export default function PartnerCard({
+  partner,
+  lang,
+  index,
+}: PartnerCardProps) {
+  const name = lang === "ge" ? partner.companyNameGe : partner.companyNameEn;
   const address =
-    lang === "ge"
-      ? partner.address
-      : partner.addressEn || partner.address;
+    lang === "ge" ? partner.address : partner.addressEn || partner.address;
 
   const cityLabel = partner.city
     ? partner.city.charAt(0).toUpperCase() + partner.city.slice(1)
     : null;
+  const { t: tNav } = useClientTranslation("navigation");
 
   return (
     <article
@@ -38,7 +41,9 @@ export default function PartnerCard({ partner, lang, index }: PartnerCardProps) 
       {/* ── Body ── */}
       <div className="partner-card__body">
         <div className="partner-card__header">
-          <h3 className="partner-card__name">{name}</h3>
+          <h3 className="partner-card__name" title={name}>
+            {name}
+          </h3>
           <div className="partner-card__rating">
             <span className="partner-card__stars">
               {[1, 2, 3, 4, 5].map((s) => (
@@ -62,7 +67,9 @@ export default function PartnerCard({ partner, lang, index }: PartnerCardProps) 
 
         {(cityLabel || address) && (
           <p className="partner-card__location">
-            <span className="partner-card__location-icon">{Icons.location}</span>
+            <span className="partner-card__location-icon">
+              {Icons.location}
+            </span>
             <span>
               {cityLabel}
               {cityLabel && address ? ", " : ""}
@@ -78,11 +85,8 @@ export default function PartnerCard({ partner, lang, index }: PartnerCardProps) 
           tiktok={partner.tiktok}
         />
 
-        <Link
-          href={`/partners/${partner._id}`}
-          className="partner-card__cta"
-        >
-          <span>პროფილის ნახვა</span>
+        <Link href={`/partners/${partner._id}`} className="partner-card__cta">
+          <span>{tNav("view_profile")}</span>
           {Icons.arrowRight}
         </Link>
       </div>

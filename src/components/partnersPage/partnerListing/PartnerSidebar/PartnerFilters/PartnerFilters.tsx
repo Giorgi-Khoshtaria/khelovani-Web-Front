@@ -1,5 +1,7 @@
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { CITIES, Icons, PRODUCT_CATEGORY_LABELS } from "../../constants";
 import "./partnerFilters.scss";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const STAR_RATINGS = [5, 4, 3, 2, 1] as const;
 
@@ -20,11 +22,14 @@ export default function PartnerFilters({
   onCityChange,
   onRatingChange,
 }: PartnerFiltersProps) {
+  const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tCommon } = useClientTranslation("common");
+  const { lang } = useLanguage();
   return (
     <div className="partner-filters">
       {/* ── Category ── */}
       <div className="partner-filters__group">
-        <span className="partner-filters__label">კატეგორია</span>
+        <span className="partner-filters__label">{tInputs("category")}</span>
         <div className="partner-filters__chips">
           {Object.entries(PRODUCT_CATEGORY_LABELS).map(([value, label]) => (
             <button
@@ -32,11 +37,9 @@ export default function PartnerFilters({
               className={`partner-filters__chip${
                 category === value ? " partner-filters__chip--active" : ""
               }`}
-              onClick={() =>
-                onCategoryChange(category === value ? "" : value)
-              }
+              onClick={() => onCategoryChange(category === value ? "" : value)}
             >
-              {label.ge}
+              {label[lang]}
             </button>
           ))}
         </div>
@@ -46,7 +49,7 @@ export default function PartnerFilters({
       <div className="partner-filters__group">
         <span className="partner-filters__label">
           <span className="partner-filters__label-icon">{Icons.location}</span>
-          მდებარეობა
+          {tCommon("location")}
         </span>
         <div className="partner-filters__select-wrap">
           <select
@@ -55,7 +58,7 @@ export default function PartnerFilters({
             onChange={(e) => onCityChange(e.target.value)}
             aria-label="Filter by city"
           >
-            <option value="">ყველა ქალაქი</option>
+            <option value="">{tCommon("all_cities")}</option>
             {CITIES.map((c) => (
               <option key={c.value} value={c.value}>
                 {c.labelGe}
@@ -70,7 +73,9 @@ export default function PartnerFilters({
 
       {/* ── Rating ── */}
       <div className="partner-filters__group">
-        <span className="partner-filters__label">მინიმალური რეიტინგი</span>
+        <span className="partner-filters__label">
+          {tCommon("minimum_rating")}
+        </span>
         <div className="partner-filters__ratings">
           {STAR_RATINGS.map((r) => (
             <button

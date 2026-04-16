@@ -21,6 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { lang } = useLanguage();
   const currentLang = lang.toLowerCase() as "ge" | "en";
   const { t: tCommon } = useClientTranslation("common");
+  const { t: tNav } = useClientTranslation("navigation");
 
   const title =
     currentLang === "en" && product.titleEn ? product.titleEn : product.titleGe;
@@ -127,7 +128,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 strokeLinejoin="round"
               />
             </svg>
-            Buy Now
+            {tNav("buy_now")}
           </button>
         </div>
       </div>
