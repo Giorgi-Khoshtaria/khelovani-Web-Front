@@ -5,10 +5,11 @@ import Image from "next/image";
 import "./productCard.scss";
 import {
   IProduct,
-  PRODUCT_CATEGORY_LABELS,
   getCategoryPlaceholder,
+  resolveCategoryLabel,
 } from "@/lib/types/productTypes";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 interface ProductCardProps {
   product: IProduct;
@@ -19,16 +20,16 @@ const DEFAULT_PLACEHOLDER = "/assets/placeholder/default.png";
 export default function ProductCard({ product }: ProductCardProps) {
   const { lang } = useLanguage();
   const currentLang = lang.toLowerCase() as "ge" | "en";
+  const { t: tCommon } = useClientTranslation("common");
 
   const title =
     currentLang === "en" && product.titleEn ? product.titleEn : product.titleGe;
-  const authorName = "Artisan";
 
-  const categoryLabel =
-    PRODUCT_CATEGORY_LABELS[product.category]?.[currentLang] ||
-    product.category;
+  const categoryLabel = resolveCategoryLabel(product.category, currentLang);
 
-  const categoryPlaceholder = getCategoryPlaceholder(product.category as string);
+  const categoryPlaceholder = getCategoryPlaceholder(
+    product.category as string,
+  );
   const initialSrc = product.images?.[0] || categoryPlaceholder;
 
   const [imgSrc, setImgSrc] = useState(initialSrc);
@@ -60,8 +61,6 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const overlayText = currentLang === "ge" ? "ნიმუში" : "Sample Image";
-
   return (
     <div className="product-card">
       <div className="product-card__image-container">
@@ -75,7 +74,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
 
         {isPlaceholder && (
-          <div className="product-card__placeholder-overlay">{overlayText}</div>
+          <div className="product-card__placeholder-overlay">
+            {tCommon("sample_image")}
+          </div>
         )}
 
         {!isOutOfStock && (
@@ -107,7 +108,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         <h3 className="product-card__title" title={title}>
           {title}
         </h3>
-        <p className="product-card__author">by {authorName}</p>
 
         <div className="product-card__footer">
           <span className="product-card__price">₾{product.price}</span>

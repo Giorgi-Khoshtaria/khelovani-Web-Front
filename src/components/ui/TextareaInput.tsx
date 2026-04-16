@@ -23,7 +23,7 @@ export default function TextareaInput({
   rows = 3,
   fullWidth,
 }: TextareaInputProps) {
-  const { t } = useClientTranslation("inputs");
+  const { t } = useClientTranslation(["validation"]);
 
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>

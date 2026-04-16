@@ -23,7 +23,7 @@ export default function PasswordInput({
   error,
   fullWidth,
 }: PasswordInputProps) {
-  const { t } = useClientTranslation("inputs");
+  const { t } = useClientTranslation(["validation"]);
   const [show, setShow] = useState(false);
 
   return (

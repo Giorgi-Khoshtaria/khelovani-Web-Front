@@ -1,3 +1,4 @@
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { Icons } from "../../constants";
 import "./partnerSearch.scss";
 
@@ -7,9 +8,10 @@ interface PartnerSearchProps {
 }
 
 export default function PartnerSearch({ value, onChange }: PartnerSearchProps) {
+  const { t } = useClientTranslation("inputs");
   return (
     <div className="partner-search">
-      <label className="partner-search__label">ძიება</label>
+      <label className="partner-search__label">{t("search")}</label>
       <div className="partner-search__wrap">
         <span className="partner-search__icon" aria-hidden="true">
           {Icons.search}
@@ -17,7 +19,7 @@ export default function PartnerSearch({ value, onChange }: PartnerSearchProps) {
         <input
           className="partner-search__input"
           type="text"
-          placeholder="მოძებნეთ პარტნიორი..."
+          placeholder={t("partner_listing.search_placeholder")}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-label="Search partners"

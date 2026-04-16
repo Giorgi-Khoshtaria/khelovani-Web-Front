@@ -17,7 +17,7 @@ export default function PhoneInput({
   error,
   fullWidth,
 }: PhoneInputProps) {
-  const { t } = useClientTranslation("inputs");
+  const { t } = useClientTranslation(["validation"]);
 
   return (
     <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>

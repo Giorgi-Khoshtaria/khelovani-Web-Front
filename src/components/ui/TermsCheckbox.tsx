@@ -17,7 +17,7 @@ export default function TermsCheckbox({
   termsTo = "/terms",
 }: TermsCheckboxProps) {
   const { t: tNav } = useClientTranslation("navigation");
-  const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tValidation } = useClientTranslation(["validation"]);
 
   return (
     <div className="terms-container form-group--full">
@@ -27,7 +27,7 @@ export default function TermsCheckbox({
           <Link href={termsTo}>{tNav("terms_link")}</Link>
         </label>
       </div>
-      {error && <span className="error-text">{tInputs(error)}</span>}
+      {error && <span className="error-text">{tValidation(error)}</span>}
     </div>
   );
 }

@@ -101,3 +101,26 @@ export function getCategoryPlaceholder(category: string): string {
   // 3. Nuclear fallback
   return DEFAULT_PLACEHOLDER;
 }
+
+/**
+ * Resolves a human-readable label for a category string.
+ * Handles exact matches, compound strings (e.g., "Jewelry_accessories"), 
+ * and case-sensitivity.
+ */
+export function resolveCategoryLabel(category: string, lang: "ge" | "en"): string {
+  if (!category) return "";
+
+  // 1. Try exact match
+  if (PRODUCT_CATEGORY_LABELS[category as ProductCategory]) {
+    return PRODUCT_CATEGORY_LABELS[category as ProductCategory][lang];
+  }
+
+  // 2. Try normalized match (lowercase and split)
+  const normalized = category.split("_")[0].toLowerCase() as ProductCategory;
+  if (PRODUCT_CATEGORY_LABELS[normalized]) {
+    return PRODUCT_CATEGORY_LABELS[normalized][lang];
+  }
+
+  // 3. Fallback to raw string
+  return category;
+}

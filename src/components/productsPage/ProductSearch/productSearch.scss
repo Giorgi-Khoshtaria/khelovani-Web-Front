@@ -1,0 +1,36 @@
+@use "@/styles/colors" as *;
+@use "@/styles/defaultTexts" as *;
+
+.product-search {
+  position: relative;
+  flex: 1;
+
+  &__icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  &__input {
+    @extend .default-text;
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    background-color: $color-white;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: $color-text-primary;
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+
+    &:focus {
+      border-color: $color-text-primary;
+      box-shadow: 0 0 0 3px rgba($color-text-primary, 0.05);
+    }
+  }
+}

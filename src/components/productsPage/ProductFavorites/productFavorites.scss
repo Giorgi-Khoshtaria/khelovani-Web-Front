@@ -1,0 +1,32 @@
+@use "sass:color";
+@use "@/styles/colors" as *;
+@use "@/styles/defaultTexts" as *;
+
+.product-favorites {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: $color-white;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &__text {
+    @extend .default-text;
+    font-weight: 500;
+    color: $color-text-primary;
+  }
+
+  &:hover {
+    border-color: $color-text-secondary;
+    background-color: color.scale($color-white, $lightness: -2%);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
