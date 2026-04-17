@@ -85,8 +85,8 @@ export default function ProductListing({
         };
 
         const response = await getProducts(params);
-        setProducts(response.products);
-        setTotalPages(response.totalPages);
+        setProducts(response.data);
+        setTotalPages(response.meta?.totalPages ?? 1);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {

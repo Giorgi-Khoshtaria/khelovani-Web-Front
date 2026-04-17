@@ -64,7 +64,7 @@ export function usePartners(
           abortController.signal,
         );
         setPartners(data.data);
-        setTotalPages(data.totalPages);
+        setTotalPages(data.meta?.totalPages ?? 1);
       } catch (err: unknown) {
         if (!axios.isCancel(err)) {
           console.error("Failed to fetch partners:", err);

@@ -9,7 +9,7 @@ export const partnerRegisterRequest = async (
     const response = await api.post(`/api/partner/register`, data, {
       params: { lang },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw error;
   }

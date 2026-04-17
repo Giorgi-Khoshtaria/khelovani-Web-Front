@@ -25,11 +25,8 @@ export default function RelatedProducts({
     const fetchRelated = async () => {
       try {
         setLoading(true);
-        const res = await getProducts({ category, limit: 12 });
-        // Filter out the current product and take first 4
-        const filtered = res.products
-          .filter((p) => p._id !== currentProductId)
-          .slice(0, 4);
+        const res = await getProducts({ category, limit: 5 });
+        const filtered = res.data.filter((p) => p._id !== currentProductId).slice(0, 4);
         setRelated(filtered);
       } catch (error) {
         console.error("Failed to fetch related products:", error);

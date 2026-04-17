@@ -10,8 +10,8 @@ export interface MenuItem {
 
 export const getMenu = async () => {
   try {
-    const response = await api.get<MenuItem[]>("/api/menu");
-    return response.data;
+    const response = await api.get<{ data: MenuItem[] }>("/api/menu");
+    return response.data.data;
   } catch (error) {
     console.error("Error fetching menu:", error);
     throw error;

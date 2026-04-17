@@ -9,22 +9,22 @@ export interface GetProductsParams {
 }
 
 export interface GetProductsResponse {
-  products: IProduct[];
-  totalCount: number;
-  totalPages: number;
-  currentPage: number;
+  data: IProduct[];
+  meta: {
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+  };
 }
 
 export const getProducts = async (
   params: GetProductsParams
 ): Promise<GetProductsResponse> => {
-  const { data } = await api.get<GetProductsResponse>("/api/products", {
-    params,
-  });
-  return data;
+  const { data } = await api.get("/api/products", { params });
+  return { data: data.data, meta: data.meta };
 };
 
 export const getProductById = async (productId: string): Promise<IProduct> => {
-  const { data } = await api.get<IProduct>(`/api/products/${productId}`);
-  return data;
+  const { data } = await api.get<{ data: IProduct }>(`/api/products/${productId}`);
+  return data.data;
 };

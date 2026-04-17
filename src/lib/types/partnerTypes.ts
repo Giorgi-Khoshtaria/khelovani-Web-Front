@@ -51,9 +51,11 @@ export interface Partner {
 
 export interface PaginatedPartnerResponse {
   data: Partner[];
-  currentPage: number;
-  totalPages: number;
-  totalPartners: number;
+  meta: {
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+  };
 }
 
 // ── Filter state (PartnerListing UI) ─────────────────────────

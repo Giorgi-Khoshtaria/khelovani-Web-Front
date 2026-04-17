@@ -10,8 +10,8 @@ export default async function ProductsPage() {
 
   try {
     const data = await getProducts({ page: 1, limit: 12 });
-    initialProducts = data.products || [];
-    initialTotalPages = data.totalPages || 1;
+    initialProducts = data.data || [];
+    initialTotalPages = data.meta?.totalPages || 1;
   } catch (error) {
     console.error("Failed to fetch initial products:", error);
   }
