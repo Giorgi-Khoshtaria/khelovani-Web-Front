@@ -1,3 +1,4 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductCategory } from "./itemsCategory.enum";
 export { ProductCategory };
 
@@ -63,27 +64,27 @@ export const PRODUCT_CATEGORY_LABELS: Record<
 const DEFAULT_PLACEHOLDER = "/assets/placeholder/default.png";
 
 export const CATEGORY_PLACEHOLDER_MAP: Record<ProductCategory, string> = {
-  [ProductCategory.JEWELRY]:     "/assets/placeholder/jewelry.png",
-  [ProductCategory.CERAMICS]:    "/assets/placeholder/ceramics.png",
-  [ProductCategory.TEXTILE]:     "/assets/placeholder/textile.png",
-  [ProductCategory.WOODWORK]:    "/assets/placeholder/woodwork.png",
-  [ProductCategory.PAINTING]:    "/assets/placeholder/painting.png",
-  [ProductCategory.SCULPTURE]:   "/assets/placeholder/sculpture.png",
+  [ProductCategory.JEWELRY]: "/assets/placeholder/jewelry.png",
+  [ProductCategory.CERAMICS]: "/assets/placeholder/ceramics.png",
+  [ProductCategory.TEXTILE]: "/assets/placeholder/textile.png",
+  [ProductCategory.WOODWORK]: "/assets/placeholder/woodwork.png",
+  [ProductCategory.PAINTING]: "/assets/placeholder/painting.png",
+  [ProductCategory.SCULPTURE]: "/assets/placeholder/sculpture.png",
   [ProductCategory.LEATHERWORK]: "/assets/placeholder/leatherwork.png",
-  [ProductCategory.GLASSWORK]:   "/assets/placeholder/glasswork.png",
-  [ProductCategory.EMBROIDERY]:  "/assets/placeholder/embroidery.png",
-  [ProductCategory.METALWORK]:   "/assets/placeholder/metalwork.png",
-  [ProductCategory.FELTWORK]:    "/assets/placeholder/feltwork.png",
-  [ProductCategory.KNITTING]:    "/assets/placeholder/knitting.png",
-  [ProductCategory.CANDLES]:     "/assets/placeholder/candles.png",
+  [ProductCategory.GLASSWORK]: "/assets/placeholder/glasswork.png",
+  [ProductCategory.EMBROIDERY]: "/assets/placeholder/embroidery.png",
+  [ProductCategory.METALWORK]: "/assets/placeholder/metalwork.png",
+  [ProductCategory.FELTWORK]: "/assets/placeholder/feltwork.png",
+  [ProductCategory.KNITTING]: "/assets/placeholder/knitting.png",
+  [ProductCategory.CANDLES]: "/assets/placeholder/candles.png",
   // Not yet generated — using default until images are ready
   [ProductCategory.PHOTOGRAPHY]: DEFAULT_PLACEHOLDER,
   [ProductCategory.PRINTMAKING]: DEFAULT_PLACEHOLDER,
-  [ProductCategory.PAPER_ART]:   DEFAULT_PLACEHOLDER,
-  [ProductCategory.HOME_DECOR]:  DEFAULT_PLACEHOLDER,
+  [ProductCategory.PAPER_ART]: DEFAULT_PLACEHOLDER,
+  [ProductCategory.HOME_DECOR]: DEFAULT_PLACEHOLDER,
   [ProductCategory.ACCESSORIES]: DEFAULT_PLACEHOLDER,
-  [ProductCategory.TOYS]:        DEFAULT_PLACEHOLDER,
-  [ProductCategory.OTHER]:       DEFAULT_PLACEHOLDER,
+  [ProductCategory.TOYS]: DEFAULT_PLACEHOLDER,
+  [ProductCategory.OTHER]: DEFAULT_PLACEHOLDER,
 };
 
 export function getCategoryPlaceholder(category: string): string {
@@ -94,7 +95,10 @@ export function getCategoryPlaceholder(category: string): string {
 
   // 2. Legacy / compound values (e.g. "jewelry_accessories" → try "jewelry" first)
   const firstSegment = category.split("_")[0];
-  if (firstSegment && CATEGORY_PLACEHOLDER_MAP[firstSegment as ProductCategory]) {
+  if (
+    firstSegment &&
+    CATEGORY_PLACEHOLDER_MAP[firstSegment as ProductCategory]
+  ) {
     return CATEGORY_PLACEHOLDER_MAP[firstSegment as ProductCategory];
   }
 
@@ -104,7 +108,7 @@ export function getCategoryPlaceholder(category: string): string {
 
 /**
  * Resolves a human-readable label for a category string.
- * Handles exact matches, compound strings (e.g., "Jewelry_accessories"), 
+ * Handles exact matches, compound strings (e.g., "Jewelry_accessories"),
  * and case-sensitivity.
  */
 export function resolveCategoryLabel(category: string, lang: "ge" | "en"): string {

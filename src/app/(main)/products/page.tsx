@@ -2,6 +2,7 @@ import ProductsHero from "@/components/productsPage/productsHero/ProductsHero";
 import ProductListing from "@/components/productsPage/productListing/ProductListing";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
 import { IProduct } from "@/lib/types/productTypes";
+import { Suspense } from "react";
 
 export default async function ProductsPage() {
   let initialProducts: IProduct[] = [];
@@ -18,10 +19,12 @@ export default async function ProductsPage() {
   return (
     <main>
       <ProductsHero />
-      <ProductListing 
-        initialProducts={initialProducts} 
-        initialTotalPages={initialTotalPages} 
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductListing 
+          initialProducts={initialProducts} 
+          initialTotalPages={initialTotalPages} 
+        />
+      </Suspense>
     </main>
   );
 }

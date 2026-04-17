@@ -1,38 +1,133 @@
+@use "sass:color";
 @use "@/styles/colors" as *;
 @use "@/styles/defaultTexts" as *;
 
 .category-filter {
-  &__select {
-    @extend .default-text;
-    padding: 12px 36px 12px 16px;
-    border: 1px solid $color-border;
-    border-radius: 8px;
+  position: relative;
+  width: 240px;
+
+  &__button {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: $color-white;
+    border: 1px solid rgba($color-espresso, 0.1);
+    border-radius: 12px;
     color: $color-text-primary;
-    outline: none;
     cursor: pointer;
-    appearance: none;
-    min-width: 200px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba($color-espresso, 0.02);
 
-    /* Custom dropdown arrow */
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234B5563%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px top 50%;
-    background-size: 10px auto;
+    &:hover {
+      background-color: color.scale($color-white, $lightness: -2%);
+      border-color: rgba($color-espresso, 0.2);
+    }
 
-    &:focus {
-      border-color: $color-text-primary;
-      box-shadow: 0 0 0 3px rgba($color-text-primary, 0.05);
+    &--open {
+      border-color: rgba($color-espresso, 0.3);
+      box-shadow: 0 4px 12px rgba($color-espresso, 0.08);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 8px;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    color: rgba($color-espresso, 0.5);
+  }
+
+  &__button--open &__chevron {
+    transform: rotate(180deg);
+    color: $color-espresso;
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: $color-white;
+    border: 1px solid rgba($color-espresso, 0.1);
+    border-radius: 12px;
+    padding: 8px;
+    z-index: 100;
+    list-style: none;
+    box-shadow: 0 12px 32px rgba($color-espresso, 0.12);
+    animation: slideDown 0.2s ease-out;
+
+    /* Custom Scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba($color-espresso, 0.2) transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($color-espresso, 0.2);
+      border-radius: 4px;
+    }
+  }
+
+  &__item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: $color-text-secondary;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba($color-espresso, 0.04);
+      color: $color-text-primary;
+    }
+
+    &--active {
+      background-color: rgba($color-espresso, 0.08);
+      color: $color-espresso;
+      font-weight: 600;
     }
   }
 }
 
-// Responsive adjustments
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Tablet/Mobile behavior
+@media (max-width: 1024px) {
+  .category-filter {
+    width: 220px;
+  }
+}
+
 @media (max-width: 768px) {
   .category-filter {
-    &__select {
-      width: 100%;
+    width: 100%;
+    
+    &__button {
+      height: 44px;
     }
   }
 }

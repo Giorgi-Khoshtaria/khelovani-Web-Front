@@ -4,14 +4,11 @@ import { useRef, useState, useEffect } from "react";
 import ProductCard from "../productCard/ProductCard";
 import "./productListing.scss";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
-import {
-  IProduct,
-  ProductCategory,
-} from "@/lib/types/productTypes";
+import { IProduct, ProductCategory } from "@/lib/types/productTypes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
-// Sub-components
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import ProductSearch from "../ProductSearch/ProductSearch";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import ProductFavorites from "../ProductFavorites/ProductFavorites";
@@ -31,13 +28,18 @@ export default function ProductListing({
   const { t: tCommon } = useClientTranslation("common");
   const { t: tPages } = useClientTranslation("pages");
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const categoryParam = searchParams.get("category") as ProductCategory | "all";
+
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
   const [loading, setLoading] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<ProductCategory | "all">(
-    "all",
+    categoryParam || "all",
   );
 
   const [page, setPage] = useState(1);
@@ -46,6 +48,15 @@ export default function ProductListing({
 
   // Available categories for iteration
   const categoriesList = ["all", ...Object.values(ProductCategory)];
+
+  // Sync with searchParams
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam);
+    } else {
+      setActiveCategory("all");
+    }
+  }, [categoryParam]);
 
   // Debouncing search input
   useEffect(() => {
@@ -89,6 +100,15 @@ export default function ProductListing({
   const handleCategoryChange = (cat: ProductCategory | "all") => {
     setActiveCategory(cat);
     setPage(1); // Reset to page 1 on category change
+
+    // Update URL search params for shared links
+    // const params = new URLSearchParams(searchParams.toString());
+    // if (cat === "all") {
+    //   params.delete("category");
+    // } else {
+    //   params.set("category", cat);
+    // }
+    // router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -129,9 +149,9 @@ export default function ProductListing({
 
         {/* Pagination component */}
         {!loading && (
-          <ProductPagination 
-            page={page} 
-            totalPages={totalPages} 
+          <ProductPagination
+            page={page}
+            totalPages={totalPages}
             onPageChange={setPage}
             isLoading={loading}
           />
