@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import ProductCard from "../productCard/ProductCard";
 import "./productListing.scss";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
@@ -11,7 +12,6 @@ import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import ProductSearch from "../ProductSearch/ProductSearch";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
-import ProductFavorites from "../ProductFavorites/ProductFavorites";
 import ProductPagination from "../ProductPagination/ProductPagination";
 
 interface ProductListingProps {
@@ -126,8 +126,6 @@ export default function ProductListing({
               currentLang={currentLang}
             />
           </div>
-
-          <ProductFavorites count={0} />
         </div>
 
         {/* Dynamic Product Grid */}
@@ -138,7 +136,9 @@ export default function ProductListing({
             </div>
           ) : products.length > 0 ? (
             products.map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <Link key={product._id} href={`/products/${product._id}`} style={{ textDecoration: "none" }}>
+                <ProductCard product={product} />
+              </Link>
             ))
           ) : (
             <div className="product-listing__empty">

@@ -1,66 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import "./productCard.scss";
-import {
-  IProduct,
-  getCategoryPlaceholder,
-  resolveCategoryLabel,
-} from "@/lib/types/productTypes";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { IProduct } from "@/lib/types/productTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useProductDisplay } from "@/lib/hooks/useProductDisplay";
+import { useProductImage } from "@/lib/hooks/useProductImage";
 
 interface ProductCardProps {
   product: IProduct;
 }
 
-const DEFAULT_PLACEHOLDER = "/assets/placeholder/default.png";
-
 export default function ProductCard({ product }: ProductCardProps) {
-  const { lang } = useLanguage();
-  const currentLang = lang.toLowerCase() as "ge" | "en";
   const { t: tCommon } = useClientTranslation("common");
   const { t: tNav } = useClientTranslation("navigation");
 
-  const title =
-    currentLang === "en" && product.titleEn ? product.titleEn : product.titleGe;
-
-  const categoryLabel = resolveCategoryLabel(product.category, currentLang);
-
-  const categoryPlaceholder = getCategoryPlaceholder(
-    product.category as string,
-  );
-  const initialSrc = product.images?.[0] || categoryPlaceholder;
-
-  const [imgSrc, setImgSrc] = useState(initialSrc);
-  const [isPlaceholder, setIsPlaceholder] = useState(!product.images?.[0]);
-  const [usedDefault, setUsedDefault] = useState(false);
-
-  const isOutOfStock = product.stockQuantity <= 0;
-
-  useEffect(() => {
-    setUsedDefault(false);
-    if (product.images?.[0]) {
-      setImgSrc(product.images[0]);
-      setIsPlaceholder(false);
-    } else {
-      setImgSrc(categoryPlaceholder);
-      setIsPlaceholder(true);
-    }
-  }, [product.images, categoryPlaceholder]);
-
-  const handleImageError = () => {
-    if (!isPlaceholder) {
-      // Real image failed → try category placeholder
-      setImgSrc(categoryPlaceholder);
-      setIsPlaceholder(true);
-    } else if (!usedDefault) {
-      // Category placeholder also failed → nuclear fallback
-      setImgSrc(DEFAULT_PLACEHOLDER);
-      setUsedDefault(true);
-    }
-  };
+  // Abstractions for Senior-level maintainability
+  const { title, categoryLabel, formattedPrice, isOutOfStock } = useProductDisplay(product);
+  const { imgSrc, isPlaceholder, handleImageError } = useProductImage(product);
 
   return (
     <div className="product-card">
@@ -111,7 +68,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </h3>
 
         <div className="product-card__footer">
-          <span className="product-card__price">₾{product.price}</span>
+          <span className="product-card__price">{formattedPrice}</span>
           <button className="product-card__buy-btn" disabled={isOutOfStock}>
             <svg
               width="14"

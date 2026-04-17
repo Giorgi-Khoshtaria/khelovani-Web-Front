@@ -23,3 +23,8 @@ export const getProducts = async (
   });
   return data;
 };
+
+export const getProductById = async (productId: string): Promise<IProduct> => {
+  const { data } = await api.get<IProduct>(`/api/products/${productId}`);
+  return data;
+};
