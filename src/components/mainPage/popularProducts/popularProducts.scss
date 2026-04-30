@@ -1,0 +1,127 @@
+// popularProducts.scss
+
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+
+.popular-products {
+  width: 100%;
+  padding: 80px 24px 96px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__title {
+    @extend .huge-text;
+  }
+
+  &__view-all {
+    @extend .default-text;
+
+    color: colors.$color-walnut;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+    padding-bottom: 2px;
+    transition: opacity 0.25s ease;
+    white-space: nowrap;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  &__cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+
+    a {
+      text-decoration: none;
+      display: block;
+
+      flex: 1 1 280px;
+      max-width: 320px;
+
+      opacity: 0;
+      transform: translateY(40px);
+
+      transition:
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          transition-delay: #{0.14s * $i};
+        }
+      }
+
+      .product-card {
+        width: 100%;
+        min-height: 400px;
+
+        box-shadow:
+          0 8px 28px rgba(colors.$color-espresso, 0.1),
+          0 2px 6px rgba(colors.$color-espresso, 0.06);
+
+        transition:
+          transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+        &:hover {
+          transform: translateY(-8px);
+
+          box-shadow:
+            0 20px 48px rgba(colors.$color-espresso, 0.18),
+            0 6px 16px rgba(colors.$color-espresso, 0.1);
+        }
+      }
+    }
+
+    @media (min-width: 1201px) {
+      gap: 32px;
+    }
+
+    @media (max-width: 1200px) {
+      gap: 22px;
+    }
+
+    @media (max-width: 900px) {
+      gap: 20px;
+    }
+
+    @media (max-width: 640px) {
+      gap: 18px;
+
+      a {
+        flex: 1 1 300px;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      gap: 16px;
+
+      a {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+  }
+
+  &.is-visible {
+    .popular-products__cards a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

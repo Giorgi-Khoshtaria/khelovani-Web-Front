@@ -21,7 +21,7 @@ export interface PartnerFormData {
   addressEn: string;
   description: string;
   terms: boolean;
-  category?: string;
+  categories?: string[];
 }
 
 export type FormErrors = Record<string, string>;
@@ -54,11 +54,11 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
 
   // ── Contact Person ────────────────────────────────────────
   if (!contactPerson) {
-    errors.contactPerson = "validation.contact_required";
+    errors.contactPerson = "contact_required";
   } else if (contactPerson.trim().length < 2) {
-    errors.contactPerson = "validation.contact_min";
+    errors.contactPerson = "contact_min";
   } else if (contactPerson.trim().length > 200) {
-    errors.contactPerson = "validation.contact_max";
+    errors.contactPerson = "contact_max";
   }
 
   // ── Phone (shared) ────────────────────────────────────────
@@ -83,21 +83,23 @@ export const validatePartnerForm = (formData: PartnerFormData): FormErrors => {
 
   // ── Description ───────────────────────────────────────────
   if (!description) {
-    errors.description = "validation.description_required";
+    errors.description = "description_required";
   } else if (description.trim().length < 10) {
-    errors.description = "validation.description_min";
+    errors.description = "description_min";
   } else if (description.trim().length > 1000) {
-    errors.description = "validation.description_max";
+    errors.description = "description_max";
   }
 
-  // ── Category ─────────────────────────────────────────────
-  if (!formData.category || formData.category.trim() === "") {
-    errors.category = "validation.category_required";
+  // ── Categories ────────────────────────────────────────────
+  if (!formData.categories || formData.categories.length === 0) {
+    errors.categories = "category_required";
+  } else if (formData.categories.length > 5) {
+    errors.categories = "category_too_many";
   }
 
   // ── Terms ─────────────────────────────────────────────────
   if (!terms) {
-    errors.terms = "validation.terms_required";
+    errors.terms = "terms_required";
   }
 
   return errors;

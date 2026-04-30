@@ -1,4 +1,3 @@
-import { useLanguage } from "@/contexts/LanguageContext";
 import { ProductCategory } from "./itemsCategory.enum";
 export { ProductCategory };
 
@@ -30,35 +29,6 @@ export interface IProduct {
   createdAt: string;
   updatedAt: string;
 }
-
-export const PRODUCT_CATEGORY_LABELS: Record<
-  ProductCategory,
-  { ge: string; en: string }
-> = {
-  [ProductCategory.JEWELRY]: { ge: "სამკაული", en: "Jewelry" },
-  [ProductCategory.CERAMICS]: { ge: "კერამიკა", en: "Ceramics" },
-  [ProductCategory.TEXTILE]: { ge: "ტექსტილი", en: "Textile" },
-  [ProductCategory.WOODWORK]: { ge: "ხის ნაკეთობები", en: "Woodwork" },
-  [ProductCategory.PAINTING]: { ge: "ფერწერა", en: "Painting" },
-  [ProductCategory.SCULPTURE]: { ge: "ქანდაკება", en: "Sculpture" },
-  [ProductCategory.LEATHERWORK]: { ge: "ტყავის ნაკეთობები", en: "Leatherwork" },
-  [ProductCategory.GLASSWORK]: { ge: "მინის ნაკეთობები", en: "Glasswork" },
-  [ProductCategory.EMBROIDERY]: { ge: "ნაქარგობა", en: "Embroidery" },
-  [ProductCategory.METALWORK]: { ge: "ლითონის ნაკეთობები", en: "Metalwork" },
-  [ProductCategory.FELTWORK]: { ge: "თექა", en: "Feltwork" },
-  [ProductCategory.KNITTING]: { ge: "ნაქსოვი", en: "Knitting" },
-  [ProductCategory.CANDLES]: { ge: "სანთლები", en: "Candles" },
-  [ProductCategory.PHOTOGRAPHY]: { ge: "ფოტოგრაფია", en: "Photography" },
-  [ProductCategory.PRINTMAKING]: {
-    ge: "გრაფიკა / გრავიურა",
-    en: "Printmaking",
-  },
-  [ProductCategory.PAPER_ART]: { ge: "ქაღალდის ხელოვნება", en: "Paper Art" },
-  [ProductCategory.HOME_DECOR]: { ge: "სახლის დეკორი", en: "Home Decor" },
-  [ProductCategory.ACCESSORIES]: { ge: "აქსესუარები", en: "Accessories" },
-  [ProductCategory.TOYS]: { ge: "სათამაშოები", en: "Toys" },
-  [ProductCategory.OTHER]: { ge: "სხვა", en: "Other" },
-};
 
 // ─── Placeholder images (one per category) ────────────────────────────────────
 const DEFAULT_PLACEHOLDER = "/assets/placeholder/default.png";
@@ -106,25 +76,3 @@ export function getCategoryPlaceholder(category: string): string {
   return DEFAULT_PLACEHOLDER;
 }
 
-/**
- * Resolves a human-readable label for a category string.
- * Handles exact matches, compound strings (e.g., "Jewelry_accessories"),
- * and case-sensitivity.
- */
-export function resolveCategoryLabel(category: string, lang: "ge" | "en"): string {
-  if (!category) return "";
-
-  // 1. Try exact match
-  if (PRODUCT_CATEGORY_LABELS[category as ProductCategory]) {
-    return PRODUCT_CATEGORY_LABELS[category as ProductCategory][lang];
-  }
-
-  // 2. Try normalized match (lowercase and split)
-  const normalized = category.split("_")[0].toLowerCase() as ProductCategory;
-  if (PRODUCT_CATEGORY_LABELS[normalized]) {
-    return PRODUCT_CATEGORY_LABELS[normalized][lang];
-  }
-
-  // 3. Fallback to raw string
-  return category;
-}

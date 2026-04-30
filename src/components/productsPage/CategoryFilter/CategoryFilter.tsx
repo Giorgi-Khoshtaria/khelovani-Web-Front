@@ -1,57 +1,40 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import {
-  ProductCategory,
-  resolveCategoryLabel,
-} from "@/lib/types/productTypes";
 import "./categoryFilter.scss";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCategories } from "@/contexts/CategoriesContext";
 
 interface CategoryFilterProps {
-  activeCategory: ProductCategory | "all";
-  onCategoryChange: (cat: ProductCategory | "all") => void;
-  categoriesList: string[];
-  currentLang: "ge" | "en";
+  activeCategory: string;
+  onCategoryChange: (cat: string) => void;
 }
 
 export default function CategoryFilter({
   activeCategory,
   onCategoryChange,
-  categoriesList,
-  currentLang,
 }: CategoryFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  const activeLabel =
-    activeCategory === "all"
-      ? currentLang === "ge"
-        ? "ყველა კატეგორია"
-        : "All Categories"
-      : resolveCategoryLabel(activeCategory, currentLang);
+  const { lang } = useLanguage();
+  const { categories, getLabel } = useCategories();
+  const currentLang = lang.toLowerCase() as "ge" | "en";
 
-  // Close dropdown when clicking outside
+  const allLabel = currentLang === "ge" ? "ყველა კატეგორია" : "All Categories";
+  const activeLabel = activeCategory === "all" ? allLabel : getLabel(activeCategory, currentLang);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  const handleSelect = (category: string) => {
-    onCategoryChange(category as ProductCategory | "all");
+  const handleSelect = (cat: string) => {
+    onCategoryChange(cat);
     setIsOpen(false);
   };
 
@@ -81,27 +64,25 @@ export default function CategoryFilter({
 
       {isOpen && (
         <ul className="category-filter__menu" role="listbox">
-          {categoriesList.map((category) => {
-            const isAll = category === "all";
-            const isActive = activeCategory === category;
-            const label = isAll
-              ? currentLang === "ge"
-                ? "ყველა კატეგორია"
-                : "All Categories"
-              : resolveCategoryLabel(category, currentLang);
-            console.log(category, currentLang);
-            return (
-              <li
-                key={category}
-                className={`category-filter__item ${isActive ? "category-filter__item--active" : ""}`}
-                onClick={() => handleSelect(category)}
-                role="option"
-                aria-selected={isActive}
-              >
-                {label}
-              </li>
-            );
-          })}
+          <li
+            className={`category-filter__item ${activeCategory === "all" ? "category-filter__item--active" : ""}`}
+            onClick={() => handleSelect("all")}
+            role="option"
+            aria-selected={activeCategory === "all"}
+          >
+            {allLabel}
+          </li>
+          {categories.map((cat) => (
+            <li
+              key={cat.slug}
+              className={`category-filter__item ${activeCategory === cat.slug ? "category-filter__item--active" : ""}`}
+              onClick={() => handleSelect(cat.slug)}
+              role="option"
+              aria-selected={activeCategory === cat.slug}
+            >
+              {getLabel(cat.slug, currentLang)}
+            </li>
+          ))}
         </ul>
       )}
     </div>

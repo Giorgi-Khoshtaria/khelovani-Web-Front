@@ -5,6 +5,7 @@
 // ── Registration (become-partner form → backend) ─────────────
 
 export interface PartnerRegisterData {
+  _id?: string;
   companyNameGe: string;
   companyNameEn: string;
   identificationCode: string;
@@ -23,7 +24,7 @@ export interface PartnerRegisterData {
   linkedin?: string;
   youtube?: string;
   terms: boolean;
-  category?: string;
+  categories?: string[];
 }
 
 // ── Public partner (returned by API) ─────────────────────────
@@ -42,7 +43,7 @@ export interface Partner {
   instagram?: string;
   tiktok?: string;
   website?: string;
-  category?: string;
+  categories?: string[];
   rating?: number;
   reviewCount?: number;
 }
@@ -63,7 +64,7 @@ export interface PaginatedPartnerResponse {
 export interface PartnerFilterState {
   search: string;
   category: string; // exact-match → backend query param
-  city: string;     // exact-match → backend query param
+  city: string; // exact-match → backend query param
   minRating: number; // reserved for future backend support
 }
 
@@ -76,8 +77,7 @@ export interface PartnerListingProps {
 
 export interface PartnerCardProps {
   partner: Partner;
-  lang: string;
-  index: number;
+  index?: number;
 }
 
 export interface PartnerSidebarProps {

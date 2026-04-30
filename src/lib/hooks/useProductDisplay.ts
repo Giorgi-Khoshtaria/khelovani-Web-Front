@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { IProduct, resolveCategoryLabel } from "../types/productTypes";
+import { IProduct } from "../types/productTypes";
 import { getLocalizedField, formatProductPrice, getStockInfo } from "../utils/productUtils";
+import { useCategories } from "@/contexts/CategoriesContext";
 
 /**
  * useProductDisplay
@@ -15,11 +16,12 @@ import { getLocalizedField, formatProductPrice, getStockInfo } from "../utils/pr
 export function useProductDisplay(product: IProduct) {
   const { lang: currentLang } = useLanguage();
   const lang = currentLang.toLowerCase() as "ge" | "en";
+  const { getLabel } = useCategories();
 
   const title = getLocalizedField(product.titleGe, product.titleEn, lang);
   const description = getLocalizedField(product.descriptionGe, product.descriptionEn, lang);
-  
-  const categoryLabel = resolveCategoryLabel(product.category, lang);
+
+  const categoryLabel = getLabel(product.category, lang);
   const formattedPrice = formatProductPrice(product.price);
   
   const { isInStock, isOutOfStock } = getStockInfo(product.stockQuantity);

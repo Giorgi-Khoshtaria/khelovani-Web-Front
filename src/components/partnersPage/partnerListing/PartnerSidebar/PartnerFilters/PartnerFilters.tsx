@@ -1,7 +1,8 @@
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-import { CITIES, Icons, PRODUCT_CATEGORY_LABELS } from "../../constants";
+import { CITIES, Icons } from "../../constants";
 import "./partnerFilters.scss";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCategories } from "@/contexts/CategoriesContext";
 
 const STAR_RATINGS = [5, 4, 3, 2, 1] as const;
 
@@ -25,21 +26,22 @@ export default function PartnerFilters({
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tCommon } = useClientTranslation("common");
   const { lang } = useLanguage();
+  const { categories, getLabel } = useCategories();
   return (
     <div className="partner-filters">
       {/* ── Category ── */}
       <div className="partner-filters__group">
         <span className="partner-filters__label">{tInputs("category")}</span>
         <div className="partner-filters__chips">
-          {Object.entries(PRODUCT_CATEGORY_LABELS).map(([value, label]) => (
+          {categories.map((cat) => (
             <button
-              key={value}
+              key={cat.slug}
               className={`partner-filters__chip${
-                category === value ? " partner-filters__chip--active" : ""
+                category === cat.slug ? " partner-filters__chip--active" : ""
               }`}
-              onClick={() => onCategoryChange(category === value ? "" : value)}
+              onClick={() => onCategoryChange(category === cat.slug ? "" : cat.slug)}
             >
-              {label[lang]}
+              {getLabel(cat.slug, lang as "ge" | "en")}
             </button>
           ))}
         </div>

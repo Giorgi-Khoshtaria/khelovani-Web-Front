@@ -12,15 +12,9 @@ import PhoneInput from "@/components/ui/PhoneInput";
 import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
+import CategoryMultiChips from "@/components/ui/CategoryMultiChips";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
-import { PRODUCT_CATEGORY_LABELS } from "@/components/partnersPage/partnerListing/constants";
-
-const CATEGORY_OPTIONS = Object.entries(PRODUCT_CATEGORY_LABELS).map(
-  ([value, label]) => ({
-    value,
-    label: label.ge, // Defaulting to Georgian for the form as per existing logic
-  }),
-);
+import { useCategories } from "@/contexts/CategoriesContext";
 import {
   validatePartnerForm,
   type PartnerFormData,
@@ -29,6 +23,7 @@ import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import { partnerRegisterRequest } from "@/apiCalls/partnerRequests/partnerAuth.req";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+
 const INITIAL_FORM: PartnerFormData = {
   companyNameGe: "",
   companyNameEn: "",
@@ -36,7 +31,7 @@ const INITIAL_FORM: PartnerFormData = {
   contactPerson: "",
   phone: "",
   city: "",
-  category: "",
+  categories: [],
   email: "",
   address: "",
   addressEn: "",
@@ -54,9 +49,19 @@ function PartnerRegistration() {
   const { t: tCommon } = useClientTranslation("common");
   const { t: tAlerts } = useClientTranslation("alerts");
   const { lang } = useLanguage();
+  const { categories: categoryList, getLabel } = useCategories();
+  const categoryOptions = categoryList.map((c) => ({
+    value: c.slug,
+    label: getLabel(c.slug, lang as "ge" | "en"),
+  }));
 
-  const { formData, errors, setErrors, handleChange } =
+  const { formData, errors, setErrors, handleChange, setFormData } =
     useFormHandler<PartnerFormData>(INITIAL_FORM);
+
+  const handleCategoriesChange = (selected: string[]) => {
+    setFormData((prev) => ({ ...prev, categories: selected }));
+    if (errors.categories) setErrors((prev) => ({ ...prev, categories: "" }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -177,14 +182,12 @@ function PartnerRegistration() {
             error={errors.city}
           />
 
-          <SelectInput
-            id="category"
+          <CategoryMultiChips
             label={tInputs("label.category") || "კატეგორია"}
-            value={formData.category ?? ""}
-            onChange={handleChange}
-            options={CATEGORY_OPTIONS}
-            placeholder={tInputs("placeholder.category") || "აირჩიეთ კატეგორია"}
-            error={errors.category}
+            options={categoryOptions}
+            value={formData.categories ?? []}
+            onChange={handleCategoriesChange}
+            error={errors.categories}
           />
 
           <TextInput

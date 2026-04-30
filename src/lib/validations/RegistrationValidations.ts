@@ -61,16 +61,16 @@ export const validateRegistrationForm = (
 
   // ── City ──────────────────────────────────────────────────
   if (!city) {
-    errors.city = "validation.city_required";
+    errors.city = "city_required";
   }
 
   // ── Address ───────────────────────────────────────────────
   if (!address) {
-    errors.address = "validation.address_required";
+    errors.address = "address_required";
   } else if (address.trim().length < 5) {
-    errors.address = "validation.address_min";
+    errors.address = "address_min";
   } else if (address.trim().length > 200) {
-    errors.address = "validation.address_max";
+    errors.address = "address_max";
   }
 
   // ── Email (shared) ────────────────────────────────────────

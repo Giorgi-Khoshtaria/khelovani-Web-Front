@@ -1,0 +1,109 @@
+// popularCategory.scss
+
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+
+.popular-category {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: colors.$color-bg-page;
+  padding: 96px 20px;
+
+  &__title {
+    @extend .huge-text;
+
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+
+    opacity: 0;
+    transform: translateY(32px);
+
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 480px) {
+      margin-bottom: 32px;
+    }
+  }
+
+  &__cards {
+    width: 100%;
+    max-width: 1400px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: 1200px) {
+      gap: 22px;
+    }
+
+    @media (max-width: 768px) {
+      gap: 20px;
+    }
+
+    @media (max-width: 480px) {
+      gap: 16px;
+    }
+
+    a {
+      text-decoration: none;
+
+      opacity: 0;
+      transform: translateY(40px);
+
+      transition:
+        opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          transition-delay: #{0.14s * $i};
+        }
+      }
+
+      flex: 1 1 280px;
+      max-width: 340px;
+
+      @media (max-width: 1200px) {
+        flex: 1 1 300px;
+        max-width: 360px;
+      }
+
+      @media (max-width: 768px) {
+        flex: 1 1 320px;
+        max-width: none;
+      }
+
+      @media (max-width: 480px) {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+  }
+
+  &.is-visible {
+    .popular-category__title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .popular-category__cards a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

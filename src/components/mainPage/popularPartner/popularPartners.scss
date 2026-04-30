@@ -1,0 +1,100 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+
+.popular-partners {
+  width: 100%;
+  padding: 80px 24px 96px;
+  background-color: colors.$color-bg-page;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__title {
+    @extend .huge-text;
+  }
+
+  &__view-all {
+    @extend .default-text;
+
+    color: colors.$color-walnut;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+    padding-bottom: 2px;
+    transition: opacity 0.25s ease;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+
+    max-width: 1480px;
+    margin: 0 auto;
+
+    @media (max-width: 1200px) {
+      gap: 22px;
+    }
+
+    @media (max-width: 900px) {
+      gap: 20px;
+    }
+
+    @media (max-width: 640px) {
+      gap: 18px;
+    }
+
+    @media (max-width: 480px) {
+      gap: 16px;
+    }
+  }
+
+  &__item {
+    flex: 1 1 280px;
+    max-width: 320px;
+    width: 100%;
+
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+
+    @for $i from 1 through 8 {
+      &:nth-child(#{$i}) {
+        transition-delay: #{0.14s * $i};
+      }
+    }
+
+    @media (max-width: 640px) {
+      flex: 1 1 300px;
+      max-width: none;
+    }
+
+    @media (max-width: 480px) {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+
+  &.is-visible {
+    .popular-partners__item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

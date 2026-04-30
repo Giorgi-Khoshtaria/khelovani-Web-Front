@@ -11,12 +11,11 @@ export const validateNameGe = (
   required = false,
 ): string | null => {
   if (!nameGe || nameGe.trim().length === 0) {
-    return required ? "validation.name_ge_required" : null;
+    return required ? "name_ge_required" : null;
   }
-  if (!/^[\u10D0-\u10FF\s]+$/.test(nameGe.trim()))
-    return "validation.name_ge_letters";
-  if (nameGe.trim().length < 2) return "validation.name_ge_min";
-  if (nameGe.trim().length > 200) return "validation.name_ge_max";
+  if (!/^[ა-\u10FF\s]+$/.test(nameGe.trim())) return "name_ge_letters";
+  if (nameGe.trim().length < 2) return "name_ge_min";
+  if (nameGe.trim().length > 200) return "name_ge_max";
   return null;
 };
 
@@ -25,11 +24,11 @@ export const validateNameEn = (
   required = true,
 ): string | null => {
   if (!nameEn || nameEn.trim().length === 0) {
-    return required ? "validation.name_en_required" : null;
+    return required ? "name_en_required" : null;
   }
-  if (!/^[a-zA-Z\s]+$/.test(nameEn.trim())) return "validation.name_en_letters";
-  if (nameEn.trim().length < 2) return "validation.name_en_min";
-  if (nameEn.trim().length > 200) return "validation.name_en_max";
+  if (!/^[a-zA-Z\s]+$/.test(nameEn.trim())) return "name_en_letters";
+  if (nameEn.trim().length < 2) return "name_en_min";
+  if (nameEn.trim().length > 200) return "name_en_max";
   return null;
 };
 // ── Email ─────────────────────────────────────────────────────────────────────
@@ -37,8 +36,8 @@ export const validateNameEn = (
  * Returns an error string when the email is invalid, or null when it's fine.
  */
 export function validateEmail(email: string): string | null {
-  if (!email) return "validation.email_required";
-  if (!EMAIL_REGEX.test(email)) return "validation.email_invalid";
+  if (!email) return "email_required";
+  if (!EMAIL_REGEX.test(email)) return "email_invalid";
   return null;
 }
 
@@ -48,10 +47,10 @@ export function validateEmail(email: string): string | null {
  * Used by: login, reset-password.
  */
 export function validatePassword(password: string): string | null {
-  if (!password) return "validation.password_required";
-  if (password.length < PASSWORD_MIN_LENGTH) return "validation.password_min";
-  if (!/[a-zA-Z]/.test(password)) return "validation.password_lowercase";
-  if (!/[0-9]/.test(password)) return "validation.password_number";
+  if (!password) return "password_required";
+  if (password.length < PASSWORD_MIN_LENGTH) return "password_min";
+  if (!/[a-zA-Z]/.test(password)) return "password_lowercase";
+  if (!/[0-9]/.test(password)) return "password_number";
   return null;
 }
 
@@ -61,12 +60,12 @@ export function validatePassword(password: string): string | null {
  * Used by: registration.
  */
 export function validateStrictPassword(password: string): string | null {
-  if (!password) return "validation.password_required";
-  if (password.length < PASSWORD_MIN_LENGTH) return "validation.password_min";
-  if (password.length > 30) return "validation.password_max";
-  if (!/[A-Z]/.test(password)) return "validation.password_uppercase";
+  if (!password) return "password_required";
+  if (password.length < PASSWORD_MIN_LENGTH) return "password_min";
+  if (password.length > 30) return "password_max";
+  if (!/[A-Z]/.test(password)) return "password_uppercase";
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password))
-    return "validation.password_special";
+    return "password_special";
   return null;
 }
 
@@ -78,51 +77,50 @@ export function validateConfirmPassword(
   password: string,
   confirmPassword: string,
 ): string | null {
-  if (!confirmPassword) return "validation.confirm_password";
-  if (confirmPassword !== password) return "validation.password_mismatch";
+  if (!confirmPassword) return "confirm_password";
+  if (confirmPassword !== password) return "password_mismatch";
   return null;
 }
 // shared/fieldValidators.ts - add this
 export const validateCity = (city: string): string | null => {
-  if (!city) return "validation.city_required";
+  if (!city) return "city_required";
   return null;
 };
 export const validatePhone = (phone?: string): string | null => {
-  if (!phone || phone.trim() === "") return "validation.phone_required";
-  if (!/^5\d{2}\s?\d{3}\s?\d{3}$/.test(phone.trim()))
-    return "validation.phone_format";
+  if (!phone || phone.trim() === "") return "phone_required";
+  if (!/^5\d{2}\s?\d{3}\s?\d{3}$/.test(phone.trim())) return "phone_format";
   return null;
 };
 // shared/fieldValidators.ts - add this
 export const validateAddress = (address: string): string | null => {
-  if (!address) return "validation.address_required";
+  if (!address) return "address_required";
   if (!/^[\u10D0-\u10FF0-9\s,.\-/#]+$/.test(address.trim()))
-    return "validation.address_ge_letters";
-  if (address.trim().length < 5) return "validation.address_min";
-  if (address.trim().length > 200) return "validation.address_max";
+    return "address_ge_letters";
+  if (address.trim().length < 5) return "address_min";
+  if (address.trim().length > 200) return "address_max";
   return null;
 };
 
 export const validateAddressEn = (addressEn: string): string | null => {
-  if (!addressEn) return "validation.address_en_required";
+  if (!addressEn) return "address_en_required";
   if (!/^[a-zA-Z0-9\s,.\-/#]+$/.test(addressEn.trim()))
-    return "validation.address_en_letters";
-  if (addressEn.trim().length < 5) return "validation.address_min";
-  if (addressEn.trim().length > 200) return "validation.address_max";
+    return "address_en_letters";
+  if (addressEn.trim().length < 5) return "address_min";
+  if (addressEn.trim().length > 200) return "address_max";
   return null;
 };
 
 // ── ID Number ─────────────────────────────────────────────────────────────
 export function validateIdNumber(idNumber: string): string | null {
-  if (!idNumber) return "validation.id_number_required";
-  if (!/^\d+$/.test(idNumber)) return "validation.id_number_digits";
-  if (idNumber.length !== 11) return "validation.id_number_length";
+  if (!idNumber) return "id_number_required";
+  if (!/^\d+$/.test(idNumber)) return "id_number_digits";
+  if (idNumber.length !== 11) return "id_number_length";
   return null;
 }
 
 // ── Date of Birth ─────────────────────────────────────────────────────────
 export function validateDateOfBirth(dateOfBirth: string): string | null {
-  if (!dateOfBirth) return "validation.date_of_birth_required";
+  if (!dateOfBirth) return "date_of_birth_required";
 
   const today = new Date();
   const dob = new Date(dateOfBirth);
@@ -133,16 +131,16 @@ export function validateDateOfBirth(dateOfBirth: string): string | null {
   const preciseAge =
     monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
 
-  if (preciseAge < 18) return "validation.age_min_18";
-  if (preciseAge > 100) return "validation.age_invalid";
+  if (preciseAge < 18) return "age_min_18";
+  if (preciseAge > 100) return "age_invalid";
 
   return null;
 }
 
 // ── Identification Code ───────────────────────────────────────────────────
 export function validateIdentificationCode(code: string): string | null {
-  if (!code) return "validation.id_code_required";
-  if (!/^\d+$/.test(code)) return "validation.id_code_digits";
-  if (code.length !== 9) return "validation.id_code_length";
+  if (!code) return "id_code_required";
+  if (!/^\d+$/.test(code)) return "id_code_digits";
+  if (code.length !== 9) return "id_code_length";
   return null;
 }

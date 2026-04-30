@@ -1,5 +1,11 @@
+import FooterLogoSection from "./footerLogoSection/FooterLogoSection";
+
 function Footer() {
-  return <div>Footer</div>;
+  return (
+    <div className="">
+      <FooterLogoSection />
+    </div>
+  );
 }
 
 export default Footer;

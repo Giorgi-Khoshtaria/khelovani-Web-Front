@@ -77,7 +77,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   background-color: colors.$color-bg-page;
 }
 
@@ -90,7 +90,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
 }
 
 // Soft blurred orbs give warmth and depth
@@ -114,13 +114,14 @@
   }
 
   &--2 {
-    width: 600px;
-    height: 600px;
-    bottom: -200px;
-    right: -160px;
+    width: 700px;
+    height: 700px;
+
+    bottom: -350px;
+    right: -250px;
     background: radial-gradient(
       circle,
-      rgba(colors.$color-walnut, 0.28) 0%,
+      rgba(colors.$color-walnut, 0.35) 0%,
       transparent 70%
     );
     animation: orbDrift 24s ease-in-out infinite reverse;

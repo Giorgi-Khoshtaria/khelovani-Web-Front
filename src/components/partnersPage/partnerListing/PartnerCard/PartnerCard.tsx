@@ -4,15 +4,16 @@ import { Icons } from "../constants";
 import { SocialLinks } from "./SocialLinks";
 import "./partnerCard.scss";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useCategories } from "@/contexts/CategoriesContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-export default function PartnerCard({
-  partner,
-  lang,
-  index,
-}: PartnerCardProps) {
-  const name = lang === "ge" ? partner.companyNameGe : partner.companyNameEn;
+export default function PartnerCard({ partner, index = 0 }: PartnerCardProps) {
+  const { getLabel } = useCategories();
+  const { lang: ctxLang } = useLanguage();
+  const activeLang = (ctxLang || "ge") as "ge" | "en";
+  const name = (activeLang === "ge" ? partner.companyNameGe : partner.companyNameEn) ?? partner.companyNameGe ?? "";
   const address =
-    lang === "ge" ? partner.address : partner.addressEn || partner.address;
+    activeLang === "ge" ? partner.address : partner.addressEn || partner.address;
 
   const cityLabel = partner.city
     ? partner.city.charAt(0).toUpperCase() + partner.city.slice(1)
@@ -33,8 +34,14 @@ export default function PartnerCard({
             {name.charAt(0).toUpperCase()}
           </div>
         )}
-        {partner.category && (
-          <span className="partner-card__category">{partner.category}</span>
+        {(partner.categories ?? []).length > 0 && (
+          <div className="partner-card__categories">
+            {(partner.categories ?? []).map((slug) => (
+              <span key={slug} className="partner-card__category">
+                {getLabel(slug, activeLang)}
+              </span>
+            ))}
+          </div>
         )}
       </div>
 
@@ -42,7 +49,7 @@ export default function PartnerCard({
       <div className="partner-card__body">
         <div className="partner-card__header">
           <h3 className="partner-card__name" title={name}>
-            {name}
+            {name.length > 50 ? name.slice(0, 50) + "…" : name}
           </h3>
           <div className="partner-card__rating">
             <span className="partner-card__stars">

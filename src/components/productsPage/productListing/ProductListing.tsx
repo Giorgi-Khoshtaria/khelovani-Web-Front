@@ -5,11 +5,9 @@ import Link from "next/link";
 import ProductCard from "../productCard/ProductCard";
 import "./productListing.scss";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
-import { IProduct, ProductCategory } from "@/lib/types/productTypes";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { IProduct } from "@/lib/types/productTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import ProductSearch from "../ProductSearch/ProductSearch";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import ProductPagination from "../ProductPagination/ProductPagination";
@@ -23,31 +21,22 @@ export default function ProductListing({
   initialProducts,
   initialTotalPages,
 }: ProductListingProps) {
-  const { lang } = useLanguage();
-  const currentLang = lang.toLowerCase() as "ge" | "en";
   const { t: tCommon } = useClientTranslation("common");
   const { t: tPages } = useClientTranslation("pages");
 
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const categoryParam = searchParams.get("category") as ProductCategory | "all";
+  const categoryParam = searchParams.get("category") ?? "all";
 
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
   const [loading, setLoading] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState<ProductCategory | "all">(
-    categoryParam || "all",
-  );
+  const [activeCategory, setActiveCategory] = useState<string>(categoryParam);
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
   const isFirstRender = useRef(true);
-
-  // Available categories for iteration
-  const categoriesList = ["all", ...Object.values(ProductCategory)];
 
   // Sync with searchParams
   useEffect(() => {
@@ -97,18 +86,9 @@ export default function ProductListing({
     fetchProducts();
   }, [debouncedSearch, activeCategory, page]);
 
-  const handleCategoryChange = (cat: ProductCategory | "all") => {
+  const handleCategoryChange = (cat: string) => {
     setActiveCategory(cat);
-    setPage(1); // Reset to page 1 on category change
-
-    // Update URL search params for shared links
-    // const params = new URLSearchParams(searchParams.toString());
-    // if (cat === "all") {
-    //   params.delete("category");
-    // } else {
-    //   params.set("category", cat);
-    // }
-    // router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    setPage(1);
   };
 
   return (
@@ -122,8 +102,6 @@ export default function ProductListing({
             <CategoryFilter
               activeCategory={activeCategory}
               onCategoryChange={handleCategoryChange}
-              categoriesList={categoriesList}
-              currentLang={currentLang}
             />
           </div>
         </div>

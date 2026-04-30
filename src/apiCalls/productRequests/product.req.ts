@@ -18,13 +18,19 @@ export interface GetProductsResponse {
 }
 
 export const getProducts = async (
-  params: GetProductsParams
+  params: GetProductsParams,
 ): Promise<GetProductsResponse> => {
   const { data } = await api.get("/api/products", { params });
   return { data: data.data, meta: data.meta };
 };
 
 export const getProductById = async (productId: string): Promise<IProduct> => {
-  const { data } = await api.get<{ data: IProduct }>(`/api/products/${productId}`);
+  const { data } = await api.get<{ data: IProduct }>(
+    `/api/products/${productId}`,
+  );
+  return data.data;
+};
+export const getPinnedProducts = async (): Promise<IProduct[]> => {
+  const { data } = await api.get<{ data: IProduct[] }>(`/api/products/pinned`);
   return data.data;
 };

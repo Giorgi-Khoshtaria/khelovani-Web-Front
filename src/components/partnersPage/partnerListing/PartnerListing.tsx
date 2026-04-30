@@ -1,15 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import api from "@/apiCalls/api";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-import {
-  Partner,
-  PaginatedPartnerResponse,
-  PartnerListingProps,
-  PartnerFilterState,
-} from "@/lib/types/partnerTypes";
+import { PartnerListingProps } from "@/lib/types/partnerTypes";
 import { usePartners } from "@/lib/hooks/usePartners";
 import { Icons } from "./constants";
 import PartnerCard from "./PartnerCard/PartnerCard";
@@ -21,7 +14,6 @@ export default function PartnerListing({
   initialPartners = [],
   initialTotalPages = 1,
 }: PartnerListingProps) {
-  const { lang } = useLanguage();
   const { t: tCommon } = useClientTranslation("common");
   const { t: tPages } = useClientTranslation("pages");
 
@@ -117,7 +109,6 @@ export default function PartnerListing({
                 <PartnerCard
                   key={partner._id}
                   partner={partner}
-                  lang={lang}
                   index={i}
                 />
               ))}

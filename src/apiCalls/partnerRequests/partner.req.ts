@@ -34,3 +34,17 @@ export const getPartnerById = async (id: string, signal?: AbortSignal) => {
     throw error;
   }
 };
+
+export const getPinnedPartners = async (signal?: AbortSignal) => {
+  try {
+    const response = await api.get<{ data: Partner[] }>("/api/partner/pinned", {
+      signal,
+    });
+
+    // Safe fallback
+    return response.data?.data || [];
+  } catch (error) {
+    console.error("Error fetching pinned partners:", error);
+    return []; // ← Return empty array instead of throwing (better UX)
+  }
+};

@@ -14,7 +14,7 @@
   min-height: 42vh; // Slightly increased for a more premium look
   position: relative;
   overflow: hidden;
-  animation: fadeInPage 0.8s ease-out forwards;
+  animation: fadeInPage 1.2s ease-out forwards;
 
   // Premium background elements
   &::before {
@@ -24,7 +24,11 @@
     left: -10%;
     width: 70%;
     height: 150%;
-    background: radial-gradient(circle, rgba($color-bg-secondary, 0.4) 0%, rgba(255,255,255,0) 70%);
+    background: radial-gradient(
+      circle,
+      rgba($color-bg-secondary, 0.4) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
     z-index: 0;
     pointer-events: none;
     animation: gradientSpin 30s linear infinite; // Added animation to background
@@ -41,7 +45,7 @@
     color: $color-text-primary;
     margin-bottom: 24px;
     animation: fadeUp 0.8s ease-out 0.2s both;
-    
+
     // Use a neutral earthy tone for the accent instead of red
     span {
       color: $color-walnut;
