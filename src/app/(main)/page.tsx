@@ -31,9 +31,15 @@ export default async function HomePage() {
   return (
     <div className="main-page">
       <MainPageHero />
-      <PopularCategory pinnedCategories={pinnedCategories} />
-      <PopularProduct pinnedProducts={pinnedProducts} />
-      <PopularPartners PinnedPartners={PinnedPartners} />
+      {pinnedCategories.length > 0 && (
+        <PopularCategory pinnedCategories={pinnedCategories} />
+      )}
+      {pinnedProducts.length > 0 && (
+        <PopularProduct pinnedProducts={pinnedProducts} />
+      )}
+      {PinnedPartners.length > 0 && (
+        <PopularPartners PinnedPartners={PinnedPartners} />
+      )}
     </div>
   );
 }
