@@ -11,7 +11,7 @@ export const VALID_CITIES = [
   "zugdidi",
 ] as const;
 
-export const PHONE_REGEX = /^5\d{2}\s?\d{3}\s?\d{3}$/;
+export const PHONE_REGEX = /^(\+?995\s?)?5\d{2}\s?\d{3}\s?\d{3}$/;
 export const SPECIAL_CHARACTER_REGEX = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
 export const zodToFormErrors = (error: z.ZodError): FormErrors => {
