@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getMenu, MenuItem } from "@/apiCalls/menu/menu.req";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useMenu } from "@/contexts/MenuContext";
 import "./navigation.scss";
+
 interface NavItem {
   key: string;
   path: string;
@@ -11,10 +12,10 @@ interface NavItem {
 interface NavigationProps {
   nav?: NavItem[];
   mobile?: boolean;
-  menuItems?: MenuItem[];
 }
 
-function Navigation({ nav, mobile, menuItems = [] }: NavigationProps) {
+function Navigation({ nav, mobile }: NavigationProps) {
+  const { menuItems } = useMenu();
   const { lang } = useLanguage();
 
   const activeItems = menuItems

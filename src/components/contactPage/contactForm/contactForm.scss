@@ -1,0 +1,57 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/_auth.scss" as auth;
+@use "@/styles/_inputs.scss";
+
+.contact-form-card {
+  @extend .auth-card;
+  padding: 40px;
+  border: 1px solid colors.$color-border;
+
+  &__title {
+    @extend .auth-content;
+    h2 {
+      text-align: left;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+
+    @media (min-width: 768px) {
+      &--two-cols {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+
+  .required-asterisk {
+    color: colors.$color-deep-red;
+    margin-left: 4px;
+    font-weight: bold;
+  }
+
+  &__submit {
+    @extend .auth-submit-btn;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 16px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

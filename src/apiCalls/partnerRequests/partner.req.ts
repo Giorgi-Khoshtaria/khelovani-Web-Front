@@ -6,6 +6,7 @@ export interface GetPartnersParams {
   city?: string;
   category?: string;
   minRating?: number;
+  partnerType?: string;
   page?: number;
   limit?: number;
 }

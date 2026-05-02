@@ -3,21 +3,36 @@
 @use "@/styles/inputs.scss";
 @use "@/styles/auth.scss";
 
-.registration-page {
+.partner-registration-page {
   @extend .auth-page;
 }
 
-.registration-page__form {
+.partner-registration-page__form {
   @extend .auth-card;
   @extend .auth-card--wide;
 }
 
-.registration-content {
+.partner-registration-content {
   @extend .auth-content;
 }
 
-.registration-form__inputs {
-  @extend .auth-form-grid;
+.form-section {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+/* Force every direct child (input wrapper) to take equal width */
+.form-section > * {
+  flex: 1 1 0; // This is the key - makes them equal width
+  min-width: 0; // Prevents overflow issues
+  width: 100%; // Ensures full width inside the flex item
 }
 
 .terms-container {
@@ -28,10 +43,84 @@
   @extend .auth-submit-btn;
 }
 
+.create-account-button {
+  margin-top: 14px;
+}
+
 .sign-in-container {
   @extend .auth-footer-link;
 }
 
 .back-to-home {
   @extend .auth-back-home;
+}
+
+// ── Partner type segmented control ───────────────────────────
+.partner-type-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+
+  &__label {
+    @extend .small-text;
+    color: colors.$color-text-secondary;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  &__options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 16px;
+    border: 1.5px solid colors.$color-border;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: colors.$color-white;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+
+    &:hover:not(.active) {
+      border-color: colors.$color-text-secondary;
+      background-color: colors.$color-ivory;
+    }
+
+    &.active {
+      border-color: colors.$color-text-primary;
+      background-color: colors.$color-bg-secondary;
+    }
+  }
+
+  &__name {
+    @extend .default-text;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__hint {
+    @extend .small-text;
+    color: colors.$color-text-secondary;
+    font-weight: 400;
+  }
 }

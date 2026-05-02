@@ -4,6 +4,8 @@ import { IProduct } from "@/lib/types/productTypes";
 export interface GetProductsParams {
   search?: string;
   category?: string;
+  partnerId?: string;
+  isShown?: boolean;
   page?: number;
   limit?: number;
 }

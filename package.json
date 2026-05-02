@@ -10,7 +10,10 @@
     "lint": "next lint",
     "test:e2e": "playwright test --project=e2e",
     "test:e2e:ui": "playwright test --project=e2e --ui",
-    "test:e2e:debug": "playwright test --project=e2e --debug"
+    "test:e2e:debug": "playwright test --project=e2e --debug",
+    "i18n:fetch": "node scripts/translations/fetch.mjs",
+    "i18n:audit": "node scripts/translations/audit.mjs",
+    "i18n": "node scripts/translations/audit.mjs"
   },
   "dependencies": {
     "@fortawesome/react-fontawesome": "^3.2.0",
@@ -19,7 +22,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-toastify": "^11.0.5",
-    "sass": "^1.98.0"
+    "sass": "^1.98.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

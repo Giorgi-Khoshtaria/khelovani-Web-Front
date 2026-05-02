@@ -1,21 +1,21 @@
 "use client";
 
+import { z } from "zod";
 import type { LoginTypes } from "@/lib/types/userTypes";
-import { validateEmail, validatePassword } from "./shared/fieldValidators";
+import { emailSchema, parseForm } from "./shared/zodHelpers";
 
 export type LoginFormErrors = {
   email?: string;
   password?: string;
 };
 
+export const loginSchema = z
+  .object({
+    email: emailSchema(255),
+    password: z.string().min(1, "password_required").max(100, "password_too_long"),
+  })
+  .strict();
+
 export function validateLoginForm(data: LoginTypes): LoginFormErrors {
-  const errors: LoginFormErrors = {};
-
-  const emailError = validateEmail(data.email);
-  if (emailError) errors.email = emailError;
-
-  const passwordError = validatePassword(data.password);
-  if (passwordError) errors.password = passwordError;
-
-  return errors;
+  return parseForm(loginSchema, data);
 }

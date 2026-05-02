@@ -1,0 +1,105 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+
+.contact-info-card {
+  background: colors.$color-white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  &__title {
+    @extend .large-text;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: colors.$color-text-primary;
+  }
+}
+
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  &__icon-box {
+    background-color: colors.$color-bg-secondary;
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: colors.$color-walnut;
+    flex-shrink: 0;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__label {
+    @extend .default-text;
+    font-weight: 700;
+    color: colors.$color-text-primary;
+  }
+
+  &__value {
+    @extend .small-text;
+    font-size: 0.95rem;
+    color: colors.$color-text-secondary;
+    line-height: 1.5;
+  }
+}
+
+.social-links {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid colors.$color-border;
+
+  &__title {
+    @extend .default-text;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: colors.$color-text-primary;
+  }
+
+  &__list {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__link {
+    background-color: colors.$color-bg-secondary;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: colors.$color-walnut;
+    transition: all 0.22s ease;
+
+    &:hover {
+      background-color: colors.$color-walnut;
+      color: colors.$color-white;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(colors.$color-walnut, 0.2);
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

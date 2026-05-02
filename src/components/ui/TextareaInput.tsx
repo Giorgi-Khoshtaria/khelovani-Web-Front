@@ -2,7 +2,7 @@ import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 interface TextareaInputProps {
   id: string;
-  label: string;
+  label: React.ReactNode;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;

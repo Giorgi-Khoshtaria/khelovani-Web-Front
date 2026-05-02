@@ -78,7 +78,7 @@ export default function Registration() {
         dateOfBirth: formData.dateOfBirth,
         city: formData.city,
         address: formData.address,
-        phone: formData.phone,
+        phone: formData.phone.replace(/^\+?995/, ""),
         email: formData.email,
         password: formData.password,
       };

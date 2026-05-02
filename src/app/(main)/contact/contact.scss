@@ -1,0 +1,25 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/animations.scss";
+
+.contact-page {
+  min-height: 100vh;
+  background-color: colors.$color-bg-page;
+  padding-bottom: 80px;
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: -60px auto 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+    animation: fadeUp 0.8s ease-out 0.5s both;
+
+    @media (max-width: 968px) {
+      grid-template-columns: 1fr;
+      margin-top: 20px;
+    }
+  }
+}

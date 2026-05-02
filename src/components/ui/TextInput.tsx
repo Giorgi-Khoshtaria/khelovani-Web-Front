@@ -2,7 +2,7 @@ import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 
 interface TextInputProps {
   id: string;
-  label: string;
+  label: React.ReactNode;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: "text" | "email" | "tel" | "date";

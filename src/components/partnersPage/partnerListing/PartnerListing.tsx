@@ -65,6 +65,7 @@ export default function PartnerListing({
           onCategoryChange={(v) => updateFilter("category", v)}
           onCityChange={(v) => updateFilter("city", v)}
           onRatingChange={(v) => updateFilter("minRating", v)}
+          onPartnerTypeChange={(v) => updateFilter("partnerType", v)}
           onClearAll={clearFilters}
           onClose={() => setSidebarOpen(false)}
         />
@@ -106,11 +107,7 @@ export default function PartnerListing({
           ) : partners.length > 0 ? (
             <div className="partner-listing__grid">
               {partners.map((partner, i) => (
-                <PartnerCard
-                  key={partner._id}
-                  partner={partner}
-                  index={i}
-                />
+                <PartnerCard key={partner._id} partner={partner} index={i} />
               ))}
             </div>
           ) : (

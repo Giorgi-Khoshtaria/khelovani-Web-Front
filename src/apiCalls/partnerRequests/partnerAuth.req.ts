@@ -1,8 +1,8 @@
 import api from "@/apiCalls/api";
-import { PartnerRegisterData } from "../../lib/types/partnerTypes";
+import { Partner } from "../../lib/types/partnerTypes";
 
 export const partnerRegisterRequest = async (
-  data: PartnerRegisterData,
+  data: Partner,
   lang: string,
 ) => {
   try {

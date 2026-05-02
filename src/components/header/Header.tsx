@@ -8,13 +8,10 @@ import Navigation from "./navigation-component/Navigation";
 import AuthActions from "./auth-component/AuthActions";
 import SideMenu from "./sideMenu/SideMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { MenuItem } from "@/apiCalls/menu/menu.req";
+import { useMenu } from "@/contexts/MenuContext";
 
-interface HeaderProps {
-  menuItems?: MenuItem[];
-}
-
-function Header({ menuItems = [] }: HeaderProps) {
+function Header() {
+  const { menuItems } = useMenu();
   const { lang, setLang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -48,7 +45,7 @@ function Header({ menuItems = [] }: HeaderProps) {
         </Link>
 
         <nav className="nav">
-          <Navigation menuItems={menuItems} />
+          <Navigation />
         </nav>
 
         <div className="header-actions">
@@ -102,7 +99,6 @@ function Header({ menuItems = [] }: HeaderProps) {
         closeIcon="/assets/close-icon.svg"
         isOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
-        menuItems={menuItems}
       />
     </>
   );

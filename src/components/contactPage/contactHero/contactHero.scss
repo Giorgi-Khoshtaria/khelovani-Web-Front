@@ -1,0 +1,48 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/animations.scss";
+
+.contact-hero {
+  position: relative;
+  width: 100%;
+  padding: 100px 24px 120px;
+  background-color: colors.$color-bg-page;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  animation: fadeInPage 1.2s ease-out forwards;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(circle at center, rgba(colors.$color-bg-secondary, 0.4) 0%, transparent 70%);
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  &__title {
+    @extend .huge-text;
+    font-size: clamp(32px, 5vw, 48px);
+    color: colors.$color-text-primary;
+    margin-bottom: 20px;
+    font-weight: 800;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+  }
+
+  &__description {
+    @extend .medium-text;
+    color: colors.$color-text-secondary;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+    animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+}

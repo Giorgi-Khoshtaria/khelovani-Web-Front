@@ -7,35 +7,74 @@
 // ─────────────────────────────────────────────────────────────
 
 @keyframes ph-orb-drift {
-  0%   { transform: translate(0, 0) scale(1); }
-  40%  { transform: translate(30px, -25px) scale(1.06); }
-  70%  { transform: translate(-15px, 18px) scale(0.96); }
-  100% { transform: translate(0, 0) scale(1); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(30px, -25px) scale(1.06);
+  }
+  70% {
+    transform: translate(-15px, 18px) scale(0.96);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
 }
 
 @keyframes ph-slide-left {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes ph-slide-right {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes ph-dot-pulse {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.7); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
 }
 
 @keyframes ph-line-grow {
-  from { transform: scaleY(0); opacity: 0; }
-  to   { transform: scaleY(1); opacity: 1; }
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
 }
 
 @keyframes ph-corner-draw {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -141,13 +180,26 @@
     animation: ph-line-grow 1s ease-out forwards;
     opacity: 0;
 
-    &:nth-child(1) { height: 80px;  animation-delay: 0.2s; }
-    &:nth-child(2) { height: 50px;  animation-delay: 0.4s; }
-    &:nth-child(3) { height: 30px;  animation-delay: 0.6s; }
+    &:nth-child(1) {
+      height: 80px;
+      animation-delay: 0.2s;
+    }
+    &:nth-child(2) {
+      height: 50px;
+      animation-delay: 0.4s;
+    }
+    &:nth-child(3) {
+      height: 30px;
+      animation-delay: 0.6s;
+    }
   }
 
-  &--left  { left: 40px; }
-  &--right { right: 40px; }
+  &--left {
+    left: 40px;
+  }
+  &--right {
+    right: 40px;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -236,10 +288,7 @@
 
 .ph__title {
   @extend .huge-text;
-  font-size: clamp(32px, 5vw, 58px);
-  line-height: 1.15;
-  color: colors.$color-espresso;
-  font-weight: 800;
+  color: colors.$color-text-primary;
   letter-spacing: -0.025em;
   margin-bottom: 20px;
   animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
@@ -276,7 +325,7 @@
   font-weight: 700;
   text-decoration: none;
   letter-spacing: 0.01em;
-  background-color: colors.$color-espresso;
+  background-color: colors.$color-walnut;
   color: colors.$color-white;
   box-shadow:
     0 8px 28px rgba(colors.$color-espresso, 0.24),

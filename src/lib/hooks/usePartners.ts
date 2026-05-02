@@ -24,6 +24,7 @@ export function usePartners(
     category: "",
     city: "",
     minRating: 0,
+    partnerType: "",
   });
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -58,6 +59,7 @@ export function usePartners(
             city: filters.city || undefined,
             category: filters.category || undefined,
             minRating: filters.minRating || undefined,
+            partnerType: filters.partnerType || undefined,
             page,
             limit: 12,
           },
@@ -86,6 +88,7 @@ export function usePartners(
     filters.city,
     filters.category,
     filters.minRating,
+    filters.partnerType,
     page,
   ]);
 
@@ -104,6 +107,7 @@ export function usePartners(
       category: "",
       city: "",
       minRating: 0,
+      partnerType: "",
     });
     setPage(1);
   };
@@ -112,7 +116,8 @@ export function usePartners(
     (filters.search ? 1 : 0) +
     (filters.category ? 1 : 0) +
     (filters.city ? 1 : 0) +
-    (filters.minRating ? 1 : 0);
+    (filters.minRating ? 1 : 0) +
+    (filters.partnerType ? 1 : 0);
 
   return {
     partners,

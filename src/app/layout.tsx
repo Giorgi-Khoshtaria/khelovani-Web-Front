@@ -5,11 +5,13 @@ import "./globals.scss";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CategoriesProvider } from "@/contexts/CategoriesContext";
+import { MenuProvider } from "@/contexts/MenuContext";
 import { cookies } from "next/headers";
 import { Lang } from "@/lib/types/lang.types";
 
 import { getTranslations } from "@/apiCalls/common.req";
 import { getPublicCategories, type PublicCategory } from "@/apiCalls/categoryRequests/category.req";
+import { getMenu, type MenuItem } from "@/apiCalls/menu/menu.req";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,7 @@ export default async function RootLayout({
   const initialLang = (cookieStore.get("lang")?.value as Lang) || "ge";
   let translations: Record<string, any> = {};
   let categories: PublicCategory[] = [];
+  let menuItems: MenuItem[] = [];
 
   try {
     translations = await getTranslations();
@@ -35,6 +38,12 @@ export default async function RootLayout({
     console.warn("Failed to fetch categories in layout:", error);
   }
 
+  try {
+    menuItems = await getMenu();
+  } catch (error) {
+    console.warn("Failed to fetch menu in layout:", error);
+  }
+
   return (
     <html lang={initialLang === "ge" ? "ka" : "en"}>
       <body>
@@ -43,7 +52,9 @@ export default async function RootLayout({
           initialLang={initialLang}
         >
           <CategoriesProvider initialCategories={categories}>
-            <AuthProvider>{children}</AuthProvider>
+            <MenuProvider initialMenuItems={menuItems}>
+              <AuthProvider>{children}</AuthProvider>
+            </MenuProvider>
           </CategoriesProvider>
         </LanguageProvider>
         <ToastContainer
