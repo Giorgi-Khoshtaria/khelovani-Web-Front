@@ -77,7 +77,7 @@ function classify({ key, chain, file, line }) {
   const foundIn = lookupInDb(key);
 
   if (foundIn.length === 0) {
-    missing.push({ key, calledWithChain: chain, file, line });
+    missing.push({ key, namespace: chain[0], file, line });
     return;
   }
 
@@ -85,7 +85,6 @@ function classify({ key, chain, file, line }) {
   if (resolvedBy.length === 0) {
     wrongNamespace.push({
       key,
-      calledWithChain: chain,
       actuallyIn: foundIn,
       suggestion: `Switch to a hook/namespace bound to "${foundIn[0]}"`,
       file,
@@ -227,9 +226,7 @@ if (missing.length === 0 && wrongNamespace.length === 0) {
   if (missing.length > 0) {
     console.log(`\n❌  MISSING (${missing.length}) — in code but not in DB:`);
     for (const item of missing) {
-      console.log(`    "${item.key}"`);
-      console.log(`      namespace chain: [${item.calledWithChain.join(", ")}]`);
-      console.log(`      ${item.file}:${item.line}`);
+      console.log(`    "${item.key}"  [${item.namespace}]  ${item.file}:${item.line}`);
     }
   }
 
@@ -239,7 +236,6 @@ if (missing.length === 0 && wrongNamespace.length === 0) {
     );
     for (const item of wrongNamespace) {
       console.log(`    "${item.key}"`);
-      console.log(`      called via  [${item.calledWithChain.join(", ")}]`);
       console.log(`      actually in [${item.actuallyIn.join(", ")}]`);
       console.log(`      💡 ${item.suggestion}`);
       console.log(`      ${item.file}:${item.line}`);

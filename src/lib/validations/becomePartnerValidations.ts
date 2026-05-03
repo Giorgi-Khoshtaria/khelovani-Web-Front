@@ -47,7 +47,8 @@ const organizationBranch = z.object({
     .string()
     .trim()
     .min(1, "id_code_required")
-    .regex(/^\d{9}$/, "id_code_invalid_org"),
+    .regex(/^\d+$/, "id_code_only_numbers_org")
+    .length(9, "id_code_invalid_org"),
   contactPerson: z.string().trim().min(1, "contactPerson_required").max(100, "contactPerson_max_length"),
   ...sharedFields,
 });
@@ -58,7 +59,8 @@ const individualBranch = z.object({
     .string()
     .trim()
     .min(1, "id_number_required")
-    .regex(/^\d{11}$/, "id_number_invalid"),
+    .regex(/^\d+$/, "id_number_only_numbers")
+    .length(11, "id_number_invalid"),
   ...sharedFields,
 });
 

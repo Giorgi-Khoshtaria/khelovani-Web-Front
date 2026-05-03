@@ -14,6 +14,7 @@ interface SelectInputProps {
   placeholder?: string;
   error?: string;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 export default function SelectInput({
@@ -25,6 +26,7 @@ export default function SelectInput({
   placeholder,
   error,
   fullWidth,
+  disabled,
 }: SelectInputProps) {
   const { t } = useClientTranslation(["validation"]);
 
@@ -36,6 +38,7 @@ export default function SelectInput({
         value={value}
         onChange={onChange}
         className={error ? "input-error" : ""}
+        disabled={disabled}
       >
         {placeholder && (
           <option value="" disabled>

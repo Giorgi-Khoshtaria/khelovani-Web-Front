@@ -7,6 +7,7 @@ interface PhoneInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 export default function PhoneInput({
@@ -16,6 +17,7 @@ export default function PhoneInput({
   onChange,
   error,
   fullWidth,
+  disabled,
 }: PhoneInputProps) {
   const { t } = useClientTranslation(["validation"]);
 
@@ -29,6 +31,7 @@ export default function PhoneInput({
           value={value}
           onChange={onChange}
           placeholder="+995 5XX XXX XXX"
+          disabled={disabled}
         />
       </div>
       {error && <span className="error-text">{t(error)}</span>}

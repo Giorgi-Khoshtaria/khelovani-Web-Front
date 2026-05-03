@@ -72,7 +72,7 @@ const dateOfBirthSchema = z
 
 export const registrationSchema = z
   .object({
-    idNumber: z.string().trim().min(1, "idNumber_required").regex(/^\d{11}$/, "idNumber_invalid"),
+    idNumber: z.string().trim().min(1, "idNumber_required").regex(/^\d+$/, "idNumber_only_numbers").length(11, "idNumber_invalid"),
     nameGe: optionalNameGeSchema,
     nameEn: z
       .string()

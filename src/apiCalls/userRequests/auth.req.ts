@@ -64,6 +64,17 @@ export const resetPassword = async (
   }
 };
 
+export const getUserProfile = async (token: string) => {
+  try {
+    const response = await api.get(`/api/user/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data as { nameEn?: string; nameGe?: string };
+  } catch {
+    return null;
+  }
+};
+
 export const verifyUser = async (token: string) => {
   try {
     const response = await api.get(`/api/user/verify`, {

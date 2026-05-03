@@ -1,0 +1,78 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/inputs.scss";
+
+.profile-info-section {
+  background: colors.$color-white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (max-width: 600px) {
+    padding: 20px 16px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__title {
+    @extend .medium-text;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__edit-btn,
+  &__save-btn,
+  &__cancel-btn {
+    @extend .default-text;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  &__edit-btn {
+    background: colors.$color-text-primary;
+    color: colors.$color-white;
+    &:hover { background: colors.$color-text-secondary; }
+  }
+
+  &__save-btn {
+    background: colors.$color-text-primary;
+    color: colors.$color-white;
+    &:hover { background: colors.$color-text-secondary; }
+  }
+
+  &__cancel-btn {
+    background: transparent;
+    color: colors.$color-text-secondary;
+    border: 1.5px solid colors.$color-border;
+    &:hover { border-color: colors.$color-text-secondary; }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

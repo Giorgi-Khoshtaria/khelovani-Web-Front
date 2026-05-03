@@ -10,6 +10,7 @@ interface TextInputProps {
   error?: string;
   maxLength?: number;
   fullWidth?: boolean;
+  disabled?: boolean;
 }
 
 export default function TextInput({
@@ -22,6 +23,7 @@ export default function TextInput({
   error,
   maxLength,
   fullWidth,
+  disabled,
 }: TextInputProps) {
   const { t } = useClientTranslation(["validation"]);
 
@@ -36,6 +38,7 @@ export default function TextInput({
         className={error ? "input-error" : ""}
         placeholder={placeholder}
         maxLength={maxLength}
+        disabled={disabled}
       />
       {error && <span className="error-text">{t(error)}</span>}
     </div>

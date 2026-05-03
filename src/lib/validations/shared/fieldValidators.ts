@@ -89,7 +89,8 @@ export const validateAddressEn = (addressEn: string): string | null => {
 
 export function validateIdNumber(idNumber: string): string | null {
   if (!idNumber) return "idNumber_required";
-  if (!/^\d{11}$/.test(idNumber.trim())) return "idNumber_invalid";
+  if (!/^\d+$/.test(idNumber.trim())) return "idNumber_only_numbers";
+  if (idNumber.trim().length !== 11) return "idNumber_invalid";
   return null;
 }
 

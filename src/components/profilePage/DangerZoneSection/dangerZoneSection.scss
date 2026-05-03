@@ -1,0 +1,120 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/inputs.scss";
+
+.danger-zone-section {
+  background: colors.$color-white;
+  border-radius: 12px;
+  border: 1.5px solid colors.$color-border;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    padding: 20px 16px;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title {
+    @extend .medium-text;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__warning {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+  }
+
+  &__delete-btn {
+    @extend .default-text;
+    align-self: flex-start;
+    padding: 10px 22px;
+    background: transparent;
+    color: colors.$color-text-primary;
+    border: 1.5px solid colors.$color-border;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: colors.$color-text-primary;
+      color: colors.$color-white;
+    }
+  }
+
+  // Modal
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+
+  &__modal {
+    background: colors.$color-white;
+    border-radius: 14px;
+    padding: 32px;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  }
+
+  &__modal-title {
+    @extend .medium-text;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__modal-text {
+    @extend .default-text;
+    color: colors.$color-text-secondary;
+    margin-bottom: 4px;
+  }
+
+  &__modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    justify-content: flex-end;
+  }
+
+  &__modal-cancel,
+  &__modal-confirm {
+    @extend .default-text;
+    padding: 9px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  &__modal-cancel {
+    background: transparent;
+    color: colors.$color-text-secondary;
+    border: 1.5px solid colors.$color-border;
+    &:hover { border-color: colors.$color-text-secondary; }
+  }
+
+  &__modal-confirm {
+    background: colors.$color-text-primary;
+    color: colors.$color-white;
+    &:hover { background: colors.$color-text-secondary; }
+  }
+}

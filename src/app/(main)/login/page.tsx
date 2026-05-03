@@ -66,13 +66,13 @@ function Login() {
       const response = await loginUser(data, lang);
 
       if (response.token) {
-        login(response.token);
+        login(response.token, response.user?.nameEn, response.user?.nameGe);
       }
 
       toast.success(
         tAlerts("login_success") || "წარმატებით შეხვედით სისტემაში",
       );
-      setTimeout(() => router.push("/"), 2000);
+      setTimeout(() => router.push("/"), 1000);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
