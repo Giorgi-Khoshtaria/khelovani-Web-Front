@@ -5,9 +5,9 @@ import Link from "next/link";
 import ProductCard from "../productCard/ProductCard";
 import "./productListing.scss";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
-import { IProduct } from "@/lib/types/productTypes";
+import { IProduct, ProductCategory } from "@/lib/types/productTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ProductSearch from "../ProductSearch/ProductSearch";
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
 import ProductPagination from "../ProductPagination/ProductPagination";
@@ -15,53 +15,76 @@ import ProductPagination from "../ProductPagination/ProductPagination";
 interface ProductListingProps {
   initialProducts: IProduct[];
   initialTotalPages: number;
+  initialTotalCount?: number;
 }
+
+const VALID_CATEGORIES = new Set<string>(Object.values(ProductCategory));
+
+const sanitizeCategory = (raw: string | null): string => {
+  if (!raw || raw === "all") return "all";
+  return VALID_CATEGORIES.has(raw) ? raw : "all";
+};
 
 export default function ProductListing({
   initialProducts,
   initialTotalPages,
+  initialTotalCount = 0,
 }: ProductListingProps) {
   const { t: tCommon } = useClientTranslation("common");
   const { t: tPages } = useClientTranslation("pages");
 
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get("category") ?? "all";
+  const initialCategory = sanitizeCategory(searchParams.get("category"));
+  const initialSearch = searchParams.get("search") ?? "";
+  const initialPageParam = Number(searchParams.get("page")) || 1;
 
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
   const [loading, setLoading] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>(categoryParam);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialPageParam);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
+  const [totalCount, setTotalCount] = useState(initialTotalCount);
   const isFirstRender = useRef(true);
 
-  // Sync with searchParams
+  // Keep state in sync with URL changes (back/forward nav, deep links)
   useEffect(() => {
-    if (categoryParam) {
-      setActiveCategory(categoryParam);
-    } else {
-      setActiveCategory("all");
-    }
-  }, [categoryParam]);
+    setActiveCategory(sanitizeCategory(searchParams.get("category")));
+  }, [searchParams]);
 
-  // Debouncing search input
+  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchQuery);
-      setPage(1); // Reset page on new search
+      setPage(1);
     }, 500);
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Fetching data
+  // Sync filters to URL (replace, not push, to avoid history spam)
+  useEffect(() => {
+    if (isFirstRender.current) return;
+    const params = new URLSearchParams();
+    if (activeCategory !== "all") params.set("category", activeCategory);
+    if (debouncedSearch) params.set("search", debouncedSearch);
+    if (page > 1) params.set("page", String(page));
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [activeCategory, debouncedSearch, page, pathname, router]);
+
+  // Fetch products with abort-on-change to prevent stale results
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
+
+    const controller = new AbortController();
 
     const fetchProducts = async () => {
       try {
@@ -73,40 +96,54 @@ export default function ProductListing({
           ...(activeCategory !== "all" && { category: activeCategory }),
         };
 
-        const response = await getProducts(params);
+        const response = await getProducts(params, controller.signal);
+        if (controller.signal.aborted) return;
         setProducts(response.data);
         setTotalPages(response.meta?.totalPages ?? 1);
+
+        // Only refresh global total when nothing is filtered, otherwise keep
+        // the previous (unfiltered) total so the "X pieces" label stays stable.
+        if (activeCategory === "all" && !debouncedSearch) {
+          setTotalCount(response.meta?.totalCount ?? 0);
+        }
       } catch (error) {
+        if (controller.signal.aborted) return;
         console.error("Failed to fetch products:", error);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     };
 
     fetchProducts();
+    return () => controller.abort();
   }, [debouncedSearch, activeCategory, page]);
 
   const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
+    setActiveCategory(sanitizeCategory(cat));
     setPage(1);
   };
+
+  const piecesLabel = tPages("home.stats.pieces") || "pieces";
 
   return (
     <section className="product-listing animate-in">
       <div className="product-listing__container">
-        {/* Toolbar: Search, Filter & Favourites */}
-        <div className="product-listing__toolbar">
-          <div className="product-listing__filters">
-            <ProductSearch value={searchQuery} onChange={setSearchQuery} />
 
-            <CategoryFilter
-              activeCategory={activeCategory}
-              onCategoryChange={handleCategoryChange}
-            />
-          </div>
+        {/* Top row: search + count */}
+        <div className="product-listing__topbar">
+          <ProductSearch value={searchQuery} onChange={setSearchQuery} />
+          <span className="product-listing__count">
+            <strong>{totalCount}</strong> {piecesLabel}
+          </span>
         </div>
 
-        {/* Dynamic Product Grid */}
+        {/* Category chips row */}
+        <CategoryFilter
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
+        />
+
+        {/* Grid */}
         <div className="product-listing__grid">
           {loading ? (
             <div className="product-listing__empty">
@@ -114,7 +151,7 @@ export default function ProductListing({
             </div>
           ) : products.length > 0 ? (
             products.map((product) => (
-              <Link key={product._id} href={`/products/${product._id}`} style={{ textDecoration: "none" }}>
+              <Link key={product._id} href={`/products/${product._id}`}>
                 <ProductCard product={product} />
               </Link>
             ))
@@ -125,7 +162,6 @@ export default function ProductListing({
           )}
         </div>
 
-        {/* Pagination component */}
         {!loading && (
           <ProductPagination
             page={page}

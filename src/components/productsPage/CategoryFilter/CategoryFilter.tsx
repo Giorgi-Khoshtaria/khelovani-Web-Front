@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
+import Image from "next/image";
 import "./categoryFilter.scss";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCategories } from "@/contexts/CategoriesContext";
+import { getCategoryPlaceholder } from "@/lib/types/productTypes";
 
 interface CategoryFilterProps {
   activeCategory: string;
@@ -14,77 +16,70 @@ export default function CategoryFilter({
   activeCategory,
   onCategoryChange,
 }: CategoryFilterProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { lang } = useLanguage();
   const { categories, getLabel } = useCategories();
   const currentLang = lang.toLowerCase() as "ge" | "en";
 
-  const allLabel = currentLang === "ge" ? "ყველა კატეგორია" : "All Categories";
-  const activeLabel = activeCategory === "all" ? allLabel : getLabel(activeCategory, currentLang);
+  const allLabel = currentLang === "ge" ? "ყველა კატეგორია" : "All categories";
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
-
-  const handleSelect = (cat: string) => {
-    onCategoryChange(cat);
-    setIsOpen(false);
+  const scroll = (dir: "prev" | "next") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === "next" ? 280 : -280, behavior: "smooth" });
   };
 
   return (
-    <div className="category-filter" ref={dropdownRef}>
+    <div className="cat-chips">
       <button
-        className={`category-filter__button ${isOpen ? "category-filter__button--open" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
+        className="cat-chips__nav cat-chips__nav--prev"
+        onClick={() => scroll("prev")}
+        aria-label="Previous"
       >
-        <span className="category-filter__label">{activeLabel}</span>
-        <svg
-          className="category-filter__chevron"
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M6 9l6 6 6-6" />
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 18l-6-6 6-6" />
         </svg>
       </button>
 
-      {isOpen && (
-        <ul className="category-filter__menu" role="listbox">
-          <li
-            className={`category-filter__item ${activeCategory === "all" ? "category-filter__item--active" : ""}`}
-            onClick={() => handleSelect("all")}
-            role="option"
-            aria-selected={activeCategory === "all"}
+      <div className="cat-chips__scroll" ref={scrollRef}>
+        {/* All */}
+        <button
+          className={`cat-chip ${activeCategory === "all" ? "cat-chip--active" : ""}`}
+          onClick={() => onCategoryChange("all")}
+        >
+          <span className="cat-chip__label">{allLabel}</span>
+        </button>
+
+        {/* Per-category chips */}
+        {categories.map((cat) => (
+          <button
+            key={cat.slug}
+            className={`cat-chip ${activeCategory === cat.slug ? "cat-chip--active" : ""}`}
+            onClick={() => onCategoryChange(cat.slug)}
           >
-            {allLabel}
-          </li>
-          {categories.map((cat) => (
-            <li
-              key={cat.slug}
-              className={`category-filter__item ${activeCategory === cat.slug ? "category-filter__item--active" : ""}`}
-              onClick={() => handleSelect(cat.slug)}
-              role="option"
-              aria-selected={activeCategory === cat.slug}
-            >
-              {getLabel(cat.slug, currentLang)}
-            </li>
-          ))}
-        </ul>
-      )}
+            <span className="cat-chip__avatar">
+              <Image
+                src={getCategoryPlaceholder(cat.slug)}
+                alt=""
+                fill
+                sizes="36px"
+                style={{ objectFit: "cover" }}
+              />
+            </span>
+            <span className="cat-chip__label">{getLabel(cat.slug, currentLang)}</span>
+          </button>
+        ))}
+      </div>
+
+      <button
+        className="cat-chips__nav cat-chips__nav--next"
+        onClick={() => scroll("next")}
+        aria-label="Next"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
     </div>
   );
 }

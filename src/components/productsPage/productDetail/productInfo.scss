@@ -1,0 +1,311 @@
+@use "sass:color";
+@use "@/styles/colors" as *;
+@use "@/styles/defaultTexts" as *;
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__category {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+  }
+
+  &__sku {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+  }
+
+  &__title {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    color: $color-text-primary;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
+  }
+
+  // ── Owner pill ──────────────────────────────────────────
+  &__owner {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px 10px 10px;
+    border-radius: 999px;
+    background: $color-white;
+    border: 1px solid $color-border;
+    text-decoration: none;
+    color: inherit;
+    align-self: flex-start;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+      border-color: $color-walnut;
+      transform: translateY(-1px);
+    }
+  }
+
+  &__owner-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: $color-espresso;
+    color: $color-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  &__owner-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+
+  &__owner-by {
+    font-size: 14px;
+    font-weight: 600;
+    color: $color-text-primary;
+  }
+
+  // ── Price ────────────────────────────────────────────────
+  &__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  &__price {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 36px;
+    font-weight: 600;
+    color: $color-text-primary;
+    letter-spacing: -0.5px;
+  }
+
+  &__price-old {
+    font-size: 18px;
+    color: $color-text-secondary;
+    text-decoration: line-through;
+  }
+
+  &__save-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: $color-deep-red;
+    color: $color-white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  // ── Stock ────────────────────────────────────────────────
+  &__stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+
+    strong {
+      font-weight: 600;
+    }
+
+    &--in {
+      color: #16a34a;
+    }
+
+    &--out {
+      color: #dc2626;
+    }
+  }
+
+  &__stock-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.18);
+
+    .product-info__stock--out & {
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.18);
+    }
+  }
+
+  &__stock-low {
+    color: $color-text-secondary;
+    font-weight: 400;
+  }
+
+  // ── Short description ──────────────────────────────────
+  &__short-desc {
+    @extend .default-text;
+    color: $color-text-secondary;
+    line-height: 1.7;
+    margin: 4px 0 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  // ── Action row ──────────────────────────────────────────
+  &__actions {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  &__qty {
+    display: inline-flex;
+    align-items: center;
+    background: $color-white;
+    border: 1px solid $color-border;
+    border-radius: 14px;
+    padding: 4px;
+  }
+
+  &__qty-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: $color-text-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: $color-bg-secondary;
+    }
+
+    &:disabled {
+      color: $color-border;
+      cursor: not-allowed;
+    }
+  }
+
+  &__qty-value {
+    min-width: 36px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: $color-text-primary;
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    background: $color-espresso;
+    color: $color-white;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: color.scale($color-espresso, $lightness: 12%);
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: $color-border;
+      cursor: not-allowed;
+      color: $color-text-secondary;
+    }
+  }
+
+  // ── Save / Share (ghost) row ─────────────────────────
+  &__secondary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  &__ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: transparent;
+    border: 1px solid $color-border;
+    color: $color-text-primary;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.18s ease, background-color 0.18s ease,
+      transform 0.15s ease;
+
+    &:hover {
+      border-color: $color-walnut;
+      background: rgba($color-walnut, 0.04);
+      transform: translateY(-1px);
+    }
+  }
+
+  // ── Buy now (outlined, full width) ───────────────────
+  &__buy-now {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 14px;
+    background: $color-white;
+    color: $color-text-primary;
+    border: 1px solid $color-border;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease,
+      transform 0.15s ease;
+
+    &:hover:not(:disabled) {
+      border-color: $color-espresso;
+      background: rgba($color-espresso, 0.03);
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background: $color-bg-secondary;
+      color: $color-text-secondary;
+      cursor: not-allowed;
+    }
+  }
+}

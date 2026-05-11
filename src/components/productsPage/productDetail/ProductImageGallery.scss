@@ -1,0 +1,157 @@
+@use "@/styles/colors" as *;
+
+.pg-gallery {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 14px;
+  width: 100%;
+
+  &--single {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  // ── Side thumbnail strip ──────────────────────────────────
+  &__thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      order: 2;
+    }
+  }
+
+  &__thumb {
+    position: relative;
+    flex: 0 0 88px;
+    width: 88px;
+    height: 88px;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: $color-bg-secondary;
+    padding: 0;
+    transition: all 0.2s ease;
+
+    &--active {
+      border-color: $color-espresso;
+      box-shadow: 0 4px 12px rgba($color-espresso, 0.18);
+    }
+
+    &:hover:not(&--active) {
+      border-color: $color-sand;
+    }
+  }
+
+  // ── Main stage ────────────────────────────────────────────
+  &__stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 560px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: $color-bg-secondary;
+    cursor: zoom-in;
+
+    @media (max-width: 1024px) {
+      aspect-ratio: 4 / 5;
+      max-height: 460px;
+    }
+
+    @media (max-width: 768px) {
+      aspect-ratio: 4 / 5;
+      max-height: none;
+      order: 1;
+    }
+  }
+
+  &__img {
+    transition: opacity 0.2s ease;
+  }
+
+  // ── Hover zoom overlay (desktop) ──────────────────────────
+  &__zoom {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 3;
+
+    &--active {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__zoom-hint {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: $color-espresso;
+    font-size: 12px;
+    font-weight: 500;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  &__counter {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background: rgba($color-espresso, 0.78);
+    color: $color-white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  &__placeholder-badge {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background: rgba(0, 0, 0, 0.55);
+    color: $color-white;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+    z-index: 4;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+  }
+}

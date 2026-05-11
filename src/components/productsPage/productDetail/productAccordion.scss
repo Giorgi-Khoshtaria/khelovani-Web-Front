@@ -1,0 +1,54 @@
+@use "@/styles/colors" as *;
+
+.pd-accordion {
+  border-bottom: 1px solid $color-border;
+
+  &__head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  &__title {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $color-espresso;
+    color: $color-white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &__body {
+    padding: 0 4px 28px;
+    animation: accordionFade 0.25s ease both;
+  }
+}
+
+@keyframes accordionFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -36,7 +36,7 @@ function Login() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
+  const { startCooldown, isCooldownActive, cooldownSeconds, isButtonDisabled } =
     useRateLimitCooldown(120);
 
   const {
@@ -133,7 +133,7 @@ function Login() {
           <div className="sign-in-button">
             <button type="submit" disabled={isLoading || isButtonDisabled}>
               {isCooldownActive
-                ? cooldownText
+                ? `${cooldownSeconds} ${tCommon("rate_limit_retry_in")}`
                 : isLoading
                   ? tCommon("loading")
                   : tNav("login")}

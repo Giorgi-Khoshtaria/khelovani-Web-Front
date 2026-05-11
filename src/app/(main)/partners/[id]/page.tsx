@@ -1,13 +1,17 @@
-// app/partners/[id]/page.tsx
+import { cache } from "react";
+import { Metadata } from "next";
+import { cookies } from "next/headers";
 import PartnerProfile from "@/components/partnersPage/partnerProfile/PartnerProfile";
 import { PartnerProducts } from "@/components/partnersPage/partnerProfile/PartnerProducts";
 import { getPartnerById } from "@/apiCalls/partnerRequests/partner.req";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
-import { Metadata } from "next";
-import { cookies } from "next/headers";
+import { IProduct } from "@/lib/types/productTypes";
 import { Lang } from "@/lib/types/lang.types";
 
-export const dynamic = "force-dynamic";
+// Per-request dedupe: generateMetadata + page render share one fetch.
+const fetchPartner = cache((id: string) =>
+  getPartnerById(id).catch(() => null),
+);
 
 export async function generateMetadata({
   params,
@@ -15,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const partner = await getPartnerById(id).catch(() => null);
+  const partner = await fetchPartner(id);
   const cookieStore = await cookies();
   const lang = (cookieStore.get("lang")?.value as Lang) || "ge";
 
@@ -48,38 +52,17 @@ export default async function PartnerProfilePage({
   const cookieStore = await cookies();
   const lang = (cookieStore.get("lang")?.value as Lang) || "ge";
 
-  // Fetch partner with better error handling
-  const partnerData = await getPartnerById(id).catch((err) => {
-    console.error("Failed to fetch partner:", err);
-    return null;
-  });
+  const partnerData = await fetchPartner(id);
 
-  console.log("Partner ID:", id);
-  console.log("Partner data:", partnerData);
-
-  // Only fetch products if partner exists
-  let products: any[] = [];
+  let products: IProduct[] = [];
   if (partnerData) {
-    products = await getProducts({
-      partnerId: id,
-      limit: 4,
-      isShown: true, // ← add this if you have the filter
-    })
+    products = await getProducts({ partnerId: id, limit: 4, isShown: true })
       .then((res) => res.data || [])
-      .catch((err) => {
-        console.error("Failed to fetch products for owner", id, err);
-        return [];
-      });
+      .catch(() => []);
   }
 
-  console.log("Products fetched:", products.length);
-  console.log(
-    "Product owners:",
-    products.map((p) => p.owner),
-  );
-
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "#f9f8f6" }}>
+    <main>
       <PartnerProfile id={id} initialData={partnerData} serverLang={lang} />
       <PartnerProducts products={products} partnerId={id} />
     </main>

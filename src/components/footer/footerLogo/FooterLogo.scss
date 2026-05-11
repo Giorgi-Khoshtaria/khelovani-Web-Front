@@ -1,20 +1,42 @@
 .khelovani-footer {
-  &__logo {
-    margin-bottom: 24px;
-    
-    img {
-      filter: brightness(0) invert(1) opacity(0.8);
-      height: auto;
-    }
+  &__column--logo {
+    max-width: 360px;
   }
 
-  &__text {
-    font-size: 14px;
-    line-height: 1.6;
-    max-width: 320px;
-    
-    @media (max-width: 640px) {
-      margin: 0 auto;
+  &__logo-link {
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+
+  &__logo-mark {
+    height: auto;
+    filter: brightness(0) invert(1) opacity(0.9);
+  }
+
+  &__brand {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+  }
+
+  &__tagline {
+    color: #9a9a96;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 360px;
+  }
+
+  @media (max-width: 540px) {
+    &__brand {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    &__tagline {
+      font-size: 14px;
     }
   }
 }

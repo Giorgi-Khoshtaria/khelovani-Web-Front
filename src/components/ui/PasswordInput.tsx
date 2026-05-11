@@ -41,7 +41,8 @@ export default function PasswordInput({
           type="button"
           className="toggle-password"
           onClick={() => setShow((p) => !p)}
-          aria-label="პაროლის ჩვენება"
+          aria-label={t(show ? "hide_password" : "show_password")}
+          aria-pressed={show}
         >
           {show ? <EyeOff /> : <EyeOpen />}
         </button>

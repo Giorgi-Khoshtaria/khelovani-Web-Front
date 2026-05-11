@@ -23,7 +23,8 @@ export const useRateLimitCooldown = (durationSeconds: number = 120) => {
   return {
     startCooldown,
     isCooldownActive: cooldown > 0,
-    cooldownText: cooldown > 0 ? `${cooldown} წამში სცადე თავიდან...` : "",
+    /** Seconds remaining. 0 when no cooldown is active. */
+    cooldownSeconds: cooldown,
     isButtonDisabled: cooldown > 0,
   };
 };

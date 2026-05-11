@@ -1,14 +1,13 @@
+import { memo } from "react";
 import Link from "next/link";
 import { PartnerCardProps } from "@/lib/types/partnerTypes";
 import { Icons } from "../constants";
 import { SocialLinks } from "./SocialLinks";
 import "./partnerCard.scss";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-import { useCategories } from "@/contexts/CategoriesContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export default function PartnerCard({ partner, index = 0 }: PartnerCardProps) {
-  const { getLabel } = useCategories();
+function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
   const { lang: ctxLang } = useLanguage();
   const activeLang = (ctxLang || "ge") as "ge" | "en";
   const name = (activeLang === "ge" ? partner.companyNameGe : partner.companyNameEn) ?? partner.companyNameGe ?? "";
@@ -32,15 +31,6 @@ export default function PartnerCard({ partner, index = 0 }: PartnerCardProps) {
         ) : (
           <div className="partner-card__placeholder" aria-hidden="true">
             {name.charAt(0).toUpperCase()}
-          </div>
-        )}
-        {(partner.categories ?? []).length > 0 && (
-          <div className="partner-card__categories">
-            {(partner.categories ?? []).map((slug) => (
-              <span key={slug} className="partner-card__category">
-                {getLabel(slug, activeLang)}
-              </span>
-            ))}
           </div>
         )}
       </div>
@@ -100,3 +90,6 @@ export default function PartnerCard({ partner, index = 0 }: PartnerCardProps) {
     </article>
   );
 }
+
+const PartnerCard = memo(PartnerCardImpl);
+export default PartnerCard;

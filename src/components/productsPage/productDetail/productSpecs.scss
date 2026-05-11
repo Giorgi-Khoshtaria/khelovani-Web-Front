@@ -1,0 +1,51 @@
+@use "@/styles/colors" as *;
+@use "@/styles/defaultTexts" as *;
+
+.product-specs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0;
+
+  &__row {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) 2fr;
+    gap: 24px;
+    padding: 16px 4px;
+    border-top: 1px solid $color-border;
+    align-items: center;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  &__icon {
+    display: inline-flex;
+    color: $color-walnut;
+  }
+
+  &__value {
+    @extend .default-text;
+    color: $color-text-primary;
+    margin: 0;
+    font-weight: 500;
+  }
+}

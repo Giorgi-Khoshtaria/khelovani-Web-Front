@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
@@ -9,26 +8,25 @@ import "./FooterLogo.scss";
 export default function FooterLogo() {
   const { t } = useClientTranslation("pages");
 
-  const logoDesc = t("footer.logo_description");
-  const finalLogoDesc =
-    logoDesc === "footer.logo_description"
-      ? "Celebrating Georgian artisan heritage through exceptional craftsmanship."
-      : logoDesc;
+  const tagline = t("footer.logo_description");
+  const finalTagline =
+    tagline === "footer.logo_description"
+      ? "A marketplace for independent Georgian craft. Connecting makers with people who care where their things come from."
+      : tagline;
 
   return (
     <div className="khelovani-footer__column khelovani-footer__column--logo">
-      <div className="khelovani-footer__logo">
-        <Link href="/">
-          <Image
-            src="/assets/logo.png"
-            alt="Khelovani Logo"
-            width={150}
-            height={50}
-            priority
-          />
-        </Link>
-      </div>
-      <p className="khelovani-footer__text">{finalLogoDesc}</p>
+      <Link href="/" className="khelovani-footer__logo-link" aria-label="Khelovani">
+        <Image
+          src="/assets/logo.png"
+          alt="Khelovani"
+          width={150}
+          height={50}
+          className="khelovani-footer__logo-mark"
+          priority
+        />
+      </Link>
+      <p className="khelovani-footer__tagline">{finalTagline}</p>
     </div>
   );
 }

@@ -1,133 +1,109 @@
-@use "sass:color";
 @use "@/styles/colors" as *;
-@use "@/styles/defaultTexts" as *;
 
-.category-filter {
+.cat-chips {
   position: relative;
-  width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 
-  &__button {
-    width: 100%;
-    height: 48px;
-    padding: 0 16px;
+  &__nav {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba($color-espresso, 0.18);
+    background-color: $color-white;
+    color: $color-text-primary;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: $color-white;
-    border: 1px solid rgba($color-espresso, 0.1);
-    border-radius: 12px;
-    color: $color-text-primary;
+    justify-content: center;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba($color-espresso, 0.02);
+    transition: all 0.18s ease;
 
     &:hover {
-      background-color: color.scale($color-white, $lightness: -2%);
-      border-color: rgba($color-espresso, 0.2);
+      background-color: $color-espresso;
+      color: $color-ivory;
+      border-color: $color-espresso;
     }
 
-    &--open {
-      border-color: rgba($color-espresso, 0.3);
-      box-shadow: 0 4px 12px rgba($color-espresso, 0.08);
-      transform: translateY(-1px);
+    @media (max-width: 768px) {
+      display: none;
     }
+  }
+
+  &__scroll {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.cat-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px 6px 6px;
+  height: 48px;
+  border: 1px solid rgba($color-espresso, 0.12);
+  background-color: $color-white;
+  border-radius: 999px;
+  cursor: pointer;
+  color: $color-text-primary;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+
+  &:hover {
+    border-color: rgba($color-espresso, 0.35);
+  }
+
+  &--active {
+    background-color: $color-espresso;
+    border-color: $color-espresso;
+    color: $color-ivory;
+  }
+
+  // chips without avatar (e.g. "All categories") get extra left padding
+  &:not(:has(.cat-chip__avatar)) {
+    padding-left: 20px;
+  }
+
+  &__avatar {
+    position: relative;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: $color-bg-secondary;
   }
 
   &__label {
     font-size: 14px;
+    line-height: 1;
+  }
+
+  &__count {
+    font-size: 12px;
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 8px;
+    opacity: 0.5;
+    margin-left: 2px;
   }
 
-  &__chevron {
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-    color: rgba($color-espresso, 0.5);
-  }
-
-  &__button--open &__chevron {
-    transform: rotate(180deg);
-    color: $color-espresso;
-  }
-
-  &__menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    width: 100%;
-    max-height: 300px;
-    overflow-y: auto;
-    background-color: $color-white;
-    border: 1px solid rgba($color-espresso, 0.1);
-    border-radius: 12px;
-    padding: 8px;
-    z-index: 100;
-    list-style: none;
-    box-shadow: 0 12px 32px rgba($color-espresso, 0.12);
-    animation: slideDown 0.2s ease-out;
-
-    /* Custom Scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: rgba($color-espresso, 0.2) transparent;
-
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: rgba($color-espresso, 0.2);
-      border-radius: 4px;
-    }
-  }
-
-  &__item {
-    padding: 10px 12px;
-    border-radius: 8px;
-    color: $color-text-secondary;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background-color: rgba($color-espresso, 0.04);
-      color: $color-text-primary;
-    }
-
-    &--active {
-      background-color: rgba($color-espresso, 0.08);
-      color: $color-espresso;
-      font-weight: 600;
-    }
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Tablet/Mobile behavior
-@media (max-width: 1024px) {
-  .category-filter {
-    width: 220px;
-  }
-}
-
-@media (max-width: 768px) {
-  .category-filter {
-    width: 100%;
-    
-    &__button {
-      height: 44px;
-    }
+  &--active &__count {
+    opacity: 0.75;
   }
 }

@@ -19,14 +19,16 @@ export default function RelatedProducts({
 }: RelatedProductsProps) {
   const { t: tPages } = useClientTranslation("pages");
   const [related, setRelated] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRelated = async () => {
       try {
         setLoading(true);
-        const res = await getProducts({ category, limit: 5 });
-        const filtered = res.data.filter((p) => p._id !== currentProductId).slice(0, 4);
+        const res = await getProducts({ category, page: 1, limit: 8 });
+        const filtered = (res.data ?? [])
+          .filter((p) => p._id !== currentProductId)
+          .slice(0, 4);
         setRelated(filtered);
       } catch (error) {
         console.error("Failed to fetch related products:", error);
@@ -35,9 +37,7 @@ export default function RelatedProducts({
       }
     };
 
-    if (category) {
-      fetchRelated();
-    }
+    fetchRelated();
   }, [currentProductId, category]);
 
   if (!loading && related.length === 0) return null;
@@ -52,11 +52,7 @@ export default function RelatedProducts({
           <p>Loading...</p>
         ) : (
           related.map((p) => (
-            <Link
-              key={p._id}
-              href={`/products/${p._id}`}
-              style={{ textDecoration: "none" }}
-            >
+            <Link key={p._id} href={`/products/${p._id}`}>
               <ProductCard product={p} />
             </Link>
           ))

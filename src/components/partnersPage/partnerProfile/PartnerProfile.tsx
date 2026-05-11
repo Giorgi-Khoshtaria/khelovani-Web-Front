@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { getPartnerById } from "@/apiCalls/partnerRequests/partner.req";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
-import { useCategories } from "@/contexts/CategoriesContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Partner } from "@/lib/types/partnerTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
@@ -95,10 +94,8 @@ export default function PartnerProfile({
 }) {
   const { lang: clientLang } = useLanguage();
   const lang = serverLang || clientLang;
-  const { getLabel } = useCategories();
   const { t: tPages } = useClientTranslation("pages");
   const { t: tCommon } = useClientTranslation("common");
-  const { t: tInputs } = useClientTranslation("inputs");
 
   const [partner, setPartner] = useState<Partner | null>(initialData);
   const [productCount, setProductCount] = useState<number>(
@@ -162,7 +159,6 @@ export default function PartnerProfile({
 
   const hasSocials =
     partner.website || partner.facebook || partner.instagram || partner.tiktok;
-  const hasContact = partner.email || (partner as any).phone; // Using any as backup for phone if not in main Partner type
 
   return (
     <div className="partner-profile">
@@ -220,12 +216,12 @@ export default function PartnerProfile({
                   </div>
                 )}
 
-                {(partner as any).phone && (
+                {partner.phone && (
                   <div className="partner-profile__meta-item">
                     <span className="meta-icon">{Icon.phone}</span>
                     <span className="meta-text">
-                      <a href={`tel:${(partner as any).phone}`}>
-                        {(partner as any).phone}
+                      <a href={`tel:${partner.phone}`}>
+                        {partner.phone}
                       </a>
                     </span>
                   </div>
@@ -254,21 +250,6 @@ export default function PartnerProfile({
                   )}
                 </div>
               </section>
-
-              {partner.categories && partner.categories.length > 0 && (
-                <section className="partner-profile__section">
-                  <h2 className="partner-profile__section-title">
-                    {tInputs("label.category")}
-                  </h2>
-                  <div className="partner-profile__specialties">
-                    {partner.categories.map((cat, idx) => (
-                      <span key={idx} className="specialty-tag">
-                        {getLabel(cat, lang as "ge" | "en")}
-                      </span>
-                    ))}
-                  </div>
-                </section>
-              )}
 
               {hasSocials && (
                 <section className="partner-profile__section">

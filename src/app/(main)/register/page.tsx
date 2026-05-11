@@ -54,7 +54,7 @@ export default function Registration() {
   const { formData, setFormData, errors, setErrors, handleChange } =
     useFormHandler(INITIAL_FORM);
 
-  const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
+  const { startCooldown, isCooldownActive, cooldownSeconds, isButtonDisabled } =
     useRateLimitCooldown(120);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -248,7 +248,7 @@ export default function Registration() {
               className="create-account-btn"
             >
               {isCooldownActive
-                ? cooldownText
+                ? `${cooldownSeconds} ${tCommon("rate_limit_retry_in")}`
                 : isLoading
                   ? tCommon("loading")
                   : tNav("register")}

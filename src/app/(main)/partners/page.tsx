@@ -3,7 +3,7 @@ import PartnersHero from "@/components/partnersPage/partnersHero/PartnersHero";
 import PartnerListing from "@/components/partnersPage/partnerListing/PartnerListing";
 import { getPartners } from "@/apiCalls/partnerRequests/partner.req";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function PartnersPage() {
   const initialData = await getPartners({ page: 1, limit: 12 }).catch(() => ({

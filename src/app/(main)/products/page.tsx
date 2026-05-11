@@ -1,28 +1,35 @@
 import ProductsHero from "@/components/productsPage/productsHero/ProductsHero";
 import ProductListing from "@/components/productsPage/productListing/ProductListing";
-import { getProducts } from "@/apiCalls/productRequests/product.req";
-import { IProduct } from "@/lib/types/productTypes";
+import {
+  getProducts,
+  type GetProductsResponse,
+} from "@/apiCalls/productRequests/product.req";
 import { Suspense } from "react";
 
-export default async function ProductsPage() {
-  let initialProducts: IProduct[] = [];
-  let initialTotalPages = 1;
+export const revalidate = 300;
 
-  try {
-    const data = await getProducts({ page: 1, limit: 12 });
-    initialProducts = data.data || [];
-    initialTotalPages = data.meta?.totalPages || 1;
-  } catch (error) {
-    console.error("Failed to fetch initial products:", error);
-  }
+const EMPTY: GetProductsResponse = {
+  data: [],
+  meta: { totalCount: 0, totalPages: 1, currentPage: 1 },
+};
+
+export default async function ProductsPage() {
+  const data = await getProducts({ page: 1, limit: 12 }).catch(
+    (): GetProductsResponse => EMPTY,
+  );
+
+  const initialProducts = data.data ?? [];
+  const initialTotalPages = data.meta?.totalPages ?? 1;
+  const initialTotalCount = data.meta?.totalCount ?? 0;
 
   return (
     <main>
       <ProductsHero />
       <Suspense fallback={<div>Loading...</div>}>
-        <ProductListing 
-          initialProducts={initialProducts} 
-          initialTotalPages={initialTotalPages} 
+        <ProductListing
+          initialProducts={initialProducts}
+          initialTotalPages={initialTotalPages}
+          initialTotalCount={initialTotalCount}
         />
       </Suspense>
     </main>

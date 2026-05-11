@@ -4,7 +4,6 @@ import { PaginatedPartnerResponse, Partner } from "@/lib/types/partnerTypes";
 export interface GetPartnersParams {
   search?: string;
   city?: string;
-  category?: string;
   minRating?: number;
   partnerType?: string;
   page?: number;

@@ -10,7 +10,7 @@ export default function FooterSocials() {
 
   return (
     <div className="khelovani-footer__column">
-      <h4 className="khelovani-footer__title">{title}</h4>
+      {/* <h4 className="khelovani-footer__title">{title}</h4> */}
       <div className="khelovani-footer__socials">
         <a
           href="https://facebook.com"

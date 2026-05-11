@@ -13,7 +13,7 @@ interface AuthActionsProps {
 
 function AuthActions({ mobile }: AuthActionsProps) {
   const { t } = useClientTranslation("navigation");
-  const { isAuthenticated, isHydrated, userName, profileImage, logout } = useAuth();
+  const { isAuthenticated, isHydrated, profileImage, logout } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -32,19 +32,18 @@ function AuthActions({ mobile }: AuthActionsProps) {
   if (isAuthenticated) {
     return (
       <div className={`auth-action ${mobile ? "mobile" : ""}`} ref={ref}>
-        <button className="user-trigger" onClick={() => setOpen((o) => !o)}>
+        <button
+          className="user-trigger"
+          onClick={() => setOpen((o) => !o)}
+          aria-label="User menu"
+          aria-expanded={open}
+        >
           <span className="user-trigger__avatar">
             {profileImage ? (
               <Image src={profileImage} alt="avatar" fill className="user-trigger__avatar-img" />
             ) : (
               Icon.user
             )}
-          </span>
-          {userName && (
-            <span className="user-trigger__name">{userName.split(" ")[0]}</span>
-          )}
-          <span className={`user-trigger__chevron${open ? " open" : ""}`}>
-            {Icon.arrowLeft}
           </span>
         </button>
 

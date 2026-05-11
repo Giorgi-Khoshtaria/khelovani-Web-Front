@@ -10,7 +10,6 @@ export default function PartnerSidebar({
   isOpen,
   activeCount,
   onSearchChange,
-  onCategoryChange,
   onCityChange,
   onRatingChange,
   onClearAll,
@@ -65,10 +64,8 @@ export default function PartnerSidebar({
 
         {/* Filters */}
         <PartnerFilters
-          category={filters.category}
           city={filters.city}
           minRating={filters.minRating}
-          onCategoryChange={onCategoryChange}
           onCityChange={onCityChange}
           onRatingChange={onRatingChange}
         />

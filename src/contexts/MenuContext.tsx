@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import type { MenuItem } from "@/apiCalls/menu/menu.req";
 
 interface MenuCtx {
@@ -18,11 +18,11 @@ export function MenuProvider({
   initialMenuItems: MenuItem[];
   children: React.ReactNode;
 }) {
-  return (
-    <MenuContext.Provider value={{ menuItems: initialMenuItems }}>
-      {children}
-    </MenuContext.Provider>
+  const value = useMemo<MenuCtx>(
+    () => ({ menuItems: initialMenuItems }),
+    [initialMenuItems],
   );
+  return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 }
 
 export function useMenu() {

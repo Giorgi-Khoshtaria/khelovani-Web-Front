@@ -1,12 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { Lang } from "../lib/types/lang.types";
+import { Translations } from "../lib/types/translations";
 
 interface LanguageContextType {
   lang: Lang;
   setLang: (lang: Lang) => void;
-  translations: Record<string, Record<string, { ge: string; en: string }>>;
+  translations: Translations;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(
@@ -19,11 +20,11 @@ export const LanguageProvider = ({
   initialLang = "ge",
 }: {
   children: React.ReactNode;
-  initialTranslations?: Record<string, Record<string, { ge: string; en: string }>>;
+  initialTranslations?: Translations;
   initialLang?: Lang;
 }) => {
   const [lang, setLangState] = useState<Lang>(initialLang);
-  const [translations] = useState(initialTranslations);
+  const [translations] = useState<Translations>(initialTranslations);
 
   // useEffect reading from localStorage was removed to prevent Client-Side hydration flickers.
   // The server (layout.tsx) now reads from Cookies and renders correct initialLang instantly!
@@ -34,7 +35,8 @@ export const LanguageProvider = ({
       localStorage.setItem("lang", newLang);
       
       // Set Cookie so the Server (layout.tsx) can read it on next refresh!
-      document.cookie = `lang=${newLang}; path=/; max-age=31536000; Secure; SameSite=Lax`; // 1 year expiry
+      const secure = process.env.NODE_ENV === "production" ? "Secure;" : "";
+      document.cookie = `lang=${newLang}; path=/; max-age=31536000; ${secure} SameSite=Lax`; // 1 year expiry
       
       window.dispatchEvent(new Event("languageChange"));
     }

@@ -48,6 +48,23 @@
   }
 }
 
+.cart-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: colors.$color-text-primary;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+
+  &:hover {
+    background-color: rgba(colors.$color-espresso, 0.08);
+    color: colors.$color-espresso;
+  }
+}
+
 .lang-toggle {
   display: flex;
   align-items: center;

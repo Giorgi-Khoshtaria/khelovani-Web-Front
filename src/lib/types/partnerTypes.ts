@@ -31,7 +31,6 @@ export interface Partner {
   instagram?: string;
   tiktok?: string;
   profilePhoto?: string;
-  categories?: string[];
   rating?: number;
   reviewCount?: number;
   productCount?: number;
@@ -53,7 +52,6 @@ export interface PaginatedPartnerResponse {
 
 export interface PartnerFilterState {
   search: string;
-  category: string;
   city: string;
   minRating: number;
   partnerType: PartnerType | "";
@@ -76,7 +74,6 @@ export interface PartnerSidebarProps {
   isOpen: boolean;
   activeCount: number;
   onSearchChange: (v: string) => void;
-  onCategoryChange: (cat: string) => void;
   onCityChange: (city: string) => void;
   onRatingChange: (r: number) => void;
   onPartnerTypeChange: (type: PartnerType | "") => void;

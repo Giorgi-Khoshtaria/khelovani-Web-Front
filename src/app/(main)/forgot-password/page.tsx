@@ -39,7 +39,7 @@ function ForgotPassword() {
   const { t: tAlerts } = useClientTranslation("alerts");
   const { lang } = useLanguage();
 
-  const { startCooldown, isCooldownActive, cooldownText, isButtonDisabled } =
+  const { startCooldown, isCooldownActive, cooldownSeconds, isButtonDisabled } =
     useRateLimitCooldown(120);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -129,7 +129,7 @@ function ForgotPassword() {
                 disabled={isLoading || isButtonDisabled}
               >
                 {isCooldownActive
-                  ? cooldownText
+                  ? `${cooldownSeconds} ${tCommon("rate_limit_retry_in")}`
                   : isLoading
                     ? tCommon("loading") || "იგზავნება..."
                     : tCommon("submit") || "გაგზავნა"}

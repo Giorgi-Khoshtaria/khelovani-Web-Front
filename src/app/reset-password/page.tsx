@@ -50,12 +50,12 @@ function ResetPasswordContent() {
                   cy="26"
                   r="25"
                   fill="none"
-                  stroke="#d32f2f"
+                  stroke="var(--color-error)"
                   strokeWidth="2"
                 />
                 <path
                   fill="none"
-                  stroke="#d32f2f"
+                  stroke="var(--color-error)"
                   strokeWidth="2.5"
                   d="M16 16l20 20M36 16l-20 20"
                 />

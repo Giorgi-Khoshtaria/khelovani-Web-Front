@@ -42,7 +42,21 @@ export const useClientTranslation = (namespaces: Namespace | Namespace[]) => {
       if (found) return found;
     }
 
-    return key; // Ultimate fallback: return the key itself
+    // Missing key: warn once per key in dev; return empty in prod so we
+    // never leak raw `products.foo` strings to users.
+    if (process.env.NODE_ENV !== "production") {
+      if (typeof window !== "undefined") {
+        const w = window as unknown as { __i18nWarned?: Set<string> };
+        w.__i18nWarned ??= new Set<string>();
+        if (!w.__i18nWarned.has(key)) {
+          w.__i18nWarned.add(key);
+          // eslint-disable-next-line no-console
+          console.warn(`[i18n] missing key "${key}" in [${nsArray.join(", ")}]`);
+        }
+      }
+      return key;
+    }
+    return "";
   };
 
   // Expose translations of the primary namespace for advanced consumers

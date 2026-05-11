@@ -21,12 +21,10 @@ export default function TermsCheckbox({
 
   return (
     <div className="terms-container form-group--full">
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-        <input type="checkbox" id={id} checked={checked} onChange={onChange} />
-        <label htmlFor={id}>
-          <Link href={termsTo}>{tNav("terms_link")}</Link>
-        </label>
-      </div>
+      <input type="checkbox" id={id} checked={checked} onChange={onChange} />
+      <label htmlFor={id}>
+        <Link href={termsTo}>{tNav("terms_link")}</Link>
+      </label>
       {error && <span className="error-text">{tValidation(error)}</span>}
     </div>
   );

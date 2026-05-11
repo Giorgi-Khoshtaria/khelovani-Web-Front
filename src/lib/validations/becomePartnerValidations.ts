@@ -15,10 +15,6 @@ const sharedFields = {
   companyNameEn: z.string().trim().min(1, "companyNameEn_required").max(100, "companyNameEn_max_length"),
   phone: phoneSchema,
   city: citySchema,
-  categories: z
-    .array(z.string().trim().min(1))
-    .min(1, "category_required")
-    .max(5, "category_too_many"),
   email: emailSchema(254),
   address: z
     .string()

@@ -1,51 +1,44 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { IProduct, getCategoryPlaceholder } from "../types/productTypes";
 
 const DEFAULT_PLACEHOLDER = "/assets/placeholder/default.png";
 
 /**
  * useProductImage
- * 
- * Handles the 3-tier image fallback logic for products:
- * 1. Primary product image
- * 2. Category-specific placeholder
- * 3. Global default placeholder
+ *
+ * Resolves the product image with a 3-step fallback chain. Tracked as a
+ * single integer step so transitions can't get into inconsistent states:
+ *   step 0 → product image (or category placeholder if there isn't one)
+ *   step 1 → category placeholder
+ *   step 2 → global default placeholder
+ *
+ * `handleImageError` advances to the next step. The chain dedupes —
+ * if the product has no image, step 0 already shows the category
+ * placeholder, so an error there jumps straight to the default.
  */
 export function useProductImage(product: IProduct | null) {
-  const categoryPlaceholder = product ? getCategoryPlaceholder(product.category as string) : DEFAULT_PLACEHOLDER;
-  const initialSrc = product?.images?.[0] || categoryPlaceholder;
+  const sources = useMemo(() => {
+    const category = product
+      ? getCategoryPlaceholder(product.category as string)
+      : DEFAULT_PLACEHOLDER;
+    const primary = product?.images?.[0];
+    return primary
+      ? [primary, category, DEFAULT_PLACEHOLDER]
+      : [category, DEFAULT_PLACEHOLDER];
+    // We don't need product as a dep — the array is rebuilt only when
+    // its image / category change.
+  }, [product]);
 
-  const [imgSrc, setImgSrc] = useState(initialSrc);
-  const [isPlaceholder, setIsPlaceholder] = useState(!product?.images?.[0]);
-  const [usedDefault, setUsedDefault] = useState(false);
+  const [step, setStep] = useState(0);
 
-  // Sync state when product images or category changes
-  useEffect(() => {
-    setUsedDefault(false);
-    if (product?.images?.[0]) {
-      setImgSrc(product.images[0]);
-      setIsPlaceholder(false);
-    } else {
-      setImgSrc(categoryPlaceholder);
-      setIsPlaceholder(true);
-    }
-  }, [product?.images, categoryPlaceholder]);
+  const imgSrc = sources[Math.min(step, sources.length - 1)];
 
   const handleImageError = useCallback(() => {
-    if (!isPlaceholder) {
-      // Real image failed -> try category placeholder
-      setImgSrc(categoryPlaceholder);
-      setIsPlaceholder(true);
-    } else if (!usedDefault) {
-      // Category placeholder also failed -> nuclear fallback
-      setImgSrc(DEFAULT_PLACEHOLDER);
-      setUsedDefault(true);
-    }
-  }, [isPlaceholder, usedDefault, categoryPlaceholder]);
+    setStep((s) => Math.min(s + 1, sources.length - 1));
+  }, [sources.length]);
 
-  return {
-    imgSrc,
-    isPlaceholder,
-    handleImageError,
-  };
+  // Whether we're showing a placeholder vs the user-uploaded image.
+  const isPlaceholder = sources.length === 2 || step >= 1;
+
+  return { imgSrc, isPlaceholder, handleImageError };
 }

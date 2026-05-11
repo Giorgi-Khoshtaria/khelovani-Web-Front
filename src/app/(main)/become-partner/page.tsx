@@ -12,9 +12,7 @@ import PhoneInput from "@/components/ui/PhoneInput";
 import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
-import CategoryMultiChips from "@/components/ui/CategoryMultiChips";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
-import { useCategories } from "@/contexts/CategoriesContext";
 import {
   validatePartnerForm,
   type PartnerFormData,
@@ -34,7 +32,7 @@ const buildInitialForm = (partnerType: PartnerType): PartnerFormData => {
       companyNameEn: "",
       phone: "",
       city: "",
-      categories: [],
+
       email: "",
       address: "",
       addressEn: "",
@@ -50,7 +48,6 @@ const buildInitialForm = (partnerType: PartnerType): PartnerFormData => {
     companyNameEn: "",
     phone: "",
     city: "",
-    categories: [],
     email: "",
     address: "",
     addressEn: "",
@@ -72,11 +69,6 @@ function PartnerRegistration() {
   const { t: tCommon } = useClientTranslation("common");
   const { t: tAlerts } = useClientTranslation("alerts");
   const { lang } = useLanguage();
-  const { categories: categoryList, getLabel } = useCategories();
-  const categoryOptions = categoryList.map((c) => ({
-    value: c.slug,
-    label: getLabel(c.slug, lang as "ge" | "en"),
-  }));
 
   const { formData, errors, setErrors, handleChange, setFormData } =
     useFormHandler<PartnerFormData>(
@@ -91,7 +83,7 @@ function PartnerRegistration() {
       companyNameEn: prev.companyNameEn,
       phone: prev.phone,
       city: prev.city,
-      categories: prev.categories ?? [],
+
       email: prev.email,
       address: prev.address,
       addressEn: prev.addressEn,
@@ -99,11 +91,6 @@ function PartnerRegistration() {
       terms: prev.terms,
     }));
     setErrors({});
-  };
-
-  const handleCategoriesChange = (selected: string[]) => {
-    setFormData((prev) => ({ ...prev, categories: selected }));
-    if (errors.categories) setErrors((prev) => ({ ...prev, categories: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -335,17 +322,6 @@ function PartnerRegistration() {
           </div>
 
           {/* ── Category (full width) ── */}
-          <div className="form-section">
-            <div>
-              <CategoryMultiChips
-                label={tInputs("label.category") || "კატეგორია"}
-                options={categoryOptions}
-                value={formData.categories ?? []}
-                onChange={handleCategoriesChange}
-                error={errors.categories}
-              />
-            </div>
-          </div>
 
           <div className="form-section">
             <SelectInput

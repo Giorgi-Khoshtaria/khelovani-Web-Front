@@ -1,5 +1,3 @@
-// PopularCategory.tsx
-
 "use client";
 
 import { useRef } from "react";
@@ -16,33 +14,53 @@ function PopularCategory({
 }: {
   pinnedCategories: PublicCategory[];
 }) {
-  const { t: Pages } = useClientTranslation("pages");
+  const { t } = useClientTranslation("pages");
   const { lang } = useLanguage();
-
   const sectionRef = useRef<HTMLElement>(null);
 
-  useRevealOnScroll({
-    ref: sectionRef,
-  });
+  useRevealOnScroll({ ref: sectionRef });
+
+  const [featured, ...rest] = pinnedCategories;
 
   return (
-    <section className="popular-category" ref={sectionRef}>
-      <h2 className="popular-category__title">
-        {Pages("home.popularCategory._title")}
-      </h2>
+    <section className="pop-cat" ref={sectionRef}>
+      <div className="pop-cat__header">
+        <h2 className="pop-cat__title">{t("home.popularCategory._title")}</h2>
+        <p className="pop-cat__subtitle">{t("home.popularCategory._subtitle")}</p>
+      </div>
 
-      <div className="popular-category__cards">
-        {pinnedCategories.map((category) => (
+      <div className="pop-cat__grid">
+        {/* featured — left large card */}
+        {featured && (
           <Link
-            key={category.slug}
-            href={`/products?category=${category.slug}`}
+            href={`/products?category=${featured.slug}`}
+            className="pop-cat__item pop-cat__item--featured"
           >
             <PopularCategoryCard
-              slug={category.slug}
-              categoryName={lang === "ge" ? category.nameGe : category.nameEn}
+              slug={featured.slug}
+              categoryName={lang === "ge" ? featured.nameGe : featured.nameEn}
+              isFeatured
+              productCount={featured.productCount}
             />
           </Link>
-        ))}
+        )}
+
+        {/* remaining 4 cards — 2×2 right grid */}
+        <div className="pop-cat__grid-right">
+          {rest.slice(0, 4).map((category) => (
+            <Link
+              key={category.slug}
+              href={`/products?category=${category.slug}`}
+              className="pop-cat__item"
+            >
+              <PopularCategoryCard
+                slug={category.slug}
+                categoryName={lang === "ge" ? category.nameGe : category.nameEn}
+                productCount={category.productCount}
+              />
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,94 +1,108 @@
 "use client";
 
+import { memo } from "react";
 import Image from "next/image";
 import "./productCard.scss";
-import { IProduct } from "@/lib/types/productTypes";
+import { IProduct, IPopulatedOwner } from "@/lib/types/productTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useProductDisplay } from "@/lib/hooks/useProductDisplay";
 import { useProductImage } from "@/lib/hooks/useProductImage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ProductCardProps {
   product: IProduct;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  const { t: tCommon } = useClientTranslation("common");
+function ProductCardImpl({ product }: ProductCardProps) {
   const { t: tNav } = useClientTranslation("navigation");
+  const { t: tPages } = useClientTranslation("pages");
+  const { lang } = useLanguage();
+  const { title, categoryLabel, isOutOfStock } = useProductDisplay(product);
+  const { imgSrc, handleImageError } = useProductImage(product);
 
-  // Abstractions for Senior-level maintainability
-  const { title, categoryLabel, formattedPrice, isOutOfStock } = useProductDisplay(product);
-  const { imgSrc, isPlaceholder, handleImageError } = useProductImage(product);
+  const populatedOwner =
+    product.owner && typeof product.owner === "object"
+      ? (product.owner as IPopulatedOwner)
+      : null;
+  const partnerName = populatedOwner
+    ? (lang === "ge" ? populatedOwner.companyNameGe : populatedOwner.companyNameEn) ||
+      populatedOwner.companyNameGe ||
+      populatedOwner.companyNameEn
+    : null;
+
+  // Compute original price when discounted
+  const oldPrice =
+    product.isOnSale && product.discountPercent
+      ? Math.round(product.price / (1 - product.discountPercent / 100))
+      : null;
+
+  // Top-left tag (sale > one-of-one > sold)
+  const tag = isOutOfStock
+    ? { label: tPages("products.out_of_stock") || "SOLD", mod: "sold" }
+    : product.isOnSale && product.discountPercent
+    ? { label: `-${product.discountPercent}%`, mod: "sale" }
+    : product.isOneOfAKind
+    ? { label: "1 OF 1", mod: "one" }
+    : null;
 
   return (
-    <div className="product-card">
-      <div className="product-card__image-container">
+    <article className="pcard">
+      <div className="pcard__image">
         <Image
           src={imgSrc}
           alt={title}
           fill
-          className="product-card__image"
-          style={{ objectFit: "cover" }}
+          className="pcard__img"
+          sizes="(max-width:640px) 90vw, (max-width:1024px) 44vw, 22vw"
           onError={handleImageError}
         />
 
-        {isPlaceholder && (
-          <div className="product-card__placeholder-overlay">
-            {tCommon("sample_image")}
-          </div>
+        {tag && (
+          <span className={`pcard__tag pcard__tag--${tag.mod}`}>{tag.label}</span>
         )}
 
-        {!isOutOfStock && (
-          <button
-            className="product-card__fav-btn"
-            aria-label="Add to favorites"
-          >
-            <svg
-              width="16"
-              height="15"
-              viewBox="0 0 16 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.6667 1.33334C10.22 1.33334 8.97334 2.14668 8 3.32668C7.02667 2.14668 5.78 1.33334 4.33334 1.33334C1.94 1.33334 0 3.27334 0 5.66668C0 9.18668 8 14 8 14C8 14 16 9.18668 16 5.66668C16 3.27334 14.06 1.33334 11.6667 1.33334Z"
-                stroke="#9CA3AF"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+        <button className="pcard__fav" aria-label="Add to favorites">
+          <svg width="16" height="15" viewBox="0 0 16 15" fill="none">
+            <path
+              d="M11.667 1.333c-1.447 0-2.694.814-3.667 1.994C7.027 2.147 5.78 1.333 4.333 1.333 1.94 1.333 0 3.273 0 5.667 0 9.187 8 14 8 14s8-4.813 8-8.333c0-2.394-1.94-4.334-4.333-4.334Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div className="pcard__info">
+        <span className="pcard__category">{categoryLabel}</span>
+        <h3 className="pcard__title">{title}</h3>
+        {partnerName && (
+          <span className="pcard__partner">By {partnerName}</span>
         )}
       </div>
 
-      <div className="product-card__content">
-        <span className="product-card__category">{categoryLabel}</span>
-        <h3 className="product-card__title" title={title}>
-          {title}
-        </h3>
-
-        <div className="product-card__footer">
-          <span className="product-card__price">{formattedPrice}</span>
-          <button className="product-card__buy-btn" disabled={isOutOfStock}>
-            <svg
-              width="14"
-              height="13"
-              viewBox="0 0 14 13"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.16669 1.16667H2.91669L4.47419 9.77583C4.54575 10.1744 4.76632 10.528 5.0931 10.7675C5.41987 11.007 5.82987 11.1147 6.24169 11.0717H11.3167C11.7285 11.1147 12.1385 11.007 12.4653 10.7675C12.792 10.528 13.0126 10.1744 13.0842 9.77583L14 4.66667H3.50002"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            {tNav("buy_now")}
-          </button>
+      <div className="pcard__cta">
+        <div className="pcard__prices">
+          <span className="pcard__price">₾{product.price}</span>
+          {oldPrice && (
+            <span className="pcard__price-old">₾{oldPrice}</span>
+          )}
         </div>
+
+        {isOutOfStock ? (
+          <button className="pcard__btn pcard__btn--sold" disabled>
+            {tPages("products.out_of_stock") || "Sold"}
+          </button>
+        ) : (
+          <button className="pcard__btn">
+            {tNav("buy_now") || "Buy now"} <span className="pcard__btn-arrow">→</span>
+          </button>
+        )}
       </div>
-    </div>
+    </article>
   );
 }
+
+const ProductCard = memo(ProductCardImpl);
+export default ProductCard;

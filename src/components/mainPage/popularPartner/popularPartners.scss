@@ -1,100 +1,181 @@
 @use "@/styles/colors.scss" as colors;
 @use "@/styles/defaultTexts.scss" as defaultTexts;
 
-.popular-partners {
+.pop-partners {
   width: 100%;
-  padding: 80px 24px 96px;
-  background-color: colors.$color-bg-page;
+  padding: 80px 0 96px;
+  overflow: hidden;
+}
 
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 48px;
-    flex-wrap: wrap;
-    gap: 16px;
+// ── header ────────────────────────────────────────────────
 
-    @media (max-width: 768px) {
-      margin-bottom: 40px;
-    }
+.pop-partners__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding: 0 48px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  @media (max-width: 1024px) {
+    padding: 0 32px;
   }
 
-  &__title {
-    @extend .huge-text;
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    margin-bottom: 28px;
   }
 
-  &__view-all {
-    @extend .default-text;
+  @media (max-width: 480px) {
+    padding: 0 16px;
+    gap: 10px;
+  }
+}
 
-    color: colors.$color-walnut;
-    font-weight: 500;
-    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
-    padding-bottom: 2px;
-    transition: opacity 0.25s ease;
+.pop-partners__title {
+  @extend .huge-text;
+  color: colors.$color-espresso;
+}
 
-    &:hover {
-      opacity: 0.75;
-    }
+.pop-partners__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+// ── arrow buttons ─────────────────────────────────────────
+
+.pop-partners__arrow {
+  width: 42px;
+  height: 42px;
+
+  @media (max-width: 480px) {
+    width: 38px;
+    height: 38px;
+  }
+  border-radius: 50%;
+  border: 1.5px solid colors.$color-border;
+  background: colors.$color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+
+  img {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
   }
 
-  &__grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
+  &:hover:not(:disabled) {
+    background: colors.$color-espresso;
+    border-color: colors.$color-espresso;
 
-    max-width: 1480px;
-    margin: 0 auto;
-
-    @media (max-width: 1200px) {
-      gap: 22px;
-    }
-
-    @media (max-width: 900px) {
-      gap: 20px;
-    }
-
-    @media (max-width: 640px) {
-      gap: 18px;
-    }
-
-    @media (max-width: 480px) {
-      gap: 16px;
-    }
-  }
-
-  &__item {
-    flex: 1 1 280px;
-    max-width: 320px;
-    width: 100%;
-
-    opacity: 0;
-    transform: translateY(40px);
-    transition:
-      opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-
-    @for $i from 1 through 8 {
-      &:nth-child(#{$i}) {
-        transition-delay: #{0.14s * $i};
-      }
-    }
-
-    @media (max-width: 640px) {
-      flex: 1 1 300px;
-      max-width: none;
-    }
-
-    @media (max-width: 480px) {
-      flex: 1 1 100%;
-      max-width: 100%;
-    }
-  }
-
-  &.is-visible {
-    .popular-partners__item {
+    img {
       opacity: 1;
-      transform: translateY(0);
+      filter: invert(1);
     }
   }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.pop-partners__view-all {
+  @extend .default-text;
+  color: colors.$color-walnut;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+  padding-bottom: 2px;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+// ── slider viewport ───────────────────────────────────────
+
+.pop-partners__viewport {
+  overflow: hidden;
+  padding: 8px 0 16px; // vertical breathing room for card shadows
+}
+
+.pop-partners__track {
+  display: flex;
+  gap: 24px;
+  padding: 0 48px;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+
+  @media (max-width: 1024px) {
+    padding: 0 32px;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    gap: 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 16px;
+  }
+}
+
+.pop-partners__slide {
+  // 4 visible: (100% - 3*gap) / 4 mins outer padding via box-sizing on viewport
+  flex: 0 0 calc((100vw - 96px - 72px) / 4);
+  width: calc((100vw - 96px - 72px) / 4);
+  max-width: 340px;
+
+  @media (max-width: 1200px) {
+    // 3 visible
+    flex: 0 0 calc((100vw - 64px - 40px) / 3);
+    width: calc((100vw - 64px - 40px) / 3);
+  }
+
+  @media (max-width: 860px) {
+    // 2 visible
+    flex: 0 0 calc((100vw - 40px - 16px) / 2);
+    width: calc((100vw - 40px - 16px) / 2);
+  }
+
+  @media (max-width: 540px) {
+    // 1 visible
+    flex: 0 0 calc(100vw - 32px);
+    width: calc(100vw - 32px);
+  }
+}
+
+// ── scroll reveal ─────────────────────────────────────────
+
+.pop-partners .pop-partners__slide .partner-card {
+  animation: none;
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease;
+}
+
+@for $i from 1 through 7 {
+  .pop-partners .pop-partners__slide:nth-child(#{$i}) .partner-card {
+    transition-delay: #{0.08s * $i};
+  }
+}
+
+.pop-partners.is-visible .pop-partners__slide .partner-card {
+  opacity: 1;
+  transform: translateY(0);
 }

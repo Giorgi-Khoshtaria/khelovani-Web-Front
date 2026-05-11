@@ -1,9 +1,16 @@
 import { ProductCategory } from "./itemsCategory.enum";
-export { ProductCategory };
+import { ProductCondition, PRODUCT_CONDITIONS, CONDITION_LABELS } from "./productCondition.enum";
+export { ProductCategory, ProductCondition, PRODUCT_CONDITIONS, CONDITION_LABELS };
+
+export interface IPopulatedOwner {
+  _id: string;
+  companyNameGe: string;
+  companyNameEn?: string;
+}
 
 export interface IProduct {
   _id: string;
-  owner: string;
+  owner: string | IPopulatedOwner;
   images: string[];
   titleGe: string;
   titleEn?: string;
@@ -20,12 +27,15 @@ export interface IProduct {
   shippingPrice?: number;
   locationGe: string;
   locationEn?: string;
-  condition: "new" | "handmade" | "vintage";
+  condition: ProductCondition;
   materialsGe: string[];
   materialsEn?: string[];
   dimensions?: string;
   weight?: number;
+  isOnSale?: boolean;
+  discountPercent?: number | null;
   isShown: boolean;
+  pinSection?: ProductCondition | null;
   createdAt: string;
   updatedAt: string;
 }

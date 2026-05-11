@@ -62,7 +62,6 @@ export default function PartnerListing({
           isOpen={sidebarOpen}
           activeCount={activeFiltersCount}
           onSearchChange={(v) => updateFilter("search", v)}
-          onCategoryChange={(v) => updateFilter("category", v)}
           onCityChange={(v) => updateFilter("city", v)}
           onRatingChange={(v) => updateFilter("minRating", v)}
           onPartnerTypeChange={(v) => updateFilter("partnerType", v)}

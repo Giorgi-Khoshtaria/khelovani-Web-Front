@@ -11,7 +11,7 @@ export default async function ProfilePage() {
 
   let profile: ProfileData | null = null;
   if (token) {
-    profile = await getProfile(token);
+    profile = await getProfile(token).catch(() => null);
   }
 
   return (

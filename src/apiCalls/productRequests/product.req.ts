@@ -1,5 +1,6 @@
 import api from "../api";
 import { IProduct } from "@/lib/types/productTypes";
+import type { ProductCondition } from "@/lib/types/productCondition.enum";
 
 export interface GetProductsParams {
   search?: string;
@@ -16,13 +17,15 @@ export interface GetProductsResponse {
     totalCount: number;
     totalPages: number;
     currentPage: number;
+    limit?: number;
   };
 }
 
 export const getProducts = async (
   params: GetProductsParams,
+  signal?: AbortSignal,
 ): Promise<GetProductsResponse> => {
-  const { data } = await api.get("/api/products", { params });
+  const { data } = await api.get("/api/products", { params, signal });
   return { data: data.data, meta: data.meta };
 };
 
@@ -32,7 +35,9 @@ export const getProductById = async (productId: string): Promise<IProduct> => {
   );
   return data.data;
 };
-export const getPinnedProducts = async (): Promise<IProduct[]> => {
-  const { data } = await api.get<{ data: IProduct[] }>(`/api/products/pinned`);
+export type PinnedProductsGrouped = Record<ProductCondition, IProduct[]>;
+
+export const getPinnedProducts = async (): Promise<PinnedProductsGrouped> => {
+  const { data } = await api.get<{ data: PinnedProductsGrouped }>(`/api/products/pinned`);
   return data.data;
 };

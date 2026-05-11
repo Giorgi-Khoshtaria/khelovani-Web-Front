@@ -34,10 +34,9 @@ export default function ProfileClient({ initialProfile }: Props) {
     // Sync cookie for future SSR visits
     document.cookie = `access-token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
 
-    getProfile(token).then((data) => {
-      if (!data) { router.replace("/login"); return; }
-      setProfile(data);
-    });
+    getProfile(token)
+      .then((data) => setProfile(data))
+      .catch(() => router.replace("/login"));
   }, [isHydrated, isAuthenticated, profile, router]);
 
   if (!isHydrated || !profile) {

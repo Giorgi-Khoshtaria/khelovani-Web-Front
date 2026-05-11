@@ -10,7 +10,6 @@
   justify-content: center;
   padding: 40px 20px;
   min-height: 100vh;
-  background-color: colors.$color-bg-page;
 }
 
 // ── Card ──────────────────────────────────────────────────────────────────────
@@ -148,14 +147,14 @@
   }
 
   .ev-error__circle {
-    stroke: #d32f2f;
+    stroke: colors.$color-error;
     stroke-width: 1.5;
     stroke-dasharray: 166;
     stroke-dashoffset: 166;
     animation: draw 0.8s ease forwards;
   }
   .ev-error__cross {
-    stroke: #d32f2f;
+    stroke: colors.$color-error;
     stroke-width: 2.5;
     stroke-linecap: round;
     stroke-dasharray: 60;
@@ -185,7 +184,7 @@
   margin: 0;
 
   &--error {
-    color: #d32f2f;
+    color: colors.$color-error;
     font-size: 11px;
     margin-top: 4px;
   }
@@ -225,7 +224,7 @@
   }
 
   &--error {
-    background-color: #d32f2f;
+    background-color: colors.$color-error;
     color: colors.$color-white;
 
     &:hover {

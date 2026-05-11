@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.scss";
@@ -8,12 +7,11 @@ import { CategoriesProvider } from "@/contexts/CategoriesContext";
 import { MenuProvider } from "@/contexts/MenuContext";
 import { cookies } from "next/headers";
 import { Lang } from "@/lib/types/lang.types";
+import { Translations } from "@/lib/types/translations";
 
 import { getTranslations } from "@/apiCalls/common.req";
 import { getPublicCategories, type PublicCategory } from "@/apiCalls/categoryRequests/category.req";
 import { getMenu, type MenuItem } from "@/apiCalls/menu/menu.req";
-
-export const dynamic = "force-dynamic";
 
 export default async function RootLayout({
   children,
@@ -22,27 +20,21 @@ export default async function RootLayout({
 }) {
   const cookieStore = await cookies();
   const initialLang = (cookieStore.get("lang")?.value as Lang) || "ge";
-  let translations: Record<string, any> = {};
-  let categories: PublicCategory[] = [];
-  let menuItems: MenuItem[] = [];
 
-  try {
-    translations = await getTranslations();
-  } catch (error) {
-    console.warn("Failed to fetch translations in layout:", error);
-  }
-
-  try {
-    categories = await getPublicCategories();
-  } catch (error) {
-    console.warn("Failed to fetch categories in layout:", error);
-  }
-
-  try {
-    menuItems = await getMenu();
-  } catch (error) {
-    console.warn("Failed to fetch menu in layout:", error);
-  }
+  const [translations, categories, menuItems] = await Promise.all([
+    getTranslations().catch((err): Translations => {
+      console.warn("Failed to fetch translations:", err);
+      return {};
+    }),
+    getPublicCategories().catch((err): PublicCategory[] => {
+      console.warn("Failed to fetch categories:", err);
+      return [];
+    }),
+    getMenu().catch((err): MenuItem[] => {
+      console.warn("Failed to fetch menu:", err);
+      return [];
+    }),
+  ]);
 
   return (
     <html lang={initialLang === "ge" ? "ka" : "en"}>

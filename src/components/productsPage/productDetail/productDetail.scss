@@ -1,9 +1,7 @@
-@use "sass:color";
 @use "@/styles/colors" as *;
 @use "@/styles/defaultTexts" as *;
 @use "@/styles/animations";
 
-// ─── Animate in ────────────────────────────────────────────────────────────────
 .animate-in {
   animation: fadeInPage 0.45s ease both;
 }
@@ -19,230 +17,73 @@
   }
 }
 
-// ─── Root ──────────────────────────────────────────────────────────────────────
 .product-detail {
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 32px 24px 80px;
+  padding: 28px 32px 80px;
 
-  // ─── Back link ───────────────────────────────────────────────────────────────
+  @media (max-width: 768px) {
+    padding: 20px 16px 64px;
+  }
+
   &__back {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     @extend .small-text;
     color: $color-text-secondary;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     cursor: pointer;
     transition: color 0.2s ease;
-
-    svg {
-      flex-shrink: 0;
-    }
 
     &:hover {
       color: $color-text-primary;
     }
   }
 
-  // ─── Main card ───────────────────────────────────────────────────────────────
-  &__card {
+  &__top {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    background: $color-white;
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 32px;
+    }
+
+    @media (max-width: 880px) {
       grid-template-columns: 1fr;
       gap: 24px;
-      padding: 20px;
     }
   }
 
-  // ─── Image ───────────────────────────────────────────────────────────────────
-  &__image-wrap {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 14px;
-    overflow: hidden;
-    background-color: $color-bg-secondary;
+  &__gallery {
+    position: sticky;
+    top: 24px;
 
-    @media (max-width: 768px) {
-      aspect-ratio: 4 / 3;
+    @media (max-width: 880px) {
+      position: static;
     }
   }
 
-  &__image {
-    object-fit: cover;
-    transition: transform 0.4s ease;
-
-    &:hover {
-      transform: scale(1.03);
-    }
+  &__sidebar {
+    min-width: 0;
   }
 
-  &__placeholder-badge {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.55);
-    color: $color-white;
-    padding: 4px 10px;
-    border-radius: 4px;
-    @extend .small-text;
-    backdrop-filter: blur(3px);
-    z-index: 2;
-    letter-spacing: 0.4px;
-  }
-
-  // ─── Info panel ──────────────────────────────────────────────────────────────
-  &__info {
+  &__content {
+    margin-top: 56px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-  }
-
-  &__info-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__category {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    background-color: $color-bg-secondary;
-    @extend .small-text;
-    color: $color-text-secondary;
-    font-weight: 500;
-    text-transform: capitalize;
-  }
-
-  &__fav-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: $color-bg-page;
-    border: 1px solid $color-border;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: $color-text-secondary;
-    transition: all 0.2s ease;
-
-    &:hover {
-      border-color: $color-deep-red;
-      color: $color-deep-red;
-      background-color: rgba($color-deep-red, 0.06);
-    }
-  }
-
-  &__title {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: $color-text-primary;
-    margin: 0;
-
-    @media (max-width: 480px) {
-      font-size: 22px;
-    }
-  }
-
-  &__stock {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    @extend .small-text;
-    font-weight: 500;
-    color: #16a34a;
-  }
-
-  &__stock-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-
-    &--in {
-      background-color: #16a34a;
-      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
-    }
-
-    &--out {
-      background-color: #dc2626;
-      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
-    }
-  }
-
-  &__price {
-    font-size: 32px;
-    font-weight: 700;
-    color: $color-text-primary;
-    letter-spacing: -0.5px;
-  }
-
-  &__divider {
-    border: none;
+    gap: 0;
     border-top: 1px solid $color-border;
-    margin: 0;
-  }
-
-  &__description-block {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  &__description-label {
-    @extend .default-text;
-    font-weight: 600;
-    color: $color-text-primary;
   }
 
   &__description {
     @extend .default-text;
     color: $color-text-secondary;
-    line-height: 1.65;
-  }
-
-  // ─── Buy button ──────────────────────────────────────────────────────────────
-  &__buy-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 15px 24px;
-    border-radius: 12px;
-    background-color: $color-espresso;
-    color: $color-white;
-    border: none;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.15s ease;
-
-    &:hover:not(:disabled) {
-      background-color: color.scale($color-espresso, $lightness: 12%);
-      transform: translateY(-1px);
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
-    &:disabled {
-      background-color: $color-border;
-      cursor: not-allowed;
-      color: $color-text-secondary;
-    }
+    line-height: 1.75;
+    white-space: pre-line;
+    margin: 0;
   }
 }

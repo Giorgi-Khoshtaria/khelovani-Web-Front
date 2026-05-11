@@ -46,25 +46,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setProfileImage(storedImg);
 
       if (!storedEn && !storedGe) {
-        getProfile(token).then((profile) => {
-          if (profile) applyProfile(profile.nameEn, profile.nameGe, profile.profileImage);
-        });
+        getProfile(token)
+          .then((profile) =>
+            applyProfile(profile.nameEn, profile.nameGe, profile.profileImage),
+          )
+          .catch(() => {
+            // Profile fetch failed — token may be stale; the axios 401
+            // interceptor will redirect if appropriate. Otherwise just
+            // skip the profile hydration; cached name/image stays empty.
+          });
       }
     }
     setIsHydrated(true);
+  // One-shot hydration on mount. Reading localStorage / setting state
+  // doesn't require deps; including any would cause re-runs we don't want.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshProfile = async () => {
     const token = localStorage.getItem("access-token");
     if (!token) return;
-    const profile = await getProfile(token);
-    if (profile) applyProfile(profile.nameEn, profile.nameGe, profile.profileImage);
+    try {
+      const profile = await getProfile(token);
+      applyProfile(profile.nameEn, profile.nameGe, profile.profileImage);
+    } catch {
+      // Caller doesn't need the failure surfaced — UI continues with
+      // whatever cached profile data we have.
+    }
   };
 
   const login = (token: string, en?: string, ge?: string, image?: string | null) => {
     localStorage.setItem("access-token", token);
-    document.cookie = `access-token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+    const secure = process.env.NODE_ENV === "production" ? "Secure;" : "";
+    document.cookie = `access-token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; ${secure} SameSite=Strict`;
     setIsAuthenticated(true);
     applyProfile(en, ge, image);
   };
