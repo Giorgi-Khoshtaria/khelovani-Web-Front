@@ -3,6 +3,7 @@
 import Image from "next/image";
 import "./forgot-password.scss";
 import TextInput from "@/components/ui/TextInput";
+import Button from "@/components/ui/Button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -123,17 +124,18 @@ function ForgotPassword() {
                 placeholder={tInputs("placeholder.email")}
               />
 
-              <button
-                className="send-btn"
+              <Button
                 type="submit"
-                disabled={isLoading || isButtonDisabled}
+                variant="primary"
+                size="lg"
+                fullWidth
+                isLoading={isLoading}
+                disabled={isButtonDisabled}
               >
                 {isCooldownActive
                   ? `${cooldownSeconds} ${tCommon("rate_limit_retry_in")}`
-                  : isLoading
-                    ? tCommon("loading") || "იგზავნება..."
-                    : tCommon("submit") || "გაგზავნა"}
-              </button>
+                  : tCommon("submit") || "გაგზავნა"}
+              </Button>
             </form>
             <Link href="/login" className="back-link">
               {tNav("back_to_login") || "შესვლის გვერდზე დაბრუნება"}

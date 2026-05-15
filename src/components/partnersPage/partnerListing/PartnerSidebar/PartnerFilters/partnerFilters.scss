@@ -4,7 +4,7 @@
 .partner-filters {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 
   // ── Shared group ────────────────────────────────────
 
@@ -16,47 +16,80 @@
 
   &__label {
     @extend .default-text;
-    display: flex;
-    align-items: center;
-    gap: 6px;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: colors.$color-text-secondary;
-
-    svg { width: 13px; height: 13px; }
   }
 
-  &__label-icon {
+  // ── Vertical row list (region / rating) ─────────────
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__row {
     display: flex;
     align-items: center;
-    color: colors.$color-walnut;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 14px;
+    color: colors.$color-text-primary;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+
+    &:hover:not(&--active) {
+      background: rgba(colors.$color-walnut, 0.06);
+    }
+
+    &--active {
+      background: colors.$color-espresso;
+      color: colors.$color-white;
+      font-weight: 600;
+    }
+
+    // Rating rows have stars on the left, label on the right
+    &--rating {
+      justify-content: flex-start;
+      gap: 12px;
+    }
   }
 
-  // ── Category chips ──────────────────────────────────
+  // ── Type chips ──────────────────────────────────────
 
   &__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
   }
 
   &__chip {
     @extend .default-text;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
     font-weight: 500;
-    border: 1.5px solid rgba(colors.$color-walnut, 0.2);
+    border: 1.5px solid rgba(colors.$color-walnut, 0.25);
     background: transparent;
-    color: colors.$color-text-secondary;
+    color: colors.$color-text-primary;
     cursor: pointer;
-    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+    transition:
+      border-color 0.18s ease,
+      background 0.18s ease,
+      color 0.18s ease;
 
-    &:hover {
-      border-color: rgba(colors.$color-walnut, 0.45);
-      color: colors.$color-walnut;
+    &:hover:not(&--active) {
+      border-color: rgba(colors.$color-walnut, 0.5);
+      background: rgba(colors.$color-walnut, 0.05);
     }
 
     &--active {
@@ -67,86 +100,32 @@
     }
   }
 
-  // ── City select ─────────────────────────────────────
+  // ── Rating stars ────────────────────────────────────
 
-  &__select-wrap {
-    position: relative;
+  &__stars {
+    display: inline-flex;
+    gap: 2px;
   }
-
-  &__select {
-    @extend .default-text;
-    width: 100%;
-    padding: 10px 34px 10px 14px;
-    border-radius: 10px;
-    border: 1px solid rgba(colors.$color-walnut, 0.2);
-    background: colors.$color-bg-page;
-    color: colors.$color-text-primary;
-    font-size: 13px;
-    appearance: none;
-    cursor: pointer;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-    &:focus {
-      outline: none;
-      border-color: colors.$color-walnut;
-      box-shadow: 0 0 0 3px rgba(colors.$color-walnut, 0.1);
-    }
-  }
-
-  &__select-arrow {
-    position: absolute;
-    right: 11px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    color: colors.$color-text-secondary;
-
-    svg { width: 15px; height: 15px; }
-  }
-
-  // ── Rating ──────────────────────────────────────────
-
-  &__ratings {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  &__rating {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px 10px;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    background: transparent;
-    cursor: pointer;
-    transition: background 0.18s ease, border-color 0.18s ease;
-
-    &:hover:not(&--active) {
-      background: rgba(colors.$color-walnut, 0.05);
-      border-color: rgba(colors.$color-walnut, 0.15);
-    }
-
-    &--active {
-      background: rgba(colors.$color-espresso, 0.06);
-      border-color: rgba(colors.$color-espresso, 0.18);
-    }
-  }
-
-  &__stars { display: flex; gap: 2px; }
 
   &__star {
-    font-size: 13px;
-    color: rgba(colors.$color-walnut, 0.2);
-    &--on { color: #c8963e; }
+    font-size: 14px;
+    color: rgba(colors.$color-walnut, 0.25);
+
+    &--on {
+      color: #b54b3d;
+    }
+  }
+
+  &__row--active &__star {
+    color: rgba(colors.$color-white, 0.35);
+
+    &--on {
+      color: #e8a89a;
+    }
   }
 
   &__rating-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: colors.$color-text-secondary;
+    font-size: 14px;
+    font-weight: 500;
   }
 }

@@ -10,7 +10,7 @@ export const revalidate = 300;
 
 const EMPTY: GetProductsResponse = {
   data: [],
-  meta: { totalCount: 0, totalPages: 1, currentPage: 1 },
+  meta: { totalCount: 0, totalPages: 1, currentPage: 1, limit: 12 },
 };
 
 export default async function ProductsPage() {

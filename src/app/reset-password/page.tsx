@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import "./reset-password.scss";
 import PasswordInput from "@/components/ui/PasswordInput";
+import Button from "@/components/ui/Button";
 import { resetPassword } from "@/apiCalls/userRequests/auth.req";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -197,11 +198,15 @@ function ResetPasswordContent() {
             }
           />
 
-          <button className="reset-btn" type="submit" disabled={isLoading}>
-            {isLoading
-              ? tCommon("loading") || "მიმდინარეობს..."
-              : tPages("reset_password.submit") || "პაროლის შეცვლა"}
-          </button>
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            fullWidth
+            isLoading={isLoading}
+          >
+            {tPages("reset_password.submit") || "პაროლის შეცვლა"}
+          </Button>
         </form>
       </div>
     </div>

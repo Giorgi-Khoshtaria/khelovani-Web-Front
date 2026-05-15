@@ -7,12 +7,7 @@
   gap: 8px;
 
   &__label {
-    @extend .default-text;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: colors.$color-text-secondary;
+    display: none;
   }
 
   &__wrap {
@@ -21,7 +16,7 @@
 
   &__icon {
     position: absolute;
-    left: 12px;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -29,18 +24,18 @@
     color: colors.$color-text-secondary;
     pointer-events: none;
 
-    svg { width: 15px; height: 15px; }
+    svg { width: 16px; height: 16px; }
   }
 
   &__input {
     @extend .default-text;
     width: 100%;
-    padding: 10px 34px 10px 36px;
-    border-radius: 10px;
+    padding: 14px 40px 14px 44px;
+    border-radius: 999px;
     border: 1px solid rgba(colors.$color-walnut, 0.2);
-    background: colors.$color-bg-page;
+    background: colors.$color-white;
     color: colors.$color-text-primary;
-    font-size: 13px;
+    font-size: 14px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
     &::placeholder { color: rgba(colors.$color-text-secondary, 0.7); }
@@ -49,20 +44,19 @@
       outline: none;
       border-color: colors.$color-walnut;
       box-shadow: 0 0 0 3px rgba(colors.$color-walnut, 0.1);
-      background: colors.$color-white;
     }
   }
 
   &__clear {
     position: absolute;
-    right: 9px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     border: none;
     background: rgba(colors.$color-espresso, 0.08);

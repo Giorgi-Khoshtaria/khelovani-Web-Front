@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { EyeOpen, EyeOff } from "@/components/ui/EyeIcons";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import FormField from "./FormField";
 
 interface PasswordInputProps {
   id: string;
@@ -23,12 +24,11 @@ export default function PasswordInput({
   error,
   fullWidth,
 }: PasswordInputProps) {
-  const { t } = useClientTranslation(["validation"]);
+  const { t } = useClientTranslation(["common"]);
   const [show, setShow] = useState(false);
 
   return (
-    <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
-      <label htmlFor={id}>{label}</label>
+    <FormField id={id} label={label} error={error} fullWidth={fullWidth}>
       <div className={`input-password${error ? " input-error" : ""}`}>
         <input
           type={show ? "text" : "password"}
@@ -47,7 +47,6 @@ export default function PasswordInput({
           {show ? <EyeOff /> : <EyeOpen />}
         </button>
       </div>
-      {error && <span className="error-text">{t(error)}</span>}
-    </div>
+    </FormField>
   );
 }

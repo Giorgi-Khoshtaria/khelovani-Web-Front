@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./globals.scss";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { CategoriesProvider } from "@/contexts/CategoriesContext";
 import { MenuProvider } from "@/contexts/MenuContext";
 import { cookies } from "next/headers";
@@ -45,7 +46,9 @@ export default async function RootLayout({
         >
           <CategoriesProvider initialCategories={categories}>
             <MenuProvider initialMenuItems={menuItems}>
-              <AuthProvider>{children}</AuthProvider>
+              <AuthProvider>
+                <FavoritesProvider>{children}</FavoritesProvider>
+              </AuthProvider>
             </MenuProvider>
           </CategoriesProvider>
         </LanguageProvider>

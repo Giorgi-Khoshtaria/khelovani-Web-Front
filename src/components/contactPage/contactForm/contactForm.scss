@@ -40,18 +40,7 @@
     font-weight: bold;
   }
 
-  &__submit {
-    @extend .auth-submit-btn;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  .btn {
     margin-top: 10px;
-    padding: 16px;
-
-    svg {
-      width: 18px;
-      height: 18px;
-    }
   }
 }

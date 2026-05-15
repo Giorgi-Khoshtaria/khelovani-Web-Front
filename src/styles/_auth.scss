@@ -98,24 +98,6 @@
   }
 }
 
-// ── Shared Submit Button ──────────────────────────────────────
-.auth-submit-btn {
-  @extend .default-text;
-  width: 100%;
-  padding: 13px;
-  background-color: colors.$color-text-primary;
-  color: colors.$color-white;
-  border: none;
-  border-radius: 12px;
-  outline: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: colors.$color-text-secondary;
-  }
-}
-
 // ── Footer Links (Sign in / Register) ─────────────────────────
 .auth-footer-link {
   display: flex;

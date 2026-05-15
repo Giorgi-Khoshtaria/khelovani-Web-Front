@@ -1,7 +1,7 @@
 "use client";
 
 import "./partnerRegistration.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ import PhoneInput from "@/components/ui/PhoneInput";
 import SelectInput from "@/components/ui/SelectInput";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
+import Button from "@/components/ui/Button";
 import { CITY_OPTIONS } from "@/components/ui/CityOptions";
 import {
   validatePartnerForm,
@@ -20,8 +21,10 @@ import {
 import { PartnerTypeEnum, type PartnerType } from "@/lib/types/partnerTypes";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import { partnerRegisterRequest } from "@/apiCalls/partnerRequests/partnerAuth.req";
+import { getPublicCategories, type PublicCategory } from "@/apiCalls/categoryRequests/category.req";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import CategoryMultiSelect from "./CategoryMultiSelect";
 
 const buildInitialForm = (partnerType: PartnerType): PartnerFormData => {
   if (partnerType === PartnerTypeEnum.INDIVIDUAL) {
@@ -32,11 +35,11 @@ const buildInitialForm = (partnerType: PartnerType): PartnerFormData => {
       companyNameEn: "",
       phone: "",
       city: "",
-
       email: "",
       address: "",
       addressEn: "",
       description: "",
+      categories: [],
       terms: false,
     };
   }
@@ -52,6 +55,7 @@ const buildInitialForm = (partnerType: PartnerType): PartnerFormData => {
     address: "",
     addressEn: "",
     description: "",
+    categories: [],
     terms: false,
   };
 };
@@ -62,11 +66,15 @@ function PartnerRegistration() {
   const [partnerType, setPartnerType] = useState<PartnerType>(
     PartnerTypeEnum.ORGANIZATION,
   );
+  const [categories, setCategories] = useState<PublicCategory[]>([]);
+
+  useEffect(() => {
+    getPublicCategories().then(setCategories).catch(() => {});
+  }, []);
 
   const { t: tPages } = useClientTranslation("pages");
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
-  const { t: tCommon } = useClientTranslation("common");
   const { t: tAlerts } = useClientTranslation("alerts");
   const { lang } = useLanguage();
 
@@ -83,14 +91,28 @@ function PartnerRegistration() {
       companyNameEn: prev.companyNameEn,
       phone: prev.phone,
       city: prev.city,
-
       email: prev.email,
       address: prev.address,
       addressEn: prev.addressEn,
       description: prev.description ?? "",
+      categories: prev.categories ?? [],
       terms: prev.terms,
     }));
     setErrors({});
+  };
+
+  const handleCategoryToggle = (slug: string) => {
+    setFormData((prev) => {
+      const current = prev.categories ?? [];
+      const next = current.includes(slug)
+        ? current.filter((s) => s !== slug)
+        : [...current, slug];
+      return { ...prev, categories: next };
+    });
+  };
+
+  const handleCategoriesClear = () => {
+    setFormData((prev) => ({ ...prev, categories: [] }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -177,7 +199,11 @@ function PartnerRegistration() {
                 onChange={() => handleTypeSwitch(PartnerTypeEnum.ORGANIZATION)}
               />
               <span className="partner-type-toggle__name">
-                {tInputs("label.partner_type_organization") || "ორგანიზაცია"}
+                {tInputs("label.partner_type_organization") || "კომპანია"}
+              </span>
+              <span className="partner-type-toggle__hint">
+                {tInputs("label.partner_type_organization_hint") ||
+                  "მაგ: შპს, ი/მ, სააქციო საზოგადოება"}
               </span>
             </label>
             <label
@@ -191,7 +217,11 @@ function PartnerRegistration() {
                 onChange={() => handleTypeSwitch(PartnerTypeEnum.INDIVIDUAL)}
               />
               <span className="partner-type-toggle__name">
-                {tInputs("label.partner_type_individual") || "ფიზიკური პირი"}
+                {tInputs("label.partner_type_individual") || "ბრენდი"}
+              </span>
+              <span className="partner-type-toggle__hint">
+                {tInputs("label.partner_type_individual_hint") ||
+                  "მაგ: ხელოსანი, არტისტი, მცირე ბრენდი"}
               </span>
             </label>
           </div>
@@ -361,6 +391,39 @@ function PartnerRegistration() {
             </div>
           </div>
 
+          {/* ── Categories ── */}
+          {categories.length > 0 && (
+            <div className="form-section">
+              <CategoryMultiSelect
+                id="categories"
+                label={tInputs("label.categories") || "კატეგორიები"}
+                options={categories.map((cat) => ({
+                  value: cat.slug,
+                  label: lang === "ge" ? cat.nameGe : cat.nameEn,
+                }))}
+                selected={formData.categories ?? []}
+                onToggle={handleCategoryToggle}
+                onClear={handleCategoriesClear}
+                placeholder={
+                  tInputs("placeholder.categories") ||
+                  (lang === "ge"
+                    ? "აირჩიეთ კატეგორიები"
+                    : "Select categories")
+                }
+                searchPlaceholder={
+                  tInputs("placeholder.search_categories") ||
+                  (lang === "ge" ? "ძებნა..." : "Search...")
+                }
+                selectedSuffix={lang === "ge" ? "არჩეული" : "selected"}
+                emptyText={
+                  lang === "ge" ? "შედეგი ვერ მოიძებნა" : "No results"
+                }
+                clearLabel={lang === "ge" ? "გასუფთავება" : "Clear all"}
+                error={errors.categories}
+              />
+            </div>
+          )}
+
           {/* ── Description (truly stacked) ── */}
           <div className="form-section">
             <div>
@@ -385,15 +448,15 @@ function PartnerRegistration() {
           />
 
           <div className="create-account-button form-group--full">
-            <button
+            <Button
               type="submit"
-              disabled={isLoading}
-              className="create-account-btn"
+              variant="primary"
+              size="lg"
+              fullWidth
+              isLoading={isLoading}
             >
-              {isLoading
-                ? tCommon("loading") || "მიმდინარეობს..."
-                : tNav("register") || "რეგისტრაცია"}
-            </button>
+              {tNav("register") || "რეგისტრაცია"}
+            </Button>
           </div>
         </form>
       </div>

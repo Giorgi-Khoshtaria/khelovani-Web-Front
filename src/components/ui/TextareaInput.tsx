@@ -1,4 +1,4 @@
-import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import FormField from "./FormField";
 
 interface TextareaInputProps {
   id: string;
@@ -23,14 +23,15 @@ export default function TextareaInput({
   rows = 3,
   fullWidth,
 }: TextareaInputProps) {
-  const { t } = useClientTranslation(["validation"]);
+  const composedLabel = (
+    <>
+      {label}
+      {hint && <span className="label-hint">{hint}</span>}
+    </>
+  );
 
   return (
-    <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
-      <label htmlFor={id}>
-        {label}
-        {hint && <span className="label-hint">{hint}</span>}
-      </label>
+    <FormField id={id} label={composedLabel} error={error} fullWidth={fullWidth}>
       <textarea
         id={id}
         value={value}
@@ -39,7 +40,6 @@ export default function TextareaInput({
         placeholder={placeholder}
         rows={rows}
       />
-      {error && <span className="error-text">{t(error)}</span>}
-    </div>
+    </FormField>
   );
 }

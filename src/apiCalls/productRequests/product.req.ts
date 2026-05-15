@@ -17,7 +17,7 @@ export interface GetProductsResponse {
     totalCount: number;
     totalPages: number;
     currentPage: number;
-    limit?: number;
+    limit: number;
   };
 }
 

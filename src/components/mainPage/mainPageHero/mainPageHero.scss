@@ -2,22 +2,19 @@
 @use "@/styles/defaultTexts.scss" as defaultTexts;
 @use "@/styles/animations.scss";
 
-// Keyframes (orbDrift, scrollBounce, gemSpin) live in animations.scss
-
 // ─── root ─────────────────────────────────────────────────
 
 .hero {
   position: relative;
   width: 100%;
-  min-height: clamp(560px, 85vh, 820px);
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   overflow: hidden;
+  color: colors.$color-ivory;
 }
 
-// ─── background layer ─────────────────────────────────────
+// ─── background image + overlay ───────────────────────────
 
 .hero__bg {
   position: absolute;
@@ -27,132 +24,99 @@
   overflow: hidden;
 }
 
-.hero__orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-
-  &--1 {
-    width: 700px;
-    height: 700px;
-    top: -220px;
-    left: -180px;
-    background: radial-gradient(circle, rgba(colors.$color-sand, 0.55) 0%, transparent 70%);
-    animation: orbDrift 18s ease-in-out infinite;
-  }
-
-  &--2 {
-    width: 700px;
-    height: 700px;
-    bottom: -350px;
-    right: -250px;
-    background: radial-gradient(circle, rgba(colors.$color-walnut, 0.3) 0%, transparent 70%);
-    animation: orbDrift 24s ease-in-out infinite reverse;
-  }
+.hero__bg-img {
+  object-fit: cover;
+  object-position: center right;
 }
 
-.hero__grid {
+.hero__bg-overlay {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(colors.$color-espresso, 0.09) 1px, transparent 1px);
-  background-size: 32px 32px;
-  opacity: 0.4;
+  background: linear-gradient(
+    100deg,
+    rgba(20, 13, 7, 0.92) 0%,
+    rgba(20, 13, 7, 0.78) 32%,
+    rgba(20, 13, 7, 0.45) 60%,
+    rgba(20, 13, 7, 0.18) 100%
+  );
 }
 
-// ─── two-column inner ─────────────────────────────────────
+// ─── content ──────────────────────────────────────────────
 
 .hero__inner {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  align-items: center;
-  gap: 64px;
   width: 100%;
-  max-width: 1200px;
-  padding: 100px 48px 120px;
-}
-
-// ─── copy column ──────────────────────────────────────────
-
-.hero__copy {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 180px 96px 64px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   opacity: 0;
+
+  @media (max-width: 1100px) {
+    padding: 160px 48px 56px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 130px 22px 44px;
+  }
 }
 
+// ─── eyebrow ──────────────────────────────────────────────
+
 .hero__eyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: colors.$color-text-secondary;
-  margin-bottom: 18px;
+  color: rgba(colors.$color-ivory, 0.78);
+  margin-bottom: 28px;
 }
 
 .hero__eyebrow-dash {
-  color: colors.$color-walnut;
+  color: rgba(colors.$color-ivory, 0.65);
 }
 
+// ─── headline ─────────────────────────────────────────────
+
 .hero__title {
-  font-size: clamp(56px, 7vw, 96px);
-  line-height: 1;
-  margin: 0 0 28px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(72px, 12vw, 200px);
+  line-height: 0.95;
+  margin: 0 0 40px;
   letter-spacing: -0.02em;
+  color: colors.$color-ivory;
 }
 
 .hero__title-regular {
-  font-weight: 700;
-  color: colors.$color-espresso;
   font-style: normal;
+  font-weight: 400;
 }
 
 .hero__title-italic {
   font-style: italic;
   font-weight: 400;
-  color: colors.$color-deep-red;
+  color: rgba(colors.$color-ivory, 0.85);
+  margin-left: 0.02em;
 }
+
+// ─── description ──────────────────────────────────────────
 
 .hero__description {
-  @extend .medium-text;
-  color: colors.$color-text-secondary;
-  line-height: 1.75;
-  font-size: clamp(14px, 1.4vw, 17px);
-  margin-bottom: 32px;
-  max-width: 520px;
-}
-
-// ─── divider ──────────────────────────────────────────────
-
-.hero__divider {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  max-width: 280px;
-  margin-bottom: 32px;
-
-  span {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(colors.$color-walnut, 0.3), transparent);
-  }
-
-  .hero__divider-gem {
-    width: 8px;
-    height: 8px;
-    flex: 0 0 8px;
-    background-color: colors.$color-walnut;
-    border-radius: 2px;
-    transform: rotate(45deg);
-    animation: gemSpin 8s linear infinite;
-  }
+  font-family: var(--font-body);
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: rgba(colors.$color-ivory, 0.78);
+  max-width: 540px;
+  margin-bottom: 44px;
 }
 
 // ─── actions ──────────────────────────────────────────────
@@ -161,35 +125,36 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 36px;
-  width: 100%;
+  gap: 14px;
+  margin-bottom: 96px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 64px;
+  }
 }
 
 .hero__btn {
-  @extend .default-text;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
-  padding: 14px 28px;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+  height: 56px;
+  padding: 0 30px;
+  border-radius: 999px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
   white-space: nowrap;
+  transition: transform 0.22s ease, background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
 
   &--primary {
-    background-color: colors.$color-espresso;
-    color: colors.$color-white;
-    box-shadow: 0 6px 24px rgba(colors.$color-espresso, 0.22);
+    background-color: colors.$color-ivory;
+    color: colors.$color-espresso;
 
     &:hover {
-      background-color: colors.$color-darkest;
       transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(colors.$color-espresso, 0.3);
+      background-color: colors.$color-white;
     }
 
     .hero__btn-icon {
@@ -202,28 +167,29 @@
     }
   }
 
-  &--secondary {
-    background-color: colors.$color-white;
-    color: colors.$color-espresso;
-    border: 1.5px solid rgba(colors.$color-espresso, 0.18);
-    box-shadow: 0 4px 14px rgba(colors.$color-espresso, 0.07);
+  &--ghost {
+    background-color: transparent;
+    color: colors.$color-ivory;
+    border: 1px solid rgba(colors.$color-ivory, 0.55);
 
     &:hover {
-      background-color: colors.$color-ivory;
-      border-color: rgba(colors.$color-espresso, 0.3);
+      background-color: rgba(colors.$color-ivory, 0.08);
       transform: translateY(-2px);
     }
   }
 
-  &--ghost {
-    background-color: transparent;
-    color: colors.$color-walnut;
-    border: 1.5px dashed rgba(colors.$color-walnut, 0.5);
+  &--text {
+    padding: 0 14px;
+    background: none;
+    color: rgba(colors.$color-ivory, 0.9);
+    text-decoration: underline;
+    text-decoration-color: rgba(colors.$color-ivory, 0.7);
+    text-underline-offset: 6px;
+    text-decoration-thickness: 1px;
 
     &:hover {
-      background-color: rgba(colors.$color-walnut, 0.06);
-      border-style: solid;
-      transform: translateY(-2px);
+      color: colors.$color-ivory;
+      text-decoration-color: colors.$color-ivory;
     }
   }
 }
@@ -232,187 +198,40 @@
 
 .hero__stats {
   display: flex;
-  align-items: center;
-  gap: 24px;
+  align-items: flex-start;
+  gap: 96px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(colors.$color-ivory, 0.18);
+  width: 100%;
+  max-width: 720px;
+
+  @media (max-width: 640px) {
+    gap: 40px;
+    flex-wrap: wrap;
+  }
 }
 
 .hero__stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
 }
 
 .hero__stat-value {
-  font-size: clamp(26px, 3vw, 40px);
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(34px, 4vw, 52px);
   line-height: 1;
-  color: colors.$color-espresso;
-  letter-spacing: -0.02em;
+  color: colors.$color-ivory;
+  letter-spacing: -0.01em;
 }
 
 .hero__stat-label {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: colors.$color-text-secondary;
-}
-
-.hero__stat-sep {
-  width: 1px;
-  height: 36px;
-  background-color: rgba(colors.$color-walnut, 0.2);
-}
-
-// ─── artwork column ───────────────────────────────────────
-
-.hero__art {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 9 / 10;
-  max-width: 480px;
-  justify-self: end;
-  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
-  opacity: 0;
-}
-
-.hero__art-card {
-  position: absolute;
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-
-  &--main {
-    top: 0;
-    left: 0;
-    right: 10%;
-    bottom: 15%;
-    background:
-      repeating-linear-gradient(
-        -45deg,
-        #6b4c35 0px,
-        #6b4c35 12px,
-        #8a6448 12px,
-        #8a6448 24px
-      );
-    box-shadow: 0 24px 64px rgba(colors.$color-espresso, 0.25);
-  }
-
-  &--detail {
-    bottom: 0;
-    right: 0;
-    width: 44%;
-    aspect-ratio: 3 / 4;
-    background-color: #e8dcc8;
-    box-shadow: 0 16px 48px rgba(colors.$color-espresso, 0.18);
-  }
-}
-
-.hero__art-caption {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: rgba(colors.$color-white, 0.75);
-  padding: 12px 16px;
-  background: linear-gradient(to top, rgba(colors.$color-espresso, 0.5) 0%, transparent 100%);
-  width: 100%;
-
-  .hero__art-card--detail & {
-    color: rgba(colors.$color-espresso, 0.55);
-    background: none;
-  }
-}
-
-// ─── scroll hint ──────────────────────────────────────────
-
-.hero__scroll {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  animation: fadeUp 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
-  opacity: 0;
-}
-
-.hero__scroll-track {
-  width: 22px;
-  height: 36px;
-  border-radius: 12px;
-  border: 2px solid rgba(colors.$color-walnut, 0.3);
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-
-.hero__scroll-thumb {
-  width: 4px;
-  height: 8px;
-  border-radius: 3px;
-  background-color: colors.$color-walnut;
-  animation: scrollBounce 1.8s ease-in-out infinite;
-}
-
-// ─── responsive ───────────────────────────────────────────
-
-// tablet & below: single column, hide decorative art
-// (placeholder CSS art reads as broken on tablet; swap for real <Image> later)
-@media (max-width: 1024px) {
-  .hero {
-    min-height: auto;
-  }
-
-  .hero__inner {
-    grid-template-columns: 1fr;
-    padding: 72px 32px 80px;
-    gap: 0;
-  }
-
-  .hero__copy {
-    order: 1;
-  }
-
-  .hero__art {
-    display: none;
-  }
-
-  .hero__title {
-    font-size: clamp(48px, 10vw, 80px);
-  }
-}
-
-// small mobile
-@media (max-width: 540px) {
-  .hero__inner {
-    padding: 56px 16px 64px;
-  }
-
-  .hero__title {
-    font-size: clamp(44px, 14vw, 60px);
-  }
-
-  .hero__description {
-    font-size: 14px;
-  }
-
-  .hero__actions {
-    flex-direction: column;
-    align-items: stretch;
-    margin-bottom: 28px;
-  }
-
-  .hero__btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .hero__stats {
-    gap: 14px;
-  }
-
-  .hero__stat-value {
-    font-size: 26px;
-  }
+  color: rgba(colors.$color-ivory, 0.6);
 }

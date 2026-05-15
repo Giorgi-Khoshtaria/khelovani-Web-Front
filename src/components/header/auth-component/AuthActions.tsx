@@ -66,8 +66,9 @@ function AuthActions({ mobile }: AuthActionsProps) {
 
   return (
     <div className={`auth-action ${mobile ? "mobile" : ""}`}>
-      <Link href="/login" className="login-btn">{t("login")}</Link>
-      <Link href="/register" className="register-btn">{t("register")}</Link>
+      <Link href="/login" className="sign-in-btn">
+        {t("login")}
+      </Link>
     </div>
   );
 }

@@ -11,14 +11,14 @@ export const useFormHandler = <T,>(
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
-    const { id, value, type } = e.target;
-    const checked =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
+    const target = e.target;
+    const { id, value } = target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [id]: type === "checkbox" ? checked : value,
-    }));
+    const isCheckbox =
+      target instanceof HTMLInputElement && target.type === "checkbox";
+    const nextValue = isCheckbox ? target.checked : value;
+
+    setFormData((prev) => ({ ...prev, [id]: nextValue }));
 
     if (errors[id]) {
       setErrors((prev) => ({ ...prev, [id]: "" }));

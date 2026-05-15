@@ -1,4 +1,4 @@
-import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import FormField from "./FormField";
 
 interface PhoneInputProps {
   id: string;
@@ -19,11 +19,8 @@ export default function PhoneInput({
   fullWidth,
   disabled,
 }: PhoneInputProps) {
-  const { t } = useClientTranslation(["validation"]);
-
   return (
-    <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
-      <label htmlFor={id}>{label}</label>
+    <FormField id={id} label={label} error={error} fullWidth={fullWidth}>
       <div className={`phone-input-wrapper${error ? " input-error" : ""}`}>
         <input
           type="tel"
@@ -34,7 +31,6 @@ export default function PhoneInput({
           disabled={disabled}
         />
       </div>
-      {error && <span className="error-text">{t(error)}</span>}
-    </div>
+    </FormField>
   );
 }

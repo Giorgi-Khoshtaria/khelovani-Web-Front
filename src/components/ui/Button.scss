@@ -1,0 +1,124 @@
+@use "sass:color";
+@use "@/styles/colors" as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  &:disabled,
+  &--loading {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none !important;
+  }
+
+  &--full {
+    width: 100%;
+  }
+
+  // ─── Sizes ─────────────────────────────────────────────
+  &--sm {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  &--md {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  &--lg {
+    padding: 15px 24px;
+    font-size: 15px;
+  }
+
+  // ─── Variants ──────────────────────────────────────────
+  &--primary {
+    background: $color-espresso;
+    color: $color-white;
+
+    &:hover:not(:disabled):not(.btn--loading) {
+      background: color.scale($color-espresso, $lightness: 12%);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--secondary {
+    background: $color-white;
+    color: $color-text-primary;
+    border-color: $color-border;
+
+    &:hover:not(:disabled):not(.btn--loading) {
+      border-color: $color-walnut;
+      background: rgba($color-walnut, 0.04);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $color-text-primary;
+    border-color: transparent;
+
+    &:hover:not(:disabled):not(.btn--loading) {
+      background: rgba($color-walnut, 0.06);
+    }
+  }
+
+  &--icon {
+    background: $color-white;
+    color: $color-text-secondary;
+    border-color: $color-border;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    gap: 0;
+
+    .btn__label {
+      display: none;
+    }
+
+    &:hover:not(:disabled):not(.btn--loading) {
+      border-color: $color-walnut;
+      color: $color-espresso;
+    }
+  }
+
+  &--danger {
+    background: $color-deep-red;
+    color: $color-white;
+
+    &:hover:not(:disabled):not(.btn--loading) {
+      background: color.scale($color-deep-red, $lightness: -8%);
+      transform: translateY(-1px);
+    }
+  }
+}

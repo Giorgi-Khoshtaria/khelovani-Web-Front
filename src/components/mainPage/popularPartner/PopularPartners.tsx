@@ -2,14 +2,13 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import "./popularPartners.scss";
-import Image from "next/image";
 import Link from "next/link";
 import { Partner } from "@/lib/types/partnerTypes";
 import PartnerCard from "@/components/partnersPage/partnerListing/PartnerCard/PartnerCard";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useRevealOnScroll } from "@/lib/hooks/useRevealOnScroll";
 
-const GAP = 24;
+const GAP = 12;
 
 function getVisibleCount(width: number): number {
   if (width <= 540) return 1;
@@ -47,42 +46,42 @@ function PopularPartners({
 
   const maxIndex = Math.max(0, partnersArray.length - visible);
 
-  // compute slide width from actual DOM so it works on all screen sizes
   const getSlideWidth = useCallback(() => {
     const firstSlide = trackRef.current?.children[0] as HTMLElement | undefined;
     return firstSlide ? firstSlide.offsetWidth + GAP : 364;
   }, []);
 
-  const applyTranslate = useCallback((i: number) => {
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translateX(-${i * getSlideWidth()}px)`;
-    }
-  }, [getSlideWidth]);
+  const applyTranslate = useCallback(
+    (i: number) => {
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(-${i * getSlideWidth()}px)`;
+      }
+    },
+    [getSlideWidth],
+  );
 
   const prev = useCallback(() => {
     setIndex((i) => {
-      const next = Math.max(0, i - 1);
-      applyTranslate(next);
-      return next;
+      const n = Math.max(0, i - 1);
+      applyTranslate(n);
+      return n;
     });
   }, [applyTranslate]);
 
   const next = useCallback(() => {
     setIndex((i) => {
-      const next = Math.min(maxIndex, i + 1);
-      applyTranslate(next);
-      return next;
+      const n = Math.min(maxIndex, i + 1);
+      applyTranslate(n);
+      return n;
     });
   }, [maxIndex, applyTranslate]);
 
-  // re-apply translate on resize, clamp index when visible count shrinks
   useEffect(() => {
     const clamped = Math.min(index, maxIndex);
     if (clamped !== index) setIndex(clamped);
     applyTranslate(clamped);
   }, [index, maxIndex, applyTranslate]);
 
-  // touch swipe
   const touchStartX = useRef(0);
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -94,44 +93,58 @@ function PopularPartners({
 
   return (
     <section className="pop-partners" ref={sectionRef}>
-      <div className="pop-partners__header">
-        <h2 className="pop-partners__title">
-          {t("home.popular-Partners_title")}
-        </h2>
+      <div className="pop-partners__container">
+        <div className="pop-partners__header">
+          <div className="pop-partners__heading">
+            <span className="pop-partners__eyebrow">
+              {t("home.popularPartners.eyebrow")}
+            </span>
+            <h2 className="pop-partners__title">
+              {t("home.popular-Partners_title")}
+            </h2>
+            <p className="pop-partners__subtitle">
+              {t("home.popularPartners._subtitle")}
+            </p>
+          </div>
 
-        <div className="pop-partners__controls">
-          <button
-            className="pop-partners__arrow"
-            onClick={prev}
-            disabled={index === 0}
-            aria-label={tNav("previous")}
-          >
-            <Image
-              src="/assets/arrow-left-solid-full.svg"
-              width={16}
-              height={16}
-              alt=""
-              aria-hidden="true"
-            />
-          </button>
-          <button
-            className="pop-partners__arrow"
-            onClick={next}
-            disabled={index >= maxIndex}
-            aria-label={tNav("next")}
-          >
-            <Image
-              src="/assets/arrow-left-solid-full.svg"
-              width={16}
-              height={16}
-              alt=""
-              aria-hidden="true"
-              style={{ transform: "rotate(180deg)" }}
-            />
-          </button>
-          <Link href="/partners" className="pop-partners__view-all">
-            {tNav("view_all")} →
-          </Link>
+          <div className="pop-partners__controls">
+            <button
+              className="pop-partners__arrow"
+              onClick={prev}
+              disabled={index === 0}
+              aria-label={tNav("previous")}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path
+                  d="M9 2 4 7l5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              className="pop-partners__arrow"
+              onClick={next}
+              disabled={index >= maxIndex}
+              aria-label={tNav("next")}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path
+                  d="M5 2 10 7l-5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <Link href="/partners" className="pop-partners__view-all">
+              {tNav("view_all")}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </div>
       </div>
 

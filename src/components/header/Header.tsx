@@ -1,22 +1,29 @@
 "use client";
-import Image from "next/image";
 
 import "./header.scss";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Navigation from "./navigation-component/Navigation";
 import AuthActions from "./auth-component/AuthActions";
 import SideMenu from "./sideMenu/SideMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useMenu } from "@/contexts/MenuContext";
+import { useFavorites } from "@/contexts/FavoritesContext";
+import { CartIcon } from "@/lib/icons";
+
+const TRANSPARENT_ROUTES = ["/"];
 
 function Header() {
-  const { menuItems } = useMenu();
+  const pathname = usePathname();
+  const { ids: favoriteIds } = useFavorites();
+  const favCount = favoriteIds.size;
   const { lang, setLang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Lock body scroll when menu is open
+  const isOverHero = TRANSPARENT_ROUTES.includes(pathname ?? "");
+  const transparent = isOverHero && !scrolled;
+
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -24,89 +31,97 @@ function Header() {
     };
   }, [menuOpen]);
 
-  // Add shadow on scroll
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 0);
+    const handleScroll = () => setScrolled(window.scrollY > 24);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const headerClass = [
+    "header",
+    transparent ? "header--transparent" : "header--solid",
+    scrolled ? "header--scrolled" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <>
-      <header className={`header${scrolled ? " header--scrolled" : ""}`}>
-        <Link href="/" className="header-logo">
-          <Image
-            className="logo"
-            src="/assets/logo.png"
-            width={150}
-            height={50}
-            alt="logo"
-          />
+      <header className={headerClass}>
+        <Link href="/" className="header__brand" aria-label="Khelovani — home">
+          <span className="header__logo-mark" aria-hidden="true">K</span>
+          <span className="header__logo-word">Khelovani</span>
         </Link>
 
-        <nav className="nav">
+        <nav className="header__nav">
           <Navigation />
         </nav>
 
-        <div className="header-actions">
-          <div className="favorites-action">
-            <Image
-              src="/assets/favorite-icon.svg"
-              width={24}
-              height={24}
-              alt="favoriteIcon"
-            />
-          </div>
-
-          <Link href="/cart" className="cart-action" aria-label="cart">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+        <div className="header__actions">
+          <Link
+            href="/favorites"
+            className="header__icon-btn"
+            aria-label="favorites"
+          >
+            <svg width="18" height="17" viewBox="0 0 18 17" fill="none" aria-hidden="true">
+              <path
+                d="M13.125 1.5c-1.628 0-3.03.916-4.125 2.244C7.905 2.416 6.503 1.5 4.875 1.5 2.182 1.5 0 3.682 0 6.375 0 10.336 9 15.75 9 15.75s9-5.414 9-9.375C18 3.682 15.818 1.5 13.125 1.5Z"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinejoin="round"
+              />
             </svg>
+            {favCount > 0 && (
+              <span className="header__icon-badge" aria-label={`${favCount} saved`}>
+                {favCount > 99 ? "99+" : favCount}
+              </span>
+            )}
           </Link>
 
-          <div className="lang-toggle">
-            <select
-              value={lang}
-              onChange={(e) => setLang(e.target.value as "ge" | "en")}
+          <Link href="/cart" className="header__icon-btn" aria-label="cart">
+            <CartIcon size={20} />
+          </Link>
+
+          <div className="header__lang">
+            <button
+              type="button"
+              className={`header__lang-btn${lang === "en" ? " is-active" : ""}`}
+              onClick={() => setLang("en")}
+              aria-pressed={lang === "en"}
             >
-              <option value="ge">GE</option>
-              <option value="en">EN</option>
-            </select>
+              EN
+            </button>
+            <span className="header__lang-sep" aria-hidden="true">·</span>
+            <button
+              type="button"
+              className={`header__lang-btn${lang === "ge" ? " is-active" : ""}`}
+              onClick={() => setLang("ge")}
+              aria-pressed={lang === "ge"}
+            >
+              GE
+            </button>
           </div>
 
-          <div className="auth-action-section">
+          <div className="header__auth">
             <AuthActions />
           </div>
 
           <button
-            className="burger-menu"
+            className="header__burger"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={menuOpen}
           >
-            <Image
-              src="/assets/burger-icon.svg"
-              width={24}
-              height={24}
-              alt="Open menu"
-            />
+            <span />
+            <span />
+            <span />
           </button>
         </div>
       </header>
 
-      {/* Overlay */}
+      {!isOverHero && <div className="header-spacer" aria-hidden="true" />}
+
       <div
         className={`menu-overlay ${menuOpen ? "menu-overlay--visible" : ""}`}
         onClick={() => setMenuOpen(false)}

@@ -30,11 +30,24 @@ export interface Partner {
   facebook?: string;
   instagram?: string;
   tiktok?: string;
+  categories?: string[];
   profilePhoto?: string;
   rating?: number;
   reviewCount?: number;
   productCount?: number;
+  establishedYear?: number;
+  verified?: boolean;
   terms?: boolean;
+}
+
+// ── Hero stats (server-derived) ──────────────────────────────
+
+export interface PartnersHeroStats {
+  totalMakers: number;
+  regionCount: number;
+  craftCount: number;
+  oldestYear?: number;
+  samplePhotos: string[];
 }
 
 // ── Paginated API response ────────────────────────────────────
@@ -62,6 +75,11 @@ export interface PartnerFilterState {
 export interface PartnerListingProps {
   initialPartners?: Partner[];
   initialTotalPages?: number;
+  initialTotalCount?: number;
+}
+
+export interface PartnersHeroProps {
+  stats: PartnersHeroStats;
 }
 
 export interface PartnerCardProps {

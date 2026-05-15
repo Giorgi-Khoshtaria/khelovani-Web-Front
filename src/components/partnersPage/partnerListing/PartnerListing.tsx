@@ -8,11 +8,13 @@ import { Icons } from "./constants";
 import PartnerCard from "./PartnerCard/PartnerCard";
 import PartnerSidebar from "./PartnerSidebar/PartnerSidebar";
 import PartnerPagination from "./PartnerPagination/PartnerPagination";
+import Button from "@/components/ui/Button";
 import "./partnerListing.scss";
 
 export default function PartnerListing({
   initialPartners = [],
   initialTotalPages = 1,
+  initialTotalCount = 0,
 }: PartnerListingProps) {
   const { t: tCommon } = useClientTranslation("common");
   const { t: tPages } = useClientTranslation("pages");
@@ -74,7 +76,10 @@ export default function PartnerListing({
           {/* Results bar */}
           <div className="partner-listing__results-bar">
             <p className="partner-listing__results-text">
-              {partners.length} {tCommon("partners")}
+              <strong>{partners.length}</strong>{" "}
+              {tPages("partner_listing.makers_of")}{" "}
+              <strong>{initialTotalCount || partners.length}</strong>{" "}
+              {tPages("partner_listing.makers")}
               {filters.search && (
                 <>
                   {" "}
@@ -101,7 +106,9 @@ export default function PartnerListing({
           ) : error ? (
             <div className="partner-listing__error">
               <p>{error}</p>
-              <button onClick={clearFilters}>{tCommon("try_again")}</button>
+              <Button variant="secondary" size="sm" onClick={clearFilters}>
+                {tCommon("try_again")}
+              </Button>
             </div>
           ) : partners.length > 0 ? (
             <div className="partner-listing__grid">
@@ -117,12 +124,9 @@ export default function PartnerListing({
                   "პარტნიორები არ მოიძებნა"}
               </p>
               {activeFiltersCount > 0 && (
-                <button
-                  className="partner-listing__empty-reset"
-                  onClick={clearFilters}
-                >
-                  {tCommon("clear_all_filter")}{" "}
-                </button>
+                <Button variant="secondary" size="sm" onClick={clearFilters}>
+                  {tCommon("clear_all_filter")}
+                </Button>
               )}
             </div>
           )}

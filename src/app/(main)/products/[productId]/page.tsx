@@ -11,18 +11,25 @@ interface Props {
   params: Promise<{ productId: string }>;
 }
 
+const DEFAULT_OG_IMAGE = "/assets/og-default.png";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { productId } = await params;
   try {
     const product: IProduct = await getProductById(productId);
     const title = product.titleEn || product.titleGe;
     const description = product.descriptionEn || product.descriptionGe;
+    const ogImage = product.images?.[0] || DEFAULT_OG_IMAGE;
     return {
       title: `${title} | Khelovani`,
       description: description?.slice(0, 160),
+      openGraph: { images: [ogImage] },
     };
   } catch {
-    return { title: "Product | Khelovani" };
+    return {
+      title: "Product | Khelovani",
+      openGraph: { images: [DEFAULT_OG_IMAGE] },
+    };
   }
 }
 

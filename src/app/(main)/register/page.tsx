@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { registerUser } from "@/apiCalls/userRequests/auth.req";
 import type { UserTypes } from "@/lib/types/userTypes";
+import Button from "@/components/ui/Button";
 import {
   validateRegistrationForm,
   type RegistrationFormData,
@@ -242,17 +243,18 @@ export default function Registration() {
           />
 
           <div className="create-account-button">
-            <button
+            <Button
               type="submit"
-              disabled={isLoading || isButtonDisabled}
-              className="create-account-btn"
+              variant="primary"
+              size="lg"
+              fullWidth
+              isLoading={isLoading}
+              disabled={isButtonDisabled}
             >
               {isCooldownActive
                 ? `${cooldownSeconds} ${tCommon("rate_limit_retry_in")}`
-                : isLoading
-                  ? tCommon("loading")
-                  : tNav("register")}
-            </button>
+                : tNav("register")}
+            </Button>
           </div>
         </form>
 

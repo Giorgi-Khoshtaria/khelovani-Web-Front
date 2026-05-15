@@ -39,10 +39,6 @@
   @extend .auth-terms-container;
 }
 
-.create-account-btn {
-  @extend .auth-submit-btn;
-}
-
 .create-account-button {
   margin-top: 14px;
 }
@@ -122,5 +118,223 @@
     @extend .small-text;
     color: colors.$color-text-secondary;
     font-weight: 400;
+  }
+}
+
+// ── Category multi-select dropdown ───────────────────────────
+.ms-label-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: colors.$color-text-primary;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.ms-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.ms-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1.5px solid colors.$color-border;
+  border-radius: 10px;
+  background-color: colors.$color-white;
+  font-size: 14px;
+  color: colors.$color-text-primary;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    border-color: colors.$color-text-secondary;
+  }
+
+  &__text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.placeholder {
+      color: colors.$color-text-secondary;
+    }
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: colors.$color-text-secondary;
+    transition: transform 0.18s ease;
+  }
+}
+
+.ms-wrapper.open .ms-trigger {
+  border-color: colors.$color-text-primary;
+
+  .ms-trigger__chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.ms-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background-color: colors.$color-white;
+  border: 1px solid colors.$color-border;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+}
+
+.ms-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid colors.$color-border;
+  color: colors.$color-text-secondary;
+}
+
+.ms-search {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: colors.$color-text-primary;
+
+  &::placeholder {
+    color: colors.$color-text-secondary;
+  }
+}
+
+.ms-list {
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ms-empty {
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: colors.$color-text-secondary;
+  margin: 0;
+}
+
+.ms-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: colors.$color-text-primary;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: colors.$color-bg-secondary;
+  }
+
+  &__label {
+    flex: 1;
+  }
+}
+
+.ms-check {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid colors.$color-border;
+  background-color: colors.$color-white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: colors.$color-white;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.ms-option.active {
+  background-color: colors.$color-bg-secondary;
+
+  .ms-check {
+    background-color: colors.$color-espresso;
+    border-color: colors.$color-espresso;
+  }
+}
+
+.ms-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ms-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px 5px 12px;
+  border-radius: 999px;
+  background-color: colors.$color-bg-secondary;
+  border: 1px solid rgba(colors.$color-espresso, 0.15);
+  font-size: 13px;
+  color: colors.$color-text-primary;
+
+  &__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: none;
+    background-color: rgba(colors.$color-espresso, 0.1);
+    color: colors.$color-text-primary;
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+
+    &:hover {
+      background-color: colors.$color-espresso;
+      color: colors.$color-white;
+    }
+  }
+}
+
+.ms-clear {
+  margin-left: 4px;
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: colors.$color-text-secondary;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: colors.$color-text-primary;
   }
 }

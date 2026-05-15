@@ -1,106 +1,262 @@
 @use "../../styles/colors.scss" as colors;
 @use "../../styles/defaultTexts.scss" as defaultTexts;
 
+// ─── shell ────────────────────────────────────────────────
+
 .header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 1440px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: colors.$color-white;
-  padding: 0 40px;
-  position: sticky;
-  top: 0;
+  padding: 22px 48px;
   z-index: 100;
-  box-shadow: none;
-  transition: box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease,
+    padding 0.3s ease;
+
+  // text + icon colors are inherited via currentColor
+  &--transparent {
+    background-color: transparent;
+    color: colors.$color-ivory;
+  }
+
+  &--solid {
+    background-color: colors.$color-ivory;
+    color: colors.$color-espresso;
+    border-bottom: 1px solid rgba(colors.$color-espresso, 0.06);
+  }
 
   &--scrolled {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    padding: 14px 48px;
+    box-shadow: 0 6px 24px rgba(colors.$color-espresso, 0.08);
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px 18px;
+
+    &--scrolled {
+      padding: 12px 18px;
+    }
   }
 }
 
-.logo {
-  width: 150px;
-}
+// ─── brand / logo ─────────────────────────────────────────
 
-.nav {
-  display: flex;
+.header__brand {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.favorites-action {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  cursor: pointer;
-
-  img {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-.cart-action {
+.header__logo-mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  color: colors.$color-text-primary;
-  cursor: pointer;
-  transition: background-color 0.18s ease, color 0.18s ease;
+  background-color: colors.$color-ivory;
+  color: colors.$color-espresso;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1;
 
-  &:hover {
-    background-color: rgba(colors.$color-espresso, 0.08);
-    color: colors.$color-espresso;
+  .header--solid & {
+    background-color: colors.$color-espresso;
+    color: colors.$color-ivory;
   }
 }
 
-.lang-toggle {
+.header__logo-word {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: inherit;
+}
+
+// ─── navigation ───────────────────────────────────────────
+
+.header__nav {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
 
-  select {
-    @extend .default-text;
-    border: none;
-    outline: none;
-    background: transparent;
-    cursor: pointer;
+  @media (max-width: 1100px) {
+    display: none;
   }
 }
 
-.burger-menu {
-  display: none;
+// ─── right-side actions ───────────────────────────────────
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header__icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(colors.$color-ivory, 0.22);
+  background-color: rgba(colors.$color-ivory, 0.06);
+  color: inherit;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background-color: rgba(colors.$color-ivory, 0.16);
+    border-color: rgba(colors.$color-ivory, 0.4);
+  }
+
+  .header--solid & {
+    border-color: rgba(colors.$color-espresso, 0.14);
+    background-color: rgba(colors.$color-espresso, 0.04);
+    color: colors.$color-espresso;
+
+    &:hover {
+      background-color: rgba(colors.$color-espresso, 0.08);
+      border-color: rgba(colors.$color-espresso, 0.25);
+    }
+  }
+}
+
+.header__icon-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background-color: colors.$color-deep-red;
+  color: colors.$color-ivory;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+}
+
+// ─── language toggle ──────────────────────────────────────
+
+.header__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.header__lang-btn {
   background: none;
   border: none;
   padding: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.55;
+  transition: opacity 0.18s ease;
 
-  img {
-    width: 24px;
-    height: 24px;
+  &.is-active {
+    opacity: 1;
+    font-weight: 700;
+  }
+
+  &:hover {
+    opacity: 0.9;
   }
 }
 
-// ── Overlay ──────────────────────────────────────────────
+.header__lang-sep {
+  opacity: 0.45;
+}
+
+// ─── auth ─────────────────────────────────────────────────
+
+.header__auth {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+// ─── burger ───────────────────────────────────────────────
+
+.header__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 1px solid rgba(colors.$color-ivory, 0.25);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 11px 11px;
+  color: inherit;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background-color: currentColor;
+    border-radius: 2px;
+  }
+
+  .header--solid & {
+    border-color: rgba(colors.$color-espresso, 0.18);
+  }
+
+  @media (max-width: 1100px) {
+    display: inline-flex;
+  }
+}
+
+// ─── spacer (non-hero pages) ──────────────────────────────
+
+.header-spacer {
+  height: 84px;
+
+  @media (max-width: 768px) {
+    height: 72px;
+  }
+}
+
+// ─── overlay ──────────────────────────────────────────────
+
 .menu-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.45);
   z-index: 999;
-
-  // always present in DOM but invisible & non-interactive by default
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -108,23 +264,5 @@
   &--visible {
     opacity: 1;
     pointer-events: all;
-  }
-}
-
-// ── Responsive ───────────────────────────────────────────
-@media (max-width: 1100px) {
-  .nav,
-  .auth-action-section {
-    display: none !important;
-  }
-
-  .burger-menu {
-    display: block;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    padding: 0 10px;
   }
 }

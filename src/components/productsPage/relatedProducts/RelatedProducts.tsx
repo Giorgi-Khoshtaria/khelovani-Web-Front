@@ -5,6 +5,7 @@ import Link from "next/link";
 import { IProduct } from "@/lib/types/productTypes";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
 import ProductCard from "../productCard/ProductCard";
+import Skeleton from "@/components/ui/Skeleton";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import "./relatedProducts.scss";
 
@@ -48,15 +49,19 @@ export default function RelatedProducts({
         {tPages("products.related") || "Related Products"}
       </h2>
       <div className="related-products__grid">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          related.map((p) => (
-            <Link key={p._id} href={`/products/${p._id}`}>
-              <ProductCard product={p} />
-            </Link>
-          ))
-        )}
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="related-products__skeleton">
+                <Skeleton height={220} radius={14} />
+                <Skeleton height={18} width="70%" />
+                <Skeleton height={14} width="40%" />
+              </div>
+            ))
+          : related.map((p) => (
+              <Link key={p._id} href={`/products/${p._id}`}>
+                <ProductCard product={p} />
+              </Link>
+            ))}
       </div>
     </section>
   );

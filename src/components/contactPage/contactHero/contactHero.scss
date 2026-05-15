@@ -1,11 +1,12 @@
 @use "@/styles/colors.scss" as colors;
 @use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/tokens" as *;
 @use "@/styles/animations.scss";
 
 .contact-hero {
   position: relative;
   width: 100%;
-  padding: 100px 24px 120px;
+  padding: 120px 24px 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,31 +18,72 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    background: radial-gradient(circle at center, rgba(colors.$color-bg-secondary, 0.4) 0%, transparent 70%);
+    background:
+      radial-gradient(circle at 50% 30%, rgba(colors.$color-bg-secondary, 0.5) 0%, transparent 65%),
+      linear-gradient(180deg, colors.$color-ivory 0%, colors.$color-bg-page 100%);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(colors.$color-walnut, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(colors.$color-walnut, 0.06) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
+    }
   }
 
   &__inner {
     position: relative;
     z-index: 1;
-    max-width: 800px;
+    max-width: 900px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__eyebrow {
+    @extend .small-text;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    font-weight: 600;
+    color: colors.$color-walnut;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease-out 0.1s both;
   }
 
   &__title {
-    @extend .huge-text;
-    font-size: clamp(32px, 5vw, 48px);
-    color: colors.$color-text-primary;
-    margin-bottom: 20px;
-    font-weight: 800;
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    color: colors.$color-espresso;
+    margin: 0 0 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     animation: fadeUp 0.8s ease-out 0.2s both;
   }
 
   &__description {
     @extend .medium-text;
     color: colors.$color-text-secondary;
-    max-width: 600px;
+    max-width: 640px;
     margin: 0 auto;
     line-height: 1.7;
+    font-size: clamp(15px, 1.4vw, 17px);
     animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+
+  @media (max-width: $bp-mobile) {
+    padding: 80px 20px 120px;
+
+    &__eyebrow {
+      letter-spacing: 0.25em;
+      margin-bottom: 20px;
+    }
   }
 }

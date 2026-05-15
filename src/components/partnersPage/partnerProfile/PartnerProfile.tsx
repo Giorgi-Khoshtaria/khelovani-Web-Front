@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getPartnerById } from "@/apiCalls/partnerRequests/partner.req";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
@@ -103,44 +103,59 @@ export default function PartnerProfile({
   );
   const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState("");
-  const isFirstMount = useRef(true);
 
   useEffect(() => {
-    if (isFirstMount.current && initialData) {
-      isFirstMount.current = false;
-      return;
-    }
+    // Skip the fetch on initial mount when SSR already provided data;
+    // refetch only when `id` or `lang` actually change. The ref pattern
+    // was Strict-mode unfriendly — comparing against initialData.* is.
+    const haveServerData =
+      initialData?._id === id &&
+      partner?._id === id &&
+      partner?.companyNameGe === initialData?.companyNameGe;
+    if (haveServerData) return;
+
+    const controller = new AbortController();
 
     const fetchPartner = async () => {
       setIsLoading(true);
       try {
-        const data = await getPartnerById(id);
+        const data = await getPartnerById(id, controller.signal);
+        if (controller.signal.aborted) return;
         setPartner(data);
 
-        // Fetch product count if not provided in the partner object
         if (data.productCount !== undefined) {
           setProductCount(data.productCount);
         } else {
           try {
-            const prodRes = await getProducts({ partnerId: id, limit: 1 });
-            setProductCount(prodRes.meta.totalCount);
+            const prodRes = await getProducts(
+              { partnerId: id, limit: 1 },
+              controller.signal,
+            );
+            if (!controller.signal.aborted) {
+              setProductCount(prodRes.meta.totalCount);
+            }
           } catch (pErr) {
-            console.warn("Could not fetch fallback product count:", pErr);
+            if (!controller.signal.aborted) {
+              console.warn("Could not fetch fallback product count:", pErr);
+            }
           }
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
+        if (controller.signal.aborted) return;
         console.error("Failed to fetch partner details", err);
         setError(
           tPages("partner_profile.error_not_found") ||
             "პარტნიორი არ მოიძებნა ან წვდომა შეზღუდულია",
         );
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     };
 
     if (id) fetchPartner();
-  }, [id, lang]);
+
+    return () => controller.abort();
+  }, [id, lang, initialData, partner?._id, partner?.companyNameGe]);
 
   if (isLoading) return <ProfileSkeleton />;
   if (error || !partner) return <ProfileError message={error} />;

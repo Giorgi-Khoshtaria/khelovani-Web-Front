@@ -1,20 +1,34 @@
 @use "@/styles/colors.scss" as colors;
 @use "@/styles/defaultTexts.scss" as defaultTexts;
 
+// ── section ───────────────────────────────────────────────
+
 .pop-products {
   width: 100%;
-  padding: 80px 48px 96px;
+  background-color: colors.$color-cream;
+  padding: 96px 0 110px;
 
   @media (max-width: 1024px) {
-    padding: 72px 32px 84px;
+    padding: 80px 0 90px;
   }
 
   @media (max-width: 768px) {
-    padding: 60px 20px 72px;
+    padding: 64px 0 72px;
+  }
+}
+
+.pop-products__container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 64px;
+
+  @media (max-width: 1024px) {
+    padding: 0 32px;
   }
 
-  @media (max-width: 480px) {
-    padding: 48px 14px 60px;
+  @media (max-width: 768px) {
+    padding: 0 18px;
   }
 }
 
@@ -22,45 +36,80 @@
 
 .pop-products__header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 12px;
+  gap: 32px;
+  margin-bottom: 32px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+}
+
+.pop-products__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 560px;
+}
+
+.pop-products__eyebrow {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: colors.$color-walnut;
+  border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+  padding-bottom: 8px;
+  width: fit-content;
 }
 
 .pop-products__title {
-  @extend .huge-text;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4.4vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
   color: colors.$color-espresso;
+  margin: 0;
+}
 
-  @media (max-width: 480px) {
-    font-size: 28px;
-  }
+.pop-products__subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.3vw, 17px);
+  line-height: 1.55;
+  color: colors.$color-text-secondary;
+  margin: 0;
 }
 
 .pop-products__view-all {
-  @extend .default-text;
-  color: colors.$color-walnut;
+  font-family: var(--font-serif);
+  font-size: 17px;
   font-weight: 500;
+  color: colors.$color-espresso;
   text-decoration: none;
-  border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
-  padding-bottom: 2px;
-  white-space: nowrap;
-  transition: opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid colors.$color-espresso;
+  padding-bottom: 4px;
+  transition: gap 0.2s ease;
 
   &:hover {
-    opacity: 0.7;
+    gap: 14px;
   }
 }
 
-// ── filter tabs ───────────────────────────────────────────
+// ── filter pills ──────────────────────────────────────────
 
 .pop-products__tabs {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 32px;
-  // horizontal scroll on small screens
+  margin-bottom: 36px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -74,46 +123,54 @@
 .pop-products__tab {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 18px;
-  border-radius: 50px;
-  border: 1.5px solid colors.$color-border;
-  background-color: transparent;
-  font-size: 14px;
+  gap: 10px;
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: none;
+  background-color: colors.$color-white;
+  font-family: var(--font-body);
+  font-size: 15px;
   font-weight: 500;
-  color: colors.$color-text-secondary;
+  color: colors.$color-espresso;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  box-shadow: 0 1px 2px rgba(colors.$color-espresso, 0.04);
 
   &:hover {
-    border-color: colors.$color-walnut;
-    color: colors.$color-espresso;
+    background-color: rgba(colors.$color-espresso, 0.06);
   }
 
   &--active {
     background-color: colors.$color-espresso;
-    border-color: colors.$color-espresso;
-    color: colors.$color-white;
-
-    .pop-products__tab-count {
-      color: rgba(255, 255, 255, 0.7);
-    }
+    color: colors.$color-ivory;
 
     &:hover {
       background-color: colors.$color-darkest;
-      border-color: colors.$color-darkest;
-      color: colors.$color-white;
+    }
+
+    .pop-products__tab-count {
+      background-color: rgba(colors.$color-ivory, 0.18);
+      color: colors.$color-ivory;
     }
   }
 }
 
 .pop-products__tab-count {
-  font-size: 13px;
-  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background-color: rgba(colors.$color-espresso, 0.08);
   color: colors.$color-text-secondary;
-  transition: color 0.2s ease;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 // ── product grid ──────────────────────────────────────────
@@ -140,9 +197,9 @@
 }
 
 .pop-products__item {
-  display: block;
+  display: flex;
   text-decoration: none;
-
+  color: inherit;
   opacity: 0;
   transform: translateY(32px);
   transition:
@@ -155,8 +212,6 @@
     }
   }
 }
-
-// ── scroll reveal ─────────────────────────────────────────
 
 .pop-products.is-visible .pop-products__item {
   opacity: 1;

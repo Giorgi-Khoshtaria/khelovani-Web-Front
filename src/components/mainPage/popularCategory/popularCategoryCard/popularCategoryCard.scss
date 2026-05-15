@@ -4,82 +4,174 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 8px 32px rgba(colors.$color-espresso, 0.14);
+  background-color: colors.$color-white;
+  display: flex;
+  flex-direction: column;
   transition:
     transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 6px 22px rgba(colors.$color-espresso, 0.08);
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 48px rgba(colors.$color-espresso, 0.22);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 44px rgba(colors.$color-espresso, 0.16);
   }
 
   &__img {
     object-fit: cover;
-    transition: transform 0.45s ease;
+    transition: transform 0.6s ease;
   }
 
   &:hover &__img {
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 
-  // dark gradient from bottom
-  &__overlay {
+  // ─── small (image-on-top) variant ────────────────────────
+
+  &__media {
+    position: relative;
+    width: 100%;
+    flex: 0 0 45%;
+    overflow: hidden;
+
+    @media (max-width: 960px) {
+      flex: 0 0 42%;
+    }
+
+    @media (max-width: 480px) {
+      flex: 0 0 40%;
+    }
+  }
+
+  &__info {
+    flex: 1 1 auto;
+    padding: 26px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    background-color: colors.$color-white;
+
+    @media (max-width: 480px) {
+      padding: 20px 22px 22px;
+    }
+  }
+
+  &__name {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2vw, 32px);
+    line-height: 1.1;
+    color: colors.$color-espresso;
+    margin: 0;
+  }
+
+  &__meta-count {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__meta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: colors.$color-walnut;
+    font-weight: 500;
+    transition: gap 0.18s ease;
+  }
+
+  &:hover &__meta-link {
+    gap: 8px;
+  }
+
+  // ─── featured variant (image fills + overlay) ────────────
+
+  &--featured &__overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
-      to top,
-      rgba(colors.$color-espresso, 0.72) 0%,
-      rgba(colors.$color-espresso, 0.12) 50%,
-      transparent 100%
+      to bottom,
+      rgba(20, 13, 7, 0.35) 0%,
+      rgba(20, 13, 7, 0.05) 30%,
+      rgba(20, 13, 7, 0.55) 75%,
+      rgba(20, 13, 7, 0.78) 100%
     );
     pointer-events: none;
   }
 
-  &__body {
+  &__featured-body {
     position: absolute;
-    bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px 22px;
-    z-index: 1;
+    bottom: 0;
+    z-index: 2;
+    padding: 0 36px 36px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 18px;
+
+    @media (max-width: 480px) {
+      padding: 0 24px 24px;
+    }
   }
 
-  &__meta {
+  &__pieces-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(colors.$color-ivory, 0.55);
     font-family: 'Courier New', Courier, monospace;
     font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.72);
+    color: colors.$color-ivory;
+    background-color: rgba(20, 13, 7, 0.18);
+    backdrop-filter: blur(4px);
   }
 
-  &__featured-badge {
-    color: rgba(255, 255, 255, 0.72);
-  }
-
-  &__name {
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 700;
+  &__featured-name {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1;
+    color: colors.$color-ivory;
+    margin: 0;
     letter-spacing: -0.01em;
-    line-height: 1.15;
   }
 
-  // featured card — larger name
-  &--featured &__name {
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 700;
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background-color: colors.$color-ivory;
+    color: colors.$color-espresso;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-top: 4px;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
   }
 
-  &--featured &__body {
-    padding: 28px 32px;
-    gap: 8px;
+  &--featured:hover &__cta {
+    background-color: colors.$color-white;
+    transform: translateY(-2px);
+
+    svg {
+      transform: translate(2px, -2px);
+    }
   }
 }

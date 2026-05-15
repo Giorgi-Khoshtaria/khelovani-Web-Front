@@ -1,0 +1,75 @@
+@use "@/styles/colors" as *;
+
+.fav-grid {
+  padding-top: 40px;
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px 28px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__cell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__meta {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+  }
+
+  &__drop {
+    color: $color-success;
+    font-weight: 600;
+  }
+
+  &__empty {
+    padding: 80px 0;
+    text-align: center;
+    color: $color-text-secondary;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+
+    p {
+      font-size: 15px;
+      margin: 0;
+    }
+  }
+
+  &__cta {
+    display: inline-flex;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background-color: $color-espresso;
+    color: $color-ivory;
+    font-size: 13px;
+    text-decoration: none;
+    transition: background-color 0.18s ease;
+
+    &:hover {
+      background-color: $color-walnut;
+    }
+  }
+}

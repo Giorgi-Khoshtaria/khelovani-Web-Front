@@ -1,0 +1,41 @@
+// =============================================================
+// Design Tokens — spacing, breakpoints, radii
+// =============================================================
+// Import in any .scss file via `@use "@/styles/tokens" as *;`
+// Then use `$space-md`, `$bp-tablet`, etc.
+
+// ─── Spacing scale ───────────────────────────────────────────
+$space-xs:  4px;
+$space-sm:  8px;
+$space-md:  12px;
+$space-lg:  16px;
+$space-xl:  24px;
+$space-2xl: 32px;
+$space-3xl: 48px;
+$space-4xl: 64px;
+$space-5xl: 80px;
+$space-6xl: 96px;
+
+// ─── Breakpoints ─────────────────────────────────────────────
+// Use mobile-first when possible: `@media (min-width: $bp-tablet) {...}`.
+$bp-xs:      480px;  // small phones / minimum width
+$bp-sm:      640px;
+$bp-mobile:  768px;  // legacy "tablet" boundary, kept for compatibility
+$bp-tablet:  880px;  // product detail collapse point
+$bp-md:      960px;
+$bp-desktop: 1024px;
+$bp-lg:      1200px;
+$bp-xl:      1440px; // max content width
+
+// ─── Border radius ───────────────────────────────────────────
+$radius-sm:   6px;
+$radius-md:   10px;
+$radius-lg:   14px;
+$radius-xl:   18px;
+$radius-pill: 999px;
+
+// ─── Z-index ─────────────────────────────────────────────────
+$z-header:    100;
+$z-overlay:   1000;
+$z-modal:     1100;
+$z-toast:     1200;

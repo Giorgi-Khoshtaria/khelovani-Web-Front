@@ -1,4 +1,4 @@
-import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import FormField from "./FormField";
 
 interface TextInputProps {
   id: string;
@@ -25,11 +25,8 @@ export default function TextInput({
   fullWidth,
   disabled,
 }: TextInputProps) {
-  const { t } = useClientTranslation(["validation"]);
-
   return (
-    <div className={`form-group${fullWidth ? " form-group--full" : ""}`}>
-      <label htmlFor={id}>{label}</label>
+    <FormField id={id} label={label} error={error} fullWidth={fullWidth}>
       <input
         type={type}
         id={id}
@@ -40,7 +37,6 @@ export default function TextInput({
         maxLength={maxLength}
         disabled={disabled}
       />
-      {error && <span className="error-text">{t(error)}</span>}
-    </div>
+    </FormField>
   );
 }

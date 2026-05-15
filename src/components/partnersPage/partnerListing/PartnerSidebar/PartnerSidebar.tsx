@@ -4,6 +4,7 @@ import PartnerSearch from "./PartnerSearch/PartnerSearch";
 import PartnerFilters from "./PartnerFilters/PartnerFilters";
 import "./partnerSidebar.scss";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PartnerSidebar({
   filters,
@@ -12,10 +13,13 @@ export default function PartnerSidebar({
   onSearchChange,
   onCityChange,
   onRatingChange,
+  onPartnerTypeChange,
   onClearAll,
   onClose,
 }: PartnerSidebarProps) {
   const { t: tCommon } = useClientTranslation("common");
+  const { lang } = useLanguage();
+  const isGe = lang === "ge";
 
   return (
     <>
@@ -30,8 +34,7 @@ export default function PartnerSidebar({
         {/* Header */}
         <div className="ps__header">
           <h2 className="ps__title">
-            {Icons.filter}
-            {tCommon("filter")}
+            {tCommon("refine") || (isGe ? "გაფილტრე" : "Refine")}
             {activeCount > 0 && (
               <span className="ps__badge">{activeCount}</span>
             )}
@@ -40,7 +43,8 @@ export default function PartnerSidebar({
           <div className="ps__header-actions">
             {activeCount > 0 && (
               <button className="ps__clear" onClick={onClearAll}>
-                გასუფთავება
+                {tCommon("clear_all_filter") ||
+                  (isGe ? "გასუფთავება" : "Clear all")}
               </button>
             )}
             <button
@@ -66,8 +70,10 @@ export default function PartnerSidebar({
         <PartnerFilters
           city={filters.city}
           minRating={filters.minRating}
+          partnerType={filters.partnerType}
           onCityChange={onCityChange}
           onRatingChange={onRatingChange}
+          onPartnerTypeChange={onPartnerTypeChange}
         />
       </aside>
     </>

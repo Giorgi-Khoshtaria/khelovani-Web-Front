@@ -1,6 +1,7 @@
 @use "@/styles/colors" as *;
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-
+// @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Noto+Serif+Georgian:wght@100..900&display=swap");
 *,
 *::before,
 *::after {
@@ -12,6 +13,22 @@
 :root {
   --color-error: #{$color-error};
   --color-success: #{$color-success};
+
+  // Default (English) — Cormorant Garamond for the whole site.
+  --font-body: "Cormorant Garamond", "Times New Roman", serif;
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+}
+
+// Georgian — Noto Serif Georgian (Cormorant doesn't cover Georgian script).
+// layout.tsx renders <html lang="ka"> (ISO-639) for Georgian content,
+// so we must match `ka`. `ge` is kept as a fallback in case anything sets
+// the attribute directly using the app's internal "ge" code.
+:lang(ka),
+:lang(ge),
+[lang="ka"],
+[lang="ge"] {
+  --font-body: "Noto Serif Georgian", serif;
+  --font-serif: "Noto Serif Georgian", serif;
 }
 
 html,
@@ -22,7 +39,7 @@ body {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-body);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

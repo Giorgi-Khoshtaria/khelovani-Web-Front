@@ -18,34 +18,63 @@ function PopularCategoryCard({
   isFeatured,
   productCount,
 }: PopularCategoryCardProps) {
-  const { t: tPages } = useClientTranslation("pages");
+  const { t } = useClientTranslation("pages");
   const imageSrc = getCategoryPlaceholder(slug);
+  const count = productCount ?? 0;
+  const piecesLabel = `${count} ${t("home.stats.pieces").toLowerCase()}`;
+
+  if (isFeatured) {
+    return (
+      <article className="cat-card cat-card--featured">
+        <Image
+          src={imageSrc}
+          alt={categoryName}
+          fill
+          className="cat-card__img"
+          sizes="(max-width:960px) 90vw, 55vw"
+        />
+        <div className="cat-card__overlay" />
+
+        <div className="cat-card__featured-body">
+          <span className="cat-card__pieces-pill">{piecesLabel}</span>
+          <h3 className="cat-card__featured-name">{categoryName}</h3>
+          <span className="cat-card__cta">
+            {t("home.popularCategory.explore")}
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path
+                d="M3.5 10.5 10.5 3.5M5 3.5h5.5V9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        </div>
+      </article>
+    );
+  }
 
   return (
-    <div className={`cat-card${isFeatured ? " cat-card--featured" : ""}`}>
-      <Image
-        src={imageSrc}
-        alt={categoryName}
-        fill
-        className="cat-card__img"
-        sizes={isFeatured ? "(max-width:960px) 90vw, 55vw" : "(max-width:960px) 45vw, 22vw"}
-      />
-      <div className="cat-card__overlay" />
-      <div className="cat-card__body">
-        {productCount != null && (
-          <span className="cat-card__meta">
-            {productCount} {tPages("home.stats.pieces")}
-            {isFeatured && (
-              <span className="cat-card__featured-badge">
-                {" · "}
-                {tPages("home.featured")}
-              </span>
-            )}
-          </span>
-        )}
-        <span className="cat-card__name">{categoryName}</span>
+    <article className="cat-card">
+      <div className="cat-card__media">
+        <Image
+          src={imageSrc}
+          alt={categoryName}
+          fill
+          className="cat-card__img"
+          sizes="(max-width:960px) 45vw, 22vw"
+        />
       </div>
-    </div>
+      <div className="cat-card__info">
+        <h3 className="cat-card__name">{categoryName}</h3>
+        <span className="cat-card__meta-count">{piecesLabel}</span>
+        <span className="cat-card__meta-link">
+          {t("home.popularCategory.explore")}
+          <span aria-hidden="true">→</span>
+        </span>
+      </div>
+    </article>
   );
 }
 

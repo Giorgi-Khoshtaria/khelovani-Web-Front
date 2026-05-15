@@ -22,7 +22,9 @@ interface ProductInfoProps {
 }
 
 const buildSku = (product: IProduct): string => {
-  const prefix = String(product.category || "PRD").slice(0, 3).toUpperCase();
+  const prefix = String(product.category || "PRD")
+    .slice(0, 3)
+    .toUpperCase();
   const tail = product._id.slice(-4).toUpperCase();
   return `${prefix}-${tail}`;
 };
@@ -60,14 +62,6 @@ export default function ProductInfo({ product, partner }: ProductInfoProps) {
 
   return (
     <div className="product-info">
-      {/* ── Header row: category + SKU ── */}
-      <div className="product-info__meta">
-        <span className="product-info__category">{categoryLabel}</span>
-        <span className="product-info__sku">
-          {tPages("products.sku")} · {sku}
-        </span>
-      </div>
-
       {/* ── Title ── */}
       <h1 className="product-info__title">{title}</h1>
 

@@ -1,4 +1,6 @@
 import { PartnerPaginationProps } from "@/lib/types/partnerTypes";
+import Button from "@/components/ui/Button";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons";
 import "./partnerPagination.scss";
 
 export default function PartnerPagination({
@@ -27,17 +29,16 @@ export default function PartnerPagination({
 
   return (
     <nav className="custom-pagination" aria-label="Pagination">
-      <button
-        className="custom-pagination__btn"
+      <Button
+        variant="secondary"
+        size="sm"
         onClick={() => onPageChange(Math.max(1, page - 1))}
         disabled={page === 1}
         aria-label={prevLabel}
+        leadingIcon={<ChevronLeftIcon size={14} />}
       >
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span>{prevLabel}</span>
-      </button>
+        {prevLabel}
+      </Button>
 
       <div className="custom-pagination__pages">
         {pages.map((p, i) =>
@@ -58,17 +59,16 @@ export default function PartnerPagination({
         )}
       </div>
 
-      <button
-        className="custom-pagination__btn"
+      <Button
+        variant="secondary"
+        size="sm"
         onClick={() => onPageChange(Math.min(totalPages, page + 1))}
         disabled={page === totalPages}
         aria-label={nextLabel}
+        trailingIcon={<ChevronRightIcon size={14} />}
       >
-        <span>{nextLabel}</span>
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+        {nextLabel}
+      </Button>
     </nav>
   );
 }

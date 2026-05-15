@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useRateLimitCooldown } from "@/lib/hooks/useRateLimitCooldown";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Button from "@/components/ui/Button";
 import {
   validateLoginForm,
   type LoginFormErrors,
@@ -72,7 +73,7 @@ function Login() {
       toast.success(
         tAlerts("login_success") || "წარმატებით შეხვედით სისტემაში",
       );
-      setTimeout(() => router.push("/"), 1000);
+      setTimeout(() => router.push("/"), 500);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const message =
@@ -131,13 +132,18 @@ function Login() {
           </div>
 
           <div className="sign-in-button">
-            <button type="submit" disabled={isLoading || isButtonDisabled}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              fullWidth
+              isLoading={isLoading}
+              disabled={isButtonDisabled}
+            >
               {isCooldownActive
                 ? `${cooldownSeconds} ${tCommon("rate_limit_retry_in")}`
-                : isLoading
-                  ? tCommon("loading")
-                  : tNav("login")}
-            </button>
+                : tNav("login")}
+            </Button>
           </div>
         </form>
 

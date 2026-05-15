@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
 import "./error.scss";
 
 interface ErrorProps {
@@ -10,6 +11,8 @@ interface ErrorProps {
 }
 
 export default function MainError({ error, reset }: ErrorProps) {
+  const router = useRouter();
+
   useEffect(() => {
     console.error("Route error:", error);
   }, [error]);
@@ -22,16 +25,12 @@ export default function MainError({ error, reset }: ErrorProps) {
           We hit an unexpected issue loading this page. Try again, or head back home.
         </p>
         <div className="route-error__actions">
-          <button
-            type="button"
-            className="route-error__retry"
-            onClick={() => reset()}
-          >
+          <Button variant="primary" onClick={() => reset()}>
             Try again
-          </button>
-          <Link href="/" className="route-error__home">
+          </Button>
+          <Button variant="secondary" onClick={() => router.push("/")}>
             Back to home
-          </Link>
+          </Button>
         </div>
       </div>
     </div>

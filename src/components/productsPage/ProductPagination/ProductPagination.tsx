@@ -1,6 +1,8 @@
 "use client";
 
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import Button from "@/components/ui/Button";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons";
 import "./productPagination.scss";
 
 interface ProductPaginationProps {
@@ -42,17 +44,16 @@ export default function ProductPagination({
 
   return (
     <nav className="custom-pagination" aria-label="Pagination">
-      <button
-        className="custom-pagination__btn"
+      <Button
+        variant="secondary"
+        size="sm"
         disabled={page === 1 || isLoading}
         onClick={() => onPageChange(Math.max(1, page - 1))}
         aria-label="Previous page"
+        leadingIcon={<ChevronLeftIcon size={14} />}
       >
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span>{prevLabel}</span>
-      </button>
+        {prevLabel}
+      </Button>
 
       <div className="custom-pagination__pages">
         {pages.map((p, index) => {
@@ -80,17 +81,16 @@ export default function ProductPagination({
         })}
       </div>
 
-      <button
-        className="custom-pagination__btn"
+      <Button
+        variant="secondary"
+        size="sm"
         disabled={page === totalPages || isLoading}
         onClick={() => onPageChange(Math.min(totalPages, page + 1))}
         aria-label="Next page"
+        trailingIcon={<ChevronRightIcon size={14} />}
       >
-        <span>{nextLabel}</span>
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+        {nextLabel}
+      </Button>
     </nav>
   );
 }

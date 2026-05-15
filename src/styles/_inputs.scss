@@ -97,12 +97,17 @@
 }
 
 // ── Validation Errors ──────────────────────────────────────
-.input-error {
-  border-color: colors.$color-error !important;
-
-  input {
-    border-color: colors.$color-error !important;
-  }
+// Specificity raised to match `.form-group input`, so we no longer need
+// `!important`. Selector list covers: bare element with `.input-error`,
+// a wrapper (e.g. `.input-password.input-error`) plus its inner input,
+// and standalone control variants.
+.form-group input.input-error,
+.form-group select.input-error,
+.form-group textarea.input-error,
+.form-group .input-error input,
+.form-group .input-error select,
+.form-group .input-error textarea {
+  border-color: colors.$color-error;
 }
 
 .error-text,

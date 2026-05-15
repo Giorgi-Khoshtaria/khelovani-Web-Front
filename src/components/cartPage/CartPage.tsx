@@ -1,10 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import Button from "@/components/ui/Button";
+import { CartIcon } from "@/lib/icons";
 import "./cartPage.scss";
 
 export default function CartPage() {
+  const router = useRouter();
   const { t: tPages } = useClientTranslation("pages");
   const { t: tNav } = useClientTranslation("navigation");
 
@@ -13,24 +16,11 @@ export default function CartPage() {
       <h1 className="cart-page__title">{tPages("cart.title")}</h1>
 
       <div className="cart-page__empty">
-        <svg
-          width="56"
-          height="56"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="9" cy="21" r="1" />
-          <circle cx="20" cy="21" r="1" />
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-        </svg>
+        <CartIcon size={56} />
         <p className="cart-page__empty-text">{tPages("cart.empty")}</p>
-        <Link href="/products" className="cart-page__cta">
+        <Button variant="primary" onClick={() => router.push("/products")}>
           {tNav("back_to_shop")}
-        </Link>
+        </Button>
       </div>
     </section>
   );

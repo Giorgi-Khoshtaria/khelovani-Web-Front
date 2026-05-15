@@ -10,40 +10,6 @@
   gap: 8px;
   padding-top: 48px;
 
-  &__btn {
-    @extend .default-text;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 18px;
-    border-radius: 8px;
-    border: 1px solid rgba(colors.$color-walnut, 0.2);
-    background: colors.$color-white;
-    color: colors.$color-espresso;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease,
-                color 0.2s ease, transform 0.2s ease;
-
-    svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    &:hover:not(:disabled) {
-      background: colors.$color-walnut;
-      color: colors.$color-white;
-      border-color: colors.$color-walnut;
-      transform: translateY(-1px);
-    }
-
-    &:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-  }
-
   &__pages {
     display: flex;
     align-items: center;
@@ -95,10 +61,6 @@
 // Responsive adjustments
 @media (max-width: 480px) {
   .custom-pagination {
-    &__btn span {
-      display: none;
-    }
-
     &__pages {
       gap: 2px;
     }

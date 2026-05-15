@@ -38,9 +38,6 @@
 
 .sign-in-button {
   margin-bottom: 32px;
-  button {
-    @extend .auth-submit-btn;
-  }
 }
 
 .register-container {

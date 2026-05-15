@@ -38,34 +38,4 @@
     justify-content: center;
     flex-wrap: wrap;
   }
-
-  &__retry,
-  &__home {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 22px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    border: none;
-    transition: transform 0.15s ease, background-color 0.2s ease;
-
-    &:hover {
-      transform: translateY(-1px);
-    }
-  }
-
-  &__retry {
-    background: $color-espresso;
-    color: $color-white;
-  }
-
-  &__home {
-    background: transparent;
-    border: 1px solid $color-border;
-    color: $color-text-primary;
-  }
 }

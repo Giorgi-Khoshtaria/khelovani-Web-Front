@@ -24,10 +24,6 @@
   @extend .auth-terms-container;
 }
 
-.create-account-btn {
-  @extend .auth-submit-btn;
-}
-
 .create-account-button {
   grid-column: 1 / -1;
 }

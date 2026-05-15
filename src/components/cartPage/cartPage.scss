@@ -34,22 +34,4 @@
     margin: 0;
   }
 
-  &__cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 22px;
-    border-radius: 12px;
-    background: $color-espresso;
-    color: $color-white;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    text-decoration: none;
-    transition: transform 0.15s ease, background-color 0.2s ease;
-
-    &:hover {
-      transform: translateY(-1px);
-    }
-  }
 }

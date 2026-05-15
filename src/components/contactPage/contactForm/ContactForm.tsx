@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import TextInput from "../../ui/TextInput";
 import TextareaInput from "../../ui/TextareaInput";
+import Button from "../../ui/Button";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import "./contactForm.scss";
 
@@ -95,12 +96,19 @@ export default function ContactForm() {
           fullWidth
         />
 
-        <button type="submit" className="contact-form__submit">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" />
-          </svg>
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          leadingIcon={
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+              <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" />
+            </svg>
+          }
+        >
           {Common("submit")}
-        </button>
+        </Button>
       </form>
     </div>
   );
