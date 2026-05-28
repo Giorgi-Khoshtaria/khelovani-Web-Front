@@ -1,0 +1,71 @@
+@use "@/styles/colors.scss" as colors;
+
+.checkout-stepper {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  &__step {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: colors.$color-walnut;
+    opacity: 0.5;
+
+    &--done {
+      opacity: 0.85;
+    }
+
+    &--active {
+      opacity: 1;
+    }
+  }
+
+  &__bullet {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid colors.$color-walnut;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: colors.$color-walnut;
+
+    .checkout-stepper__step--active & {
+      background: colors.$color-text-primary;
+      border-color: colors.$color-text-primary;
+      color: colors.$color-white;
+    }
+
+    .checkout-stepper__step--done & {
+      background: colors.$color-walnut;
+      color: colors.$color-white;
+    }
+  }
+
+  &__label {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  &__connector {
+    display: inline-block;
+    width: 28px;
+    height: 1.5px;
+    background: colors.$color-walnut;
+    opacity: 0.4;
+    margin: 0 4px 0 6px;
+
+    @media (max-width: 600px) {
+      width: 14px;
+    }
+  }
+}

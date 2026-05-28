@@ -22,8 +22,14 @@ export function useProductDisplay(product: IProduct) {
   const description = getLocalizedField(product.descriptionGe, product.descriptionEn, lang);
 
   const categoryLabel = getLabel(product.category, lang);
-  const formattedPrice = formatProductPrice(product.price);
-  
+
+  const salePrice =
+    product.isOnSale && product.discountPercent
+      ? Math.round(product.price * (1 - product.discountPercent / 100))
+      : null;
+
+  const formattedPrice = formatProductPrice(salePrice ?? product.price);
+
   const { isInStock, isOutOfStock } = getStockInfo(product.stockQuantity);
 
   return {

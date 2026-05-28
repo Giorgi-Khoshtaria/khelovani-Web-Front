@@ -2,119 +2,70 @@
 @use "@/styles/defaultTexts.scss" as defaultTexts;
 @use "@/styles/animations.scss";
 
-// ─────────────────────────────────────────────────────────────
-// Root section
-// ─────────────────────────────────────────────────────────────
-
 .partner-listing {
   width: 100%;
   max-width: 1360px;
   margin: 0 auto;
   padding: 48px 24px 100px;
 
-  // ── Mobile bar (filter toggle + count) ─────────────────
+  // ── Top row: Filters pill + count ──────────────────────
 
-  &__mobile-bar {
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-
-    @media (max-width: 1024px) { display: flex; }
-  }
-
-  &__filter-btn {
-    @extend .default-text;
+  &__topbar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: 10px;
-    border: 1px solid rgba(colors.$color-walnut, 0.25);
-    background: colors.$color-white;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__filters-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(colors.$color-walnut, 0.35);
+    background: colors.$color-bg-secondary;
     color: colors.$color-espresso;
-    font-weight: 600;
     font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
     transition: background 0.2s ease, border-color 0.2s ease;
 
     svg { width: 16px; height: 16px; }
 
     &:hover {
-      background: colors.$color-bg-secondary;
-      border-color: rgba(colors.$color-walnut, 0.4);
+      background: colors.$color-bg-accent;
+      border-color: rgba(colors.$color-walnut, 0.55);
     }
   }
 
-  &__filter-count {
+  &__filters-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-width: 18px;
     height: 18px;
-    padding: 0 5px;
-    border-radius: 9px;
-    background: colors.$color-deep-red;
+    padding: 0 6px;
+    margin-left: 2px;
+    border-radius: 999px;
+    background: colors.$color-espresso;
     color: colors.$color-white;
     font-size: 10px;
     font-weight: 700;
   }
 
   &__count {
-    @extend .default-text;
-    font-size: 13px;
+    font-size: 15px;
     color: colors.$color-text-secondary;
-  }
-
-  // ── Two-column layout ──────────────────────────────────
-
-  &__layout {
-    display: flex;
-    gap: 28px;
-    align-items: flex-start;
-  }
-
-  // ── Main content area ──────────────────────────────────
-
-  &__main {
-    flex: 1;
-    min-width: 0; // prevent flex blowout
-  }
-
-  // ── Results bar ────────────────────────────────────────
-
-  &__results-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(colors.$color-border, 0.5);
-  }
-
-  &__results-text {
-    @extend .default-text;
-    color: colors.$color-text-secondary;
-    font-size: 14px;
-
-    strong { color: colors.$color-espresso; }
-  }
-
-  &__clear-all {
-    @extend .default-text;
-    font-size: 12px;
-    font-weight: 600;
-    color: colors.$color-walnut;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 6px;
     white-space: nowrap;
-    transition: background 0.2s ease;
 
-    &:hover { background: rgba(colors.$color-walnut, 0.08); }
+    strong {
+      font-weight: 700;
+      color: colors.$color-text-primary;
+      margin-right: 4px;
+    }
   }
 
   // ── Cards grid ─────────────────────────────────────────
@@ -133,23 +84,6 @@
     padding: 80px 24px;
     text-align: center;
     color: colors.$color-text-secondary;
-
-    button {
-      @extend .default-text;
-      padding: 9px 24px;
-      border-radius: 8px;
-      border: 1px solid colors.$color-walnut;
-      background: transparent;
-      color: colors.$color-walnut;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:hover {
-        background: colors.$color-walnut;
-        color: colors.$color-white;
-      }
-    }
   }
 
   // ── Loading ────────────────────────────────────────────
@@ -209,32 +143,17 @@
     color: colors.$color-text-secondary;
     text-align: center;
   }
-
-  &__empty-reset {
-    @extend .default-text;
-    padding: 9px 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(colors.$color-walnut, 0.3);
-    background: transparent;
-    color: colors.$color-walnut;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-
-    &:hover {
-      background: colors.$color-walnut;
-      color: colors.$color-white;
-    }
-  }
 }
 
 // ─── Responsive ───────────────────────────────────────────────
 
-@media (max-width: 1024px) {
-  .partner-listing__layout {
-    // sidebar moves off-canvas; main takes full width
-    display: block;
+@media (max-width: 900px) {
+  .partner-listing {
+    padding: 32px 20px 80px;
+
+    &__topbar { gap: 12px; }
+    &__filters-btn { padding: 10px 18px; }
+    &__count { font-size: 14px; }
   }
 }
 

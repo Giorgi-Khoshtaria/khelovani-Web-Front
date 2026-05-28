@@ -9,11 +9,12 @@ import axios from "axios";
 import Image from "next/image";
 import TextInput from "@/components/ui/TextInput";
 import PhoneInput from "@/components/ui/PhoneInput";
-import SelectInput from "@/components/ui/SelectInput";
+import SearchableSelect from "@/components/ui/SearchableSelect/SearchableSelect";
+import FormField from "@/components/ui/FormField";
 import TextareaInput from "@/components/ui/TextareaInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
 import Button from "@/components/ui/Button";
-import { CITY_OPTIONS } from "@/components/ui/CityOptions";
+import { CITY_OPTIONS } from "@/lib/utils/CityOptions";
 import {
   validatePartnerForm,
   type PartnerFormData,
@@ -21,7 +22,10 @@ import {
 import { PartnerTypeEnum, type PartnerType } from "@/lib/types/partnerTypes";
 import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import { partnerRegisterRequest } from "@/apiCalls/partnerRequests/partnerAuth.req";
-import { getPublicCategories, type PublicCategory } from "@/apiCalls/categoryRequests/category.req";
+import {
+  getPublicCategories,
+  type PublicCategory,
+} from "@/apiCalls/categoryRequests/category.req";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import CategoryMultiSelect from "./CategoryMultiSelect";
@@ -69,13 +73,16 @@ function PartnerRegistration() {
   const [categories, setCategories] = useState<PublicCategory[]>([]);
 
   useEffect(() => {
-    getPublicCategories().then(setCategories).catch(() => {});
+    getPublicCategories()
+      .then(setCategories)
+      .catch(() => {});
   }, []);
 
   const { t: tPages } = useClientTranslation("pages");
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tNav } = useClientTranslation("navigation");
   const { t: tAlerts } = useClientTranslation("alerts");
+  const { t: tCommon } = useClientTranslation("common");
   const { lang } = useLanguage();
 
   const { formData, errors, setErrors, handleChange, setFormData } =
@@ -354,16 +361,27 @@ function PartnerRegistration() {
           {/* ── Category (full width) ── */}
 
           <div className="form-section">
-            <SelectInput
+            <FormField
               id="city"
               label={tInputs("label.city")}
-              value={formData.city}
-              onChange={handleChange}
-              options={CITY_OPTIONS}
-              placeholder={tInputs("placeholder.city")}
               error={errors.city}
               fullWidth
-            />
+            >
+              <SearchableSelect
+                id="city"
+                value={formData.city}
+                options={CITY_OPTIONS}
+                placeholder={tInputs("placeholder.city")}
+                searchPlaceholder={tCommon("search")}
+                emptyText={tCommon("no_results")}
+                error={!!errors.city}
+                onChange={(v) => {
+                  setFormData((prev) => ({ ...prev, city: v }));
+                  if (errors.city)
+                    setErrors((prev) => ({ ...prev, city: "" }));
+                }}
+              />
+            </FormField>
           </div>
           {/* ── Address (truly stacked) ── */}
           <div className="form-section">
@@ -406,18 +424,14 @@ function PartnerRegistration() {
                 onClear={handleCategoriesClear}
                 placeholder={
                   tInputs("placeholder.categories") ||
-                  (lang === "ge"
-                    ? "აირჩიეთ კატეგორიები"
-                    : "Select categories")
+                  (lang === "ge" ? "აირჩიეთ კატეგორიები" : "Select categories")
                 }
                 searchPlaceholder={
                   tInputs("placeholder.search_categories") ||
                   (lang === "ge" ? "ძებნა..." : "Search...")
                 }
                 selectedSuffix={lang === "ge" ? "არჩეული" : "selected"}
-                emptyText={
-                  lang === "ge" ? "შედეგი ვერ მოიძებნა" : "No results"
-                }
+                emptyText={lang === "ge" ? "შედეგი ვერ მოიძებნა" : "No results"}
                 clearLabel={lang === "ge" ? "გასუფთავება" : "Clear all"}
                 error={errors.categories}
               />

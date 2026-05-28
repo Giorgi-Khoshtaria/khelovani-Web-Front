@@ -19,9 +19,7 @@ import { useFormHandler } from "@/lib/hooks/useFormHandler";
 import TextInput from "@/components/ui/TextInput";
 import PhoneInput from "@/components/ui/PhoneInput";
 import PasswordInput from "@/components/ui/PasswordInput";
-import SelectInput from "@/components/ui/SelectInput";
 import TermsCheckbox from "@/components/ui/TermsCheckbox";
-import { CITY_OPTIONS } from "@/components/ui/CityOptions";
 import { useCheckIfUserIsLogin } from "@/lib/hooks/useCheckIfUserIsLogin";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -30,9 +28,6 @@ const INITIAL_FORM: RegistrationFormData = {
   idNumber: "",
   nameGe: "",
   nameEn: "",
-  dateOfBirth: "",
-  city: "",
-  address: "",
   email: "",
   phone: "",
   password: "",
@@ -76,9 +71,6 @@ export default function Registration() {
         idNumber: formData.idNumber,
         nameGe: formData.nameGe || undefined,
         nameEn: formData.nameEn,
-        dateOfBirth: formData.dateOfBirth,
-        city: formData.city,
-        address: formData.address,
         phone: formData.phone.replace(/^\+?995/, ""),
         email: formData.email,
         password: formData.password,
@@ -186,35 +178,6 @@ export default function Registration() {
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
-          />
-
-          <TextInput
-            id="dateOfBirth"
-            label={tInputs("label.date_of_birth")}
-            type="date"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            error={errors.dateOfBirth}
-          />
-
-          <SelectInput
-            id="city"
-            label={tInputs("label.city")}
-            value={formData.city}
-            onChange={handleChange}
-            options={CITY_OPTIONS}
-            placeholder={tInputs("placeholder.city")}
-            error={errors.city}
-          />
-
-          <TextInput
-            id="address"
-            label={tInputs("label.address")}
-            value={formData.address}
-            onChange={handleChange}
-            error={errors.address}
-            placeholder={tInputs("placeholder.address")}
-            fullWidth
           />
 
           <PasswordInput

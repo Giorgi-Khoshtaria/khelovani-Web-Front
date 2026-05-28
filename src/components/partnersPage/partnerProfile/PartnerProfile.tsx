@@ -7,7 +7,7 @@ import { getProducts } from "@/apiCalls/productRequests/product.req";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Partner } from "@/lib/types/partnerTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-import { Icon } from "@/lib/utils/icons";
+import { Icon } from "@/lib/icons/icons";
 import "./partnerProfile.scss";
 
 // ─── Skeleton Loader ───────────────────────────────────────
@@ -235,9 +235,7 @@ export default function PartnerProfile({
                   <div className="partner-profile__meta-item">
                     <span className="meta-icon">{Icon.phone}</span>
                     <span className="meta-text">
-                      <a href={`tel:${partner.phone}`}>
-                        {partner.phone}
-                      </a>
+                      <a href={`tel:${partner.phone}`}>{partner.phone}</a>
                     </span>
                   </div>
                 )}

@@ -1,0 +1,45 @@
+@use "@/styles/colors.scss" as colors;
+
+.shipping-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 52px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: colors.$color-walnut;
+
+    @media (max-width: 600px) {
+      font-size: 38px;
+    }
+  }
+
+  &__title-em {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  &__step {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1.5px solid colors.$color-walnut;
+    color: colors.$color-walnut;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+}

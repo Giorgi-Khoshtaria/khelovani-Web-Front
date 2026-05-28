@@ -9,8 +9,10 @@ import { useProductDisplay } from "@/lib/hooks/useProductDisplay";
 import { useProductImage } from "@/lib/hooks/useProductImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
+import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface ProductCardProps {
   product: IProduct;
@@ -19,6 +21,7 @@ interface ProductCardProps {
 function ProductCardImpl({ product }: ProductCardProps) {
   const { isAuthenticated } = useAuth();
   const { isFavorite, toggle } = useFavorites();
+  const { addItem: addToCart, loading: cartLoading } = useCart();
   const router = useRouter();
   const favorited = isFavorite(product._id);
   const { t: tPages } = useClientTranslation("pages");
@@ -39,10 +42,11 @@ function ProductCardImpl({ product }: ProductCardProps) {
       populatedOwner.companyNameEn
     : null;
 
-  const oldPrice =
+  const salePrice =
     product.isOnSale && product.discountPercent
-      ? Math.round(product.price / (1 - product.discountPercent / 100))
+      ? Math.round(product.price * (1 - product.discountPercent / 100))
       : null;
+  const oldPrice = salePrice !== null ? product.price : null;
 
   const tag = isOutOfStock
     ? { label: tPages("products.out_of_stock") || "SOLD", mod: "sold" }
@@ -107,7 +111,7 @@ function ProductCardImpl({ product }: ProductCardProps) {
 
       <div className="pcard__cta">
         <div className="pcard__prices">
-          <span className="pcard__price">₾{product.price}</span>
+          <span className="pcard__price">₾{salePrice ?? product.price}</span>
           {oldPrice && (
             <span className="pcard__price-old">₾{oldPrice}</span>
           )}
@@ -116,11 +120,13 @@ function ProductCardImpl({ product }: ProductCardProps) {
         <button
           type="button"
           className="pcard__cart"
-          aria-label={tNav("buy_now")}
-          disabled={isOutOfStock}
-          onClick={(e) => {
+          aria-label={tPages("cart.add_to_cart") || tNav("buy_now")}
+          disabled={isOutOfStock || cartLoading}
+          onClick={async (e) => {
             e.preventDefault();
             e.stopPropagation();
+            await addToCart(product, 1);
+            toast.success(tPages("cart.added") || "კალათაში დაემატა");
           }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

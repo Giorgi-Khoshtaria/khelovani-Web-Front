@@ -9,6 +9,7 @@ import AuthActions from "./auth-component/AuthActions";
 import SideMenu from "./sideMenu/SideMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
+import { useCart } from "@/contexts/CartContext";
 import { CartIcon } from "@/lib/icons";
 
 const TRANSPARENT_ROUTES = ["/"];
@@ -17,6 +18,7 @@ function Header() {
   const pathname = usePathname();
   const { ids: favoriteIds } = useFavorites();
   const favCount = favoriteIds.size;
+  const { totalItems: cartCount } = useCart();
   const { lang, setLang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -81,6 +83,14 @@ function Header() {
 
           <Link href="/cart" className="header__icon-btn" aria-label="cart">
             <CartIcon size={20} />
+            {cartCount > 0 && (
+              <span
+                className="header__icon-badge"
+                aria-label={`${cartCount} in cart`}
+              >
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
           </Link>
 
           <div className="header__lang">

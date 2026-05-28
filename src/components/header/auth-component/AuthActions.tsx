@@ -5,7 +5,7 @@ import "./authAction.scss";
 import { useEffect, useRef, useState } from "react";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useAuth } from "@/contexts/AuthContext";
-import { Icon } from "@/lib/utils/icons";
+import { Icon } from "@/lib/icons/icons";
 
 interface AuthActionsProps {
   mobile?: boolean;
@@ -40,7 +40,12 @@ function AuthActions({ mobile }: AuthActionsProps) {
         >
           <span className="user-trigger__avatar">
             {profileImage ? (
-              <Image src={profileImage} alt="avatar" fill className="user-trigger__avatar-img" />
+              <Image
+                src={profileImage}
+                alt="avatar"
+                fill
+                className="user-trigger__avatar-img"
+              />
             ) : (
               Icon.user
             )}
@@ -49,12 +54,19 @@ function AuthActions({ mobile }: AuthActionsProps) {
 
         {open && (
           <div className="user-dropdown">
-            <Link href="/profile" className="user-dropdown__item" onClick={() => setOpen(false)}>
+            <Link
+              href="/profile"
+              className="user-dropdown__item"
+              onClick={() => setOpen(false)}
+            >
               {t("view_profile")}
             </Link>
             <button
               className="user-dropdown__item user-dropdown__logout"
-              onClick={() => { setOpen(false); logout(); }}
+              onClick={() => {
+                setOpen(false);
+                logout();
+              }}
             >
               {t("logout")}
             </button>

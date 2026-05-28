@@ -1,0 +1,347 @@
+// Shared drawer chrome used by ProductFilters and PartnerFilters.
+// `fd` = "filter drawer". Feature-specific bits (e.g. price slider, star
+// ratings) live in the consuming component's own scss.
+
+@use "@/styles/colors" as *;
+
+// ─── Overlay ─────────────────────────────────────────────────
+
+.fd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba($color-espresso, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 110; // above fixed header (z-index 100)
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+
+  &--open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+// ─── Drawer ──────────────────────────────────────────────────
+
+.fd {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 420px;
+  max-width: 92vw;
+  background: $color-ivory;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 6px 0 28px rgba($color-espresso, 0.12);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--open { transform: translateX(0); }
+}
+
+// ─── Header ──────────────────────────────────────────────────
+
+.fd__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid rgba($color-border, 0.5);
+}
+
+.fd__eyebrow {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $color-walnut;
+  margin-bottom: 4px;
+}
+
+.fd__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: $color-espresso;
+}
+
+.fd__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba($color-border, 0.7);
+  background: $color-white;
+  color: $color-espresso;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover { background: rgba($color-espresso, 0.06); }
+}
+
+// ─── Body (scroll area) ──────────────────────────────────────
+
+.fd__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ─── Search rows (top + nested artisan/etc) ──────────────────
+
+.fd__search,
+.fd__sub-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid rgba($color-border, 0.8);
+  border-radius: 999px;
+  background: $color-white;
+  color: $color-text-secondary;
+
+  svg { flex-shrink: 0; }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: $color-text-primary;
+    font-family: inherit;
+
+    &::placeholder { color: rgba($color-walnut, 0.7); }
+  }
+
+  &:focus-within {
+    border-color: rgba($color-espresso, 0.4);
+  }
+}
+
+.fd__sub-search {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+// ─── Section ─────────────────────────────────────────────────
+
+.fd-section {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba($color-border, 0.45);
+  padding-top: 18px;
+}
+
+.fd-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0 0 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $color-walnut;
+}
+
+.fd-section__chevron {
+  transition: transform 0.25s ease;
+  &--open { transform: rotate(180deg); }
+}
+
+.fd-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// ─── Selectable rows (category / city / rating list) ────────
+
+.fd-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fd-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: $color-text-primary;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+  font-family: inherit;
+  text-align: left;
+
+  &:hover { background: rgba($color-walnut, 0.08); }
+
+  &--active {
+    background: $color-espresso;
+    color: $color-white;
+    &:hover { background: $color-espresso; }
+  }
+}
+
+.fd-list__count {
+  font-size: 13px;
+  color: inherit;
+  opacity: 0.65;
+}
+
+// ─── Chip row (e.g. partner type) ────────────────────────────
+
+.fd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fd-chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba($color-walnut, 0.35);
+  background: $color-white;
+  color: $color-espresso;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+
+  &:hover { background: $color-bg-secondary; }
+
+  &--active {
+    background: $color-espresso;
+    color: $color-white;
+    border-color: $color-espresso;
+
+    &:hover { background: $color-espresso; }
+  }
+}
+
+// ─── Checkbox list (artisans / multi-select) ─────────────────
+
+.fd-checks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.fd-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 6px;
+  cursor: pointer;
+  font-size: 15px;
+  color: $color-text-primary;
+  border-radius: 8px;
+
+  &:hover { background: rgba($color-walnut, 0.06); }
+
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.fd-check__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid rgba($color-walnut, 0.55);
+  background: $color-white;
+  color: $color-white;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.fd-check input[type="checkbox"]:checked + .fd-check__box {
+  background: $color-espresso;
+  border-color: $color-espresso;
+}
+
+.fd-check__label { line-height: 1.2; }
+
+// ─── Hint / loading line ─────────────────────────────────────
+
+.fd__hint {
+  margin: 4px 4px 0;
+  font-size: 13px;
+  color: $color-text-secondary;
+}
+
+// ─── Footer ──────────────────────────────────────────────────
+
+.fd__footer {
+  padding: 18px 28px 24px;
+  border-top: 1px solid rgba($color-border, 0.5);
+  background: $color-ivory;
+}
+
+.fd__clear {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 999px;
+  background: $color-white;
+  border: 1px solid rgba($color-walnut, 0.4);
+  color: $color-espresso;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: rgba($color-walnut, 0.06);
+    border-color: rgba($color-walnut, 0.6);
+  }
+}
+
+// ─── Responsive ──────────────────────────────────────────────
+
+@media (max-width: 600px) {
+  .fd {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .fd__header { padding: 22px 20px 16px; }
+  .fd__body   { padding: 16px 20px 20px; }
+  .fd__footer { padding: 14px 20px 20px; }
+  .fd__title  { font-size: 26px; }
+}

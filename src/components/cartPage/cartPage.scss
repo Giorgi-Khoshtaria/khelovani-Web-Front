@@ -1,37 +1,62 @@
-@use "@/styles/colors" as *;
-@use "@/styles/defaultTexts" as *;
+@use "@/styles/colors.scss" as colors;
 
 .cart-page {
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 48px 24px 96px;
+  padding: 40px 24px 80px;
+  background: colors.$color-bg-page;
   min-height: calc(100vh - 200px);
 
-  &__title {
-    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
-    font-size: 36px;
-    font-weight: 600;
-    color: $color-text-primary;
-    margin: 0 0 32px;
-    letter-spacing: -0.5px;
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 360px;
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 28px;
+    margin-top: 28px;
+
+    @media (max-width: 960px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__aside {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+
+    @media (max-width: 960px) {
+      position: static;
+    }
   }
 
   &__empty {
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 18px;
     padding: 80px 24px;
-    background: $color-white;
-    border: 1px solid $color-border;
+    background: colors.$color-white;
+    border: 1px solid colors.$color-border;
     border-radius: 18px;
-    color: $color-text-secondary;
+    color: colors.$color-text-secondary;
   }
 
   &__empty-text {
-    @extend .default-text;
     margin: 0;
+    font-size: 15px;
   }
-
 }

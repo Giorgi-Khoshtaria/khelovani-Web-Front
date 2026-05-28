@@ -1,0 +1,75 @@
+@use "@/styles/colors" as *;
+@use "@/styles/filterDrawer";
+
+// Feature-specific: price-range dual-handle slider.
+
+.pf-price {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 4px 8px;
+}
+
+.pf-price__legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-espresso;
+}
+
+.pf-price__track {
+  position: relative;
+  height: 28px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px;
+    background: rgba($color-walnut, 0.25);
+    transform: translateY(-50%);
+  }
+
+  .pf-price__range {
+    position: absolute;
+    top: 50%;
+    left: var(--pf-pct-min, 0%);
+    right: calc(100% - var(--pf-pct-max, 100%));
+    height: 3px;
+    border-radius: 3px;
+    background: $color-espresso;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  // both range inputs overlap the same track — only thumbs catch events
+  input[type="range"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 28px;
+    appearance: none;
+    background: transparent;
+    pointer-events: none;
+    margin: 0;
+
+    @mixin pf-thumb {
+      pointer-events: auto;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: $color-white;
+      border: 2px solid $color-espresso;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba($color-espresso, 0.18);
+    }
+
+    &::-webkit-slider-thumb { appearance: none; @include pf-thumb; }
+    &::-moz-range-thumb     { @include pf-thumb; }
+  }
+}

@@ -1,0 +1,42 @@
+@use "@/styles/colors.scss" as colors;
+
+.payments-section {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  &__empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: colors.$color-text-secondary;
+    background: colors.$color-ivory;
+    border: 1px dashed colors.$color-border;
+    border-radius: 14px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+}

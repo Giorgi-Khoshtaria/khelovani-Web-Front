@@ -2,11 +2,16 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { IProduct } from "@/lib/types/productTypes";
 import { Partner } from "@/lib/types/partnerTypes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useProductDisplay } from "@/lib/hooks/useProductDisplay";
+import { useFavorites } from "@/contexts/FavoritesContext";
+import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   CartIcon,
   HeartIcon,
@@ -32,6 +37,12 @@ const buildSku = (product: IProduct): string => {
 export default function ProductInfo({ product, partner }: ProductInfoProps) {
   const { lang } = useLanguage();
   const { t: tPages } = useClientTranslation("pages");
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+  const { isFavorite, toggle } = useFavorites();
+  const { addItem: addToCart, loading: cartLoading } = useCart();
+
+  const favorited = isFavorite(product._id);
 
   const { title, description, categoryLabel, formattedPrice, isInStock } =
     useProductDisplay(product);
@@ -44,21 +55,26 @@ export default function ProductInfo({ product, partner }: ProductInfoProps) {
     : null;
   const ownerHref = partner?._id ? `/partners/${partner._id}` : "#";
 
-  const [qty, setQty] = useState(1);
-
   const sku = useMemo(() => buildSku(product), [product]);
 
   const hasDiscount =
     !!product.isOnSale &&
     !!product.discountPercent &&
     product.discountPercent > 0;
-  const originalPrice = hasDiscount
-    ? Math.round(product.price / (1 - product.discountPercent! / 100))
-    : null;
+  const originalPrice = hasDiscount ? product.price : null;
 
-  const max = Math.max(1, product.stockQuantity || 1);
+  // Quantity is bounded by remaining stock — cannot exceed stockQuantity.
+  const stockLimit = Math.max(1, Math.min(product.stockQuantity || 0, 99));
+  const [qty, setQty] = useState(1);
   const dec = () => setQty((q) => Math.max(1, q - 1));
-  const inc = () => setQty((q) => Math.min(max, q + 1));
+  const inc = () => setQty((q) => Math.min(stockLimit, q + 1));
+  const atMax = qty >= stockLimit;
+
+  const handleAddToCart = async () => {
+    if (!isInStock) return;
+    await addToCart(product, qty);
+    toast.success(tPages("cart.added") || "კალათაში დაემატა");
+  };
 
   return (
     <div className="product-info">
@@ -117,48 +133,22 @@ export default function ProductInfo({ product, partner }: ProductInfoProps) {
       {/* ── Short description ── */}
       <p className="product-info__short-desc">{description}</p>
 
-      {/* ── Action row: qty + add to cart ── */}
-      <div className="product-info__actions">
-        <div className="product-info__qty" aria-label="quantity selector">
-          <button
-            type="button"
-            className="product-info__qty-btn"
-            onClick={dec}
-            disabled={qty <= 1}
-            aria-label="decrease"
-          >
-            <MinusIcon />
-          </button>
-          <span className="product-info__qty-value">{qty}</span>
-          <button
-            type="button"
-            className="product-info__qty-btn"
-            onClick={inc}
-            disabled={qty >= max}
-            aria-label="increase"
-          >
-            <PlusIcon />
-          </button>
-        </div>
-
-        <button
-          type="button"
-          className="product-info__cta product-info__cta--cart"
-          disabled={!isInStock}
-        >
-          <CartIcon />
-          <span>
-            {tPages("products.add_to_cart")} · ₾{product.price * qty}
-          </span>
-        </button>
-      </div>
-
       {/* ── Save / Share row ── */}
       <div className="product-info__secondary">
         <button
           type="button"
-          className="product-info__ghost"
+          className={`product-info__ghost${
+            favorited ? " product-info__ghost--active" : ""
+          }`}
           aria-label={tPages("products.add_to_favourites")}
+          aria-pressed={favorited}
+          onClick={() => {
+            if (!isAuthenticated) {
+              router.push("/login");
+              return;
+            }
+            toggle(product._id);
+          }}
         >
           <HeartIcon size={18} />
           <span>{tPages("products.save")}</span>
@@ -174,15 +164,42 @@ export default function ProductInfo({ product, partner }: ProductInfoProps) {
         </button>
       </div>
 
-      {/* ── Buy now (full width, outlined) ── */}
-      <button
-        type="button"
-        className="product-info__buy-now"
-        disabled={!isInStock}
-        id={`buy-now-${product._id}`}
-      >
-        {tPages("products.buy_now")}
-      </button>
+      {/* ── Action row at bottom: qty + add to cart (outlined, full width) ── */}
+      <div className="product-info__actions product-info__actions--bottom">
+        <div className="product-info__qty" aria-label="quantity selector">
+          <button
+            type="button"
+            className="product-info__qty-btn"
+            onClick={dec}
+            disabled={!isInStock || qty <= 1}
+            aria-label="decrease"
+          >
+            <MinusIcon />
+          </button>
+          <span className="product-info__qty-value">{qty}</span>
+          <button
+            type="button"
+            className="product-info__qty-btn"
+            onClick={inc}
+            disabled={!isInStock || atMax}
+            aria-label="increase"
+          >
+            <PlusIcon />
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="product-info__cta product-info__cta--cart product-info__cta--outlined"
+          disabled={!isInStock || cartLoading}
+          onClick={handleAddToCart}
+        >
+          <CartIcon />
+          <span>
+            {tPages("products.add_to_cart")} · ₾{product.price * qty}
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

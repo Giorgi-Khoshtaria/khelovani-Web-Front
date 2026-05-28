@@ -81,21 +81,15 @@ function PartnersHero({ stats }: PartnersHeroProps) {
         <div className="ph__stats">
           <div className="ph__stat">
             <span className="ph__stat-value">{totalMakers}</span>
-            <span className="ph__stat-label">
-              {tPages("partnersPage.makers_count_label")}
-            </span>
+            <span className="ph__stat-label">{tPages("stats.makers")}</span>
           </div>
           <div className="ph__stat">
             <span className="ph__stat-value">{regionCount}</span>
-            <span className="ph__stat-label">
-              {tPages("partnersPage.regions_label")}
-            </span>
+            <span className="ph__stat-label">{tPages("stats.regions")}</span>
           </div>
           <div className="ph__stat">
             <span className="ph__stat-value">{craftCount}</span>
-            <span className="ph__stat-label">
-              {tPages("partnersPage.crafts_label")}
-            </span>
+            <span className="ph__stat-label">{tPages("stats.pieces")}</span>
           </div>
         </div>
       </div>

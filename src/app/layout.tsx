@@ -4,6 +4,7 @@ import "./globals.scss";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
+import { CartProvider } from "@/contexts/CartContext";
 import { CategoriesProvider } from "@/contexts/CategoriesContext";
 import { MenuProvider } from "@/contexts/MenuContext";
 import { cookies } from "next/headers";
@@ -47,7 +48,9 @@ export default async function RootLayout({
           <CategoriesProvider initialCategories={categories}>
             <MenuProvider initialMenuItems={menuItems}>
               <AuthProvider>
-                <FavoritesProvider>{children}</FavoritesProvider>
+                <FavoritesProvider>
+                  <CartProvider>{children}</CartProvider>
+                </FavoritesProvider>
               </AuthProvider>
             </MenuProvider>
           </CategoriesProvider>

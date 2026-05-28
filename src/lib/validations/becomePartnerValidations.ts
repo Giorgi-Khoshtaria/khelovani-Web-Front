@@ -11,8 +11,18 @@ import { PartnerTypeEnum } from "@/lib/types/partnerTypes";
 export type FormErrors = Record<string, string>;
 
 const sharedFields = {
-  companyNameGe: z.string().trim().min(1, "companyNameGe_required").max(100, "companyNameGe_max_length"),
-  companyNameEn: z.string().trim().min(1, "companyNameEn_required").max(100, "companyNameEn_max_length"),
+  companyNameGe: z
+    .string()
+    .trim()
+    .min(1, "companyNameGe_required")
+    .max(100, "companyNameGe_max_length")
+    .regex(/^[ა-ჿ0-9\s&.,'-]+$/, "companyNameGe_invalid"),
+  companyNameEn: z
+    .string()
+    .trim()
+    .min(1, "companyNameEn_required")
+    .max(100, "companyNameEn_max_length")
+    .regex(/^[A-Za-z0-9\s&.,'-]+$/, "companyNameEn_invalid"),
   phone: phoneSchema,
   city: citySchema,
   email: emailSchema(254),

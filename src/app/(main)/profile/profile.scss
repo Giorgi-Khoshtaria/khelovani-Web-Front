@@ -6,7 +6,7 @@
   padding: 40px 20px 60px;
 
   &__container {
-    max-width: 780px;
+    max-width: 1080px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -18,6 +18,122 @@
     justify-content: center;
     align-items: center;
     min-height: 60vh;
+  }
+}
+
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__body {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  &__nav {
+    background: colors.$color-white;
+    border: 1px solid colors.$color-border;
+    border-radius: 18px;
+    padding: 10px;
+    position: sticky;
+    top: 24px;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+
+  &__nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: colors.$color-text-primary;
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: colors.$color-ivory;
+    }
+
+    &.active {
+      background: colors.$color-bg-secondary;
+      font-weight: 600;
+    }
+
+    &.danger {
+      color: colors.$color-deep-red;
+    }
+  }
+
+  &__nav-icon {
+    display: flex;
+    align-items: center;
+    color: inherit;
+  }
+
+  &__nav-label {
+    flex: 1;
+  }
+
+  &__nav-chevron {
+    color: colors.$color-text-secondary;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &__nav-item.active &__nav-chevron {
+    opacity: 1;
+  }
+
+  &__content {
+    background: colors.$color-white;
+    border: 1px solid colors.$color-border;
+    border-radius: 18px;
+    padding: 28px 30px;
+  }
+
+  @media (max-width: 860px) {
+    &__body {
+      grid-template-columns: 1fr;
+    }
+
+    &__nav {
+      position: static;
+
+      ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    &__nav-item {
+      width: auto;
+    }
+
+    &__nav-chevron {
+      display: none;
+    }
+
+    &__content {
+      padding: 22px 18px;
+    }
   }
 }
 

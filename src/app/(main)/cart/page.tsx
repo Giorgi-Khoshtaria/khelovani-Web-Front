@@ -1,14 +1,64 @@
-import type { Metadata } from "next";
-import CartPage from "@/components/cartPage/CartPage";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Cart | Khelovani",
-};
+import { useRouter } from "next/navigation";
+import { useCart } from "@/contexts/CartContext";
+import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import CartHeader from "@/components/cartPage/CartHeader";
+import CheckoutStepper from "@/components/cartPage/CheckoutStepper";
+import CartItemsList from "@/components/cartPage/CartItemsList";
+import OrderSummary from "@/components/cartPage/OrderSummary";
+import CartEmpty from "@/components/cartPage/CartEmpty";
+import "@/components/cartPage/cartPage.scss";
 
-export default function Page() {
+export default function CartPage() {
+  const router = useRouter();
+  const { items, isReady, totalItems } = useCart();
+  const { t: tPages } = useClientTranslation("pages");
+  const { t: tNav } = useClientTranslation("navigation");
+
+  if (!isReady) {
+    return (
+      <main>
+        <section className="cart-page">
+          <div className="cart-page__loading">
+            <span className="spinner" />
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <main>
+        <section className="cart-page">
+          <CartHeader pieces={0} />
+          <CheckoutStepper active="cart" />
+          <CartEmpty
+            message={tPages("cart.empty") || "თქვენი კალათა ცარიელია"}
+            ctaLabel={tNav("back_to_shop") || "მაღაზიაში დაბრუნება"}
+            onShop={() => router.push("/products")}
+          />
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main>
-      <CartPage />
+      <section className="cart-page">
+        <CartHeader pieces={totalItems} />
+        <CheckoutStepper active="cart" />
+
+        <div className="cart-page__layout">
+          <div className="cart-page__main">
+            <CartItemsList items={items} />
+          </div>
+          <aside className="cart-page__aside">
+            <OrderSummary items={items} />
+          </aside>
+        </div>
+      </section>
     </main>
   );
 }

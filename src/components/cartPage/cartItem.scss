@@ -1,0 +1,223 @@
+@use "@/styles/colors.scss" as colors;
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+  }
+
+  &__media {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: colors.$color-ivory;
+    display: block;
+
+    @media (max-width: 600px) {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  &__img {
+    object-fit: cover;
+  }
+
+  &__one-of {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(250, 247, 242, 0.95);
+    color: colors.$color-walnut;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  &__top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__category {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__title {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: colors.$color-text-primary;
+    text-decoration: none;
+    line-height: 1.25;
+
+    &:hover {
+      color: colors.$color-walnut;
+    }
+  }
+
+  &__owner {
+    font-size: 12.5px;
+    color: colors.$color-text-secondary;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: colors.$color-text-primary;
+    }
+  }
+
+  &__remove {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: colors.$color-text-secondary;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: colors.$color-ivory;
+      color: colors.$color-text-primary;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__controls {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: auto 1fr;
+    }
+  }
+
+  &__qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid colors.$color-border;
+    border-radius: 999px;
+    padding: 4px;
+  }
+
+  &__qty-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: colors.$color-text-primary;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: colors.$color-ivory;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &__qty-value {
+    min-width: 28px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__price {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+
+    @media (max-width: 600px) {
+      grid-column: 2;
+      align-items: flex-end;
+    }
+  }
+
+  &__price-strike {
+    font-size: 12.5px;
+    text-decoration: line-through;
+    color: colors.$color-text-secondary;
+  }
+
+  &__price-current {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: colors.$color-text-primary;
+  }
+
+  &__price-each {
+    font-size: 11.5px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__stock-low {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #fdecea;
+    color: colors.$color-error;
+    font-size: 12px;
+    font-weight: 500;
+    align-self: flex-start;
+  }
+
+  &__stock-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: colors.$color-error;
+  }
+}

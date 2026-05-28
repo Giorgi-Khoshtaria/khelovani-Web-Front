@@ -87,18 +87,6 @@ export interface PartnerCardProps {
   index?: number;
 }
 
-export interface PartnerSidebarProps {
-  filters: PartnerFilterState;
-  isOpen: boolean;
-  activeCount: number;
-  onSearchChange: (v: string) => void;
-  onCityChange: (city: string) => void;
-  onRatingChange: (r: number) => void;
-  onPartnerTypeChange: (type: PartnerType | "") => void;
-  onClearAll: () => void;
-  onClose: () => void;
-}
-
 export interface PartnerPaginationProps {
   page: number;
   totalPages: number;

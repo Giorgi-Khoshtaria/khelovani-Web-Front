@@ -1,0 +1,29 @@
+@use "@/styles/colors" as *;
+
+// Feature-specific: star-rating row content. Drawer chrome comes from
+// the shared @/styles/filterDrawer stylesheet.
+
+.pf-stars {
+  display: inline-flex;
+  gap: 2px;
+  margin-right: 10px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.pf-star {
+  color: rgba($color-walnut, 0.3);
+
+  &--on { color: $color-walnut; }
+}
+
+.fd-list__row--active .pf-star {
+  color: rgba($color-white, 0.4);
+  &--on { color: $color-white; }
+}
+
+.pf-rating-label {
+  font-size: 14px;
+  color: inherit;
+  opacity: 0.85;
+}

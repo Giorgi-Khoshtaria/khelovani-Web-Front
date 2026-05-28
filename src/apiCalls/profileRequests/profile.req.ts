@@ -7,12 +7,11 @@ export interface ProfileData {
   idNumber: string;
   nameGe?: string;
   nameEn: string;
-  dateOfBirth: string;
-  city: string;
-  address: string;
   email: string;
   phone: string;
   profileImage: string | null;
+  isVerified?: boolean;
+  createdAt?: string;
 }
 
 /**

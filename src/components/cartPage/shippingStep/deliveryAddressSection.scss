@@ -1,0 +1,105 @@
+@use "@/styles/colors.scss" as colors;
+
+.delivery-address {
+  background: colors.$color-white;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  &__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: auto 1fr;
+      row-gap: 8px;
+    }
+  }
+
+  &__step {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-walnut;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: colors.$color-text-primary;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 13.5px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__add {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: colors.$color-walnut;
+    cursor: pointer;
+
+    @media (max-width: 600px) {
+      grid-column: 1 / -1;
+      text-align: left;
+    }
+
+    &:hover:not(:disabled) {
+      color: colors.$color-text-primary;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__empty {
+    padding: 32px 20px;
+    border-radius: 14px;
+    background: colors.$color-ivory;
+    border: 1.5px dashed colors.$color-border;
+    color: colors.$color-text-secondary;
+    text-align: center;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

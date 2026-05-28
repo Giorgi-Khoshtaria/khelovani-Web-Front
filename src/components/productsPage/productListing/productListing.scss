@@ -17,16 +17,53 @@
     gap: 24px;
   }
 
-  // ── top row: search + count ─────────────────────────────────────────────────
+  // ── Top row ─────────────────────────────────────────────────
 
   &__topbar {
     display: flex;
     align-items: center;
-    gap: 24px;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 6px;
+  }
+
+  &__filters-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba($color-walnut, 0.35);
+    background: $color-bg-secondary;
+    color: $color-espresso;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      background: $color-bg-accent;
+      border-color: rgba($color-walnut, 0.55);
+    }
+  }
+
+  &__filters-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+    margin-left: 2px;
+    border-radius: 999px;
+    background: $color-espresso;
+    color: $color-white;
+    font-size: 10px;
+    font-weight: 700;
   }
 
   &__count {
-    flex-shrink: 0;
     font-size: 15px;
     color: $color-text-secondary;
     white-space: nowrap;
@@ -38,7 +75,7 @@
     }
   }
 
-  // ── grid ────────────────────────────────────────────────────────────────────
+  // ── Grid ────────────────────────────────────────────────────
 
   &__grid {
     display: grid;
@@ -76,24 +113,19 @@
     }
   }
 
-  // ── responsive ──────────────────────────────────────────────────────────────
+  // ── Responsive ──────────────────────────────────────────────
 
   @media (max-width: 900px) {
     padding: 24px 20px 60px;
 
-    &__container {
-      gap: 18px;
-    }
+    &__container { gap: 18px; }
 
     &__topbar {
-      flex-direction: column;
-      align-items: stretch;
       gap: 12px;
     }
 
-    &__count {
-      text-align: right;
-    }
+    &__filters-btn { padding: 10px 18px; }
+    &__count { font-size: 14px; }
 
     &__grid {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

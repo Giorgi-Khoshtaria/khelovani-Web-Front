@@ -4,8 +4,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import TextInput from "@/components/ui/TextInput";
 import PhoneInput from "@/components/ui/PhoneInput";
-import SelectInput from "@/components/ui/SelectInput";
-import { CITY_OPTIONS } from "@/components/ui/CityOptions";
 import { updateProfile } from "@/apiCalls/profileRequests/profile.req";
 import type { ProfileData } from "@/apiCalls/profileRequests/profile.req";
 import { validateProfileUpdate, type ProfileUpdateFormData } from "@/lib/validations/profileUpdateValidations";
@@ -23,9 +21,6 @@ function toFormData(p: ProfileData): ProfileUpdateFormData {
     idNumber: p.idNumber ?? "",
     nameGe: p.nameGe ?? "",
     nameEn: p.nameEn ?? "",
-    dateOfBirth: p.dateOfBirth ? p.dateOfBirth.slice(0, 10) : "",
-    city: p.city ?? "",
-    address: p.address ?? "",
     email: p.email ?? "",
     phone: p.phone ?? "",
   };
@@ -43,7 +38,7 @@ export default function ProfileInfoSection({ profile, onUpdated }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
     setErrors((prev) => ({ ...prev, [id]: "" }));
@@ -156,35 +151,6 @@ export default function ProfileInfoSection({ profile, onUpdated }: Props) {
           value={formData.phone}
           onChange={handleChange}
           error={errors.phone}
-          disabled={!isEditing}
-        />
-        <TextInput
-          id="dateOfBirth"
-          label={tInputs("label.date_of_birth") || "დაბადების თარიღი"}
-          type="date"
-          value={formData.dateOfBirth}
-          onChange={handleChange}
-          error={errors.dateOfBirth}
-          disabled={!isEditing}
-        />
-        <SelectInput
-          id="city"
-          label={tInputs("label.city") || "ქალაქი"}
-          value={formData.city}
-          onChange={handleChange}
-          options={CITY_OPTIONS}
-          placeholder={tInputs("placeholder.city") || ""}
-          error={errors.city}
-          disabled={!isEditing}
-        />
-        <TextInput
-          id="address"
-          label={tInputs("label.address") || "მისამართი"}
-          value={formData.address}
-          onChange={handleChange}
-          error={errors.address}
-          placeholder={tInputs("placeholder.address") || ""}
-          fullWidth
           disabled={!isEditing}
         />
       </div>

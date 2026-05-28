@@ -181,6 +181,10 @@
     gap: 12px;
     align-items: center;
     margin-top: 4px;
+
+    &--bottom {
+      margin-top: 8px;
+    }
   }
 
   &__qty {
@@ -249,6 +253,32 @@
       cursor: not-allowed;
       color: $color-text-secondary;
     }
+
+    // ── Outlined variant (mirrors the old buy-now) ──────
+    &--outlined {
+      width: 100%;
+      background: $color-white;
+      color: $color-text-primary;
+      border: 1px solid $color-border;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      padding: 15px 20px;
+      transition: border-color 0.2s ease, background-color 0.2s ease,
+        transform 0.15s ease;
+
+      &:hover:not(:disabled) {
+        background: rgba($color-espresso, 0.03);
+        border-color: $color-espresso;
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        background: $color-bg-secondary;
+        color: $color-text-secondary;
+        border-color: $color-border;
+        cursor: not-allowed;
+      }
+    }
   }
 
   // ── Save / Share (ghost) row ─────────────────────────
@@ -278,6 +308,15 @@
       border-color: $color-walnut;
       background: rgba($color-walnut, 0.04);
       transform: translateY(-1px);
+    }
+
+    &--active {
+      border-color: #c0392b;
+      color: #c0392b;
+
+      svg {
+        fill: #c0392b;
+      }
     }
   }
 

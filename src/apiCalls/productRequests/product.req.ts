@@ -7,6 +7,8 @@ export interface GetProductsParams {
   category?: string;
   partnerId?: string;
   isShown?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
   page?: number;
   limit?: number;
 }
