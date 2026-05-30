@@ -1,0 +1,19 @@
+@use "@/styles/colors.scss" as colors;
+
+.orders-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  background: colors.$color-bg-page;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 360px;
+  }
+}

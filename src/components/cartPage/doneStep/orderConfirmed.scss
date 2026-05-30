@@ -1,0 +1,83 @@
+@use "@/styles/colors.scss" as colors;
+
+.order-confirmed {
+  background: colors.$color-white;
+  border-radius: 24px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  padding: 72px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+
+  &__check {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 2.5px solid colors.$color-success;
+    color: colors.$color-success;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  &__eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: colors.$color-walnut;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: colors.$color-espresso;
+
+    @media (max-width: 600px) {
+      font-size: 38px;
+    }
+  }
+
+  &__message {
+    margin: 0;
+    max-width: 540px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: colors.$color-text-secondary;
+
+    strong {
+      color: colors.$color-text-primary;
+      font-weight: 600;
+    }
+  }
+
+  &__track {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    border-radius: 999px;
+    border: none;
+    background: colors.$color-darkest;
+    color: colors.$color-white;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: colors.$color-espresso;
+    }
+  }
+}

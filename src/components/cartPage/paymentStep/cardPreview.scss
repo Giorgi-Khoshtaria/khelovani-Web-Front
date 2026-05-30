@@ -1,0 +1,89 @@
+@use "@/styles/colors.scss" as colors;
+
+.card-preview {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1.6 / 1;
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: colors.$color-white;
+  background: linear-gradient(135deg, colors.$color-espresso, colors.$color-darkest);
+  box-shadow: 0 16px 40px rgba(colors.$color-darkest, 0.35);
+  overflow: hidden;
+
+  // Subtle brand tints on the gradient.
+  &--visa {
+    background: linear-gradient(135deg, #2a2520, colors.$color-darkest);
+  }
+  &--mastercard {
+    background: linear-gradient(135deg, #3a261a, colors.$color-darkest);
+  }
+  &--amex {
+    background: linear-gradient(135deg, #1f2a2a, colors.$color-darkest);
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__chip {
+    width: 46px;
+    height: 34px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #e7c66b, #b8923c);
+  }
+
+  &__brand {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  &__number {
+    font-size: clamp(18px, 4.5vw, 26px);
+    letter-spacing: 3px;
+    font-variant-numeric: tabular-nums;
+    color: rgba(colors.$color-white, 0.92);
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+
+    &--exp {
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+
+  &__label {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(colors.$color-white, 0.55);
+  }
+
+  &__value {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

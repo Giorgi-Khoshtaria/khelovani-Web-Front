@@ -2,13 +2,13 @@
 
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useShippingCheckout } from "@/lib/hooks/useShippingCheckout";
-import CheckoutStepper from "@/components/cartPage/CheckoutStepper";
+import CheckoutStepper from "@/components/cartPage/cartStep/CheckoutStepper";
 import AddAddressModal from "@/components/profilePage/AddressesSection/AddAddressModal";
 import ShippingHeader from "@/components/cartPage/shippingStep/ShippingHeader";
 import ContactInfoSection from "@/components/cartPage/shippingStep/ContactInfoSection";
 import DeliveryAddressSection from "@/components/cartPage/shippingStep/DeliveryAddressSection";
-import ShippingOrderSummary from "@/components/cartPage/shippingStep/ShippingOrderSummary";
-import "@/components/cartPage/shippingStep/shippingStep.scss";
+import OrderSummary from "@/components/cartPage/orderSummary/OrderSummary";
+import "./shippingStep.scss";
 
 export default function ShippingPage() {
   const s = useShippingCheckout();
@@ -58,9 +58,10 @@ export default function ShippingPage() {
             />
           </div>
           <aside className="shipping-step__aside">
-            <ShippingOrderSummary
+            <OrderSummary
               items={s.items}
-              onContinue={s.handleContinue}
+              variant="shipping"
+              onAction={s.handleContinue}
             />
           </aside>
         </div>

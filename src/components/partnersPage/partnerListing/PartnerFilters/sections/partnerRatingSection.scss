@@ -1,7 +1,7 @@
 @use "@/styles/colors" as *;
 
-// Feature-specific: star-rating row content. Drawer chrome comes from
-// the shared @/styles/filterDrawer stylesheet.
+// Star-rating row content. Drawer chrome comes from the shared
+// @/styles/filterDrawer stylesheet (loaded by FilterDrawer).
 
 .pf-stars {
   display: inline-flex;

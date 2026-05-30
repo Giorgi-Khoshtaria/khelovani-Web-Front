@@ -20,6 +20,7 @@ import {
 } from "@/apiCalls/profileRequests/profile.req";
 import type { Address, AddressPayload } from "@/lib/types/addressTypes";
 import type { CartItem } from "@/lib/types/cartTypes";
+import { saveCheckoutSession } from "@/lib/checkout/checkoutSession";
 import { z } from "zod";
 import { emailSchema, phoneSchema } from "@/lib/validations/shared/zodHelpers";
 
@@ -240,7 +241,15 @@ export const useShippingCheckout = (): ShippingCheckoutState => {
       );
       return;
     }
-    toast.info(tPages("cart.checkout_soon") || "მალე ხელმისაწვდომი იქნება");
+    saveCheckoutSession({
+      addressId: selectedId,
+      contact: {
+        person: contactPerson.trim(),
+        email: contactEmail.trim(),
+        phone: contactPhone.trim(),
+      },
+    });
+    router.push("/cart/payment");
   };
 
   return {

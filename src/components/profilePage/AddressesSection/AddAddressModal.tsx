@@ -30,11 +30,6 @@ const TYPE_TABS: { value: AddressType; key: string; fallback: string }[] = [
     fallback: "Office",
   },
   {
-    value: AddressType.Family,
-    key: "profile.addresses.type_family",
-    fallback: "Family",
-  },
-  {
     value: AddressType.Other,
     key: "profile.addresses.type_other",
     fallback: "Other",

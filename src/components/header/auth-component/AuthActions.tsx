@@ -61,6 +61,13 @@ function AuthActions({ mobile }: AuthActionsProps) {
             >
               {t("view_profile")}
             </Link>
+            <Link
+              href="/orders"
+              className="user-dropdown__item"
+              onClick={() => setOpen(false)}
+            >
+              {t("orders") || "ჩემი შეკვეთები"}
+            </Link>
             <button
               className="user-dropdown__item user-dropdown__logout"
               onClick={() => {

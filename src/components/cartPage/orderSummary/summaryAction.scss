@@ -1,0 +1,38 @@
+@use "@/styles/colors.scss" as colors;
+
+.summary-action {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  border: none;
+  background: colors.$color-darkest;
+  color: colors.$color-white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: colors.$color-espresso;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Cart step: lock · label · arrow spread across the button.
+  &--spread {
+    justify-content: space-between;
+    gap: 14px;
+
+    span {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}

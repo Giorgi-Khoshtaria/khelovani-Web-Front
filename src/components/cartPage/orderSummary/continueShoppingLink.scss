@@ -1,0 +1,16 @@
+@use "@/styles/colors.scss" as colors;
+
+.continue-shopping {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: colors.$color-text-secondary;
+  text-decoration: none;
+  padding: 4px 0;
+
+  &:hover {
+    color: colors.$color-text-primary;
+  }
+}

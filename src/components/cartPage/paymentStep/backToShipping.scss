@@ -1,0 +1,23 @@
+@use "@/styles/colors.scss" as colors;
+
+.back-to-shipping {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1.5px solid colors.$color-border;
+  background: colors.$color-white;
+  color: colors.$color-text-primary;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: colors.$color-walnut;
+    background: colors.$color-ivory;
+  }
+}

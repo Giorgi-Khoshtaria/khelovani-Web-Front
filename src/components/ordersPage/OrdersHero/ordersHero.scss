@@ -1,0 +1,75 @@
+@use "@/styles/colors.scss" as colors;
+
+.orders-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 620px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 52px;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: colors.$color-espresso;
+
+    @media (max-width: 600px) {
+      font-size: 38px;
+    }
+  }
+
+  &__title-em {
+    font-style: italic;
+    font-weight: 500;
+    color: colors.$color-walnut;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: colors.$color-text-secondary;
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 320px;
+    flex: 1;
+    max-width: 420px;
+    padding: 14px 20px;
+    border-radius: 999px;
+    background: colors.$color-white;
+    border: 1px solid colors.$color-border;
+    color: colors.$color-text-secondary;
+
+    @media (max-width: 600px) {
+      min-width: 100%;
+    }
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      color: colors.$color-text-primary;
+
+      &::placeholder {
+        color: colors.$color-text-secondary;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@use "@/styles/colors.scss" as colors;
+
+.summary-footnote {
+  margin: 0;
+  font-size: 12px;
+  color: colors.$color-text-secondary;
+  text-align: center;
+  line-height: 1.5;
+
+  &--secure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    svg {
+      color: colors.$color-success;
+      flex-shrink: 0;
+    }
+  }
+}

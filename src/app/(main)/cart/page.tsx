@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
-import CartHeader from "@/components/cartPage/CartHeader";
-import CheckoutStepper from "@/components/cartPage/CheckoutStepper";
-import CartItemsList from "@/components/cartPage/CartItemsList";
-import OrderSummary from "@/components/cartPage/OrderSummary";
-import CartEmpty from "@/components/cartPage/CartEmpty";
-import "@/components/cartPage/cartPage.scss";
+import CartHeader from "@/components/cartPage/cartStep/CartHeader";
+import CheckoutStepper from "@/components/cartPage/cartStep/CheckoutStepper";
+import CartItemsList from "@/components/cartPage/cartStep/CartItemsList";
+import OrderSummary from "@/components/cartPage/orderSummary/OrderSummary";
+import CartEmpty from "@/components/cartPage/cartStep/CartEmpty";
+import "./cartPage.scss";
 
 export default function CartPage() {
   const router = useRouter();
@@ -55,7 +55,11 @@ export default function CartPage() {
             <CartItemsList items={items} />
           </div>
           <aside className="cart-page__aside">
-            <OrderSummary items={items} />
+            <OrderSummary
+              items={items}
+              variant="cart"
+              onAction={() => router.push("/cart/shipping")}
+            />
           </aside>
         </div>
       </section>

@@ -14,15 +14,13 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-const TYPE_LABEL: Record<AddressType, { key: string; fallback: string }> = {
+const TYPE_LABEL: Partial<
+  Record<AddressType, { key: string; fallback: string }>
+> = {
   [AddressType.Home]: { key: "profile.addresses.type_home", fallback: "სახლი" },
   [AddressType.Work]: {
     key: "profile.addresses.type_work",
     fallback: "ოფისი",
-  },
-  [AddressType.Family]: {
-    key: "profile.addresses.type_family",
-    fallback: "ოჯახი",
   },
   [AddressType.Other]: {
     key: "profile.addresses.type_other",
@@ -88,9 +86,11 @@ export default function DeliveryAddressCard({
         >
           {selected && <span className="delivery-address-card__radio-dot" />}
         </span>
-        <span className="delivery-address-card__type">
-          {tPages(typeLabel.key) || typeLabel.fallback}
-        </span>
+        {typeLabel && (
+          <span className="delivery-address-card__type">
+            {tPages(typeLabel.key) || typeLabel.fallback}
+          </span>
+        )}
         {address.isDefault && (
           <span className="delivery-address-card__default">
             {tPages("shipping.address.default_badge") || "ნაგულისხმევი"}

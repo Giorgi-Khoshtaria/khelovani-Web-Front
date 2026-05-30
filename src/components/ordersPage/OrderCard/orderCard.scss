@@ -1,0 +1,297 @@
+@use "@/styles/colors.scss" as colors;
+
+.order-card {
+  background: colors.$color-white;
+  border-radius: 18px;
+  border: 1px solid colors.$color-border;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+
+  &__head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 26px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+  }
+
+  &__id {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__number {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: colors.$color-espresso;
+  }
+
+  &__ordered {
+    font-size: 13.5px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 600;
+
+    &::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    &--paid {
+      background: rgba(#c98a2b, 0.14);
+      color: #b9772a;
+    }
+    &--delivered {
+      background: rgba(colors.$color-success, 0.14);
+      color: colors.$color-success;
+    }
+    &--cancelled {
+      background: rgba(colors.$color-error, 0.12);
+      color: colors.$color-error;
+    }
+  }
+
+  &__total {
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: colors.$color-espresso;
+  }
+
+  &__chevron {
+    color: colors.$color-walnut;
+    display: inline-flex;
+    transition: transform 0.2s ease;
+  }
+
+  &--open &__chevron {
+    transform: rotate(180deg);
+  }
+
+  // ── Collapsed summary ──────────────────────────────────────
+  &__summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 26px 22px;
+  }
+
+  &__thumbs {
+    display: inline-flex;
+    align-items: center;
+
+    img {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid colors.$color-white;
+      margin-left: -10px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__thumbs-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 8px;
+    margin-left: -10px;
+    border-radius: 10px;
+    border: 2px solid colors.$color-white;
+    background: colors.$color-bg-secondary;
+    color: colors.$color-walnut;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  &__summary-text {
+    font-size: 15px;
+    color: colors.$color-text-secondary;
+  }
+
+  // ── Expanded body ──────────────────────────────────────────
+  &__body {
+    padding: 0 26px 24px;
+    border-top: 1px solid colors.$color-border;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding-top: 22px;
+  }
+
+  &__tracker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__step {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: colors.$color-text-secondary;
+
+    &--done {
+      color: colors.$color-espresso;
+    }
+  }
+
+  &__bullet {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid colors.$color-border;
+    color: colors.$color-text-secondary;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  &__step--done &__bullet {
+    background: colors.$color-darkest;
+    border-color: colors.$color-darkest;
+    color: colors.$color-white;
+  }
+
+  &__line {
+    flex: 1;
+    height: 2px;
+    background: colors.$color-border;
+
+    &--done {
+      background: colors.$color-success;
+    }
+  }
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 12px;
+    padding: 6px;
+    margin: -6px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: colors.$color-ivory;
+    }
+  }
+
+  &__thumb {
+    position: relative;
+    width: 56px;
+    height: 56px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      background: colors.$color-ivory;
+    }
+  }
+
+  &__qty {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: colors.$color-darkest;
+    color: colors.$color-white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+  }
+
+  &__item-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: colors.$color-espresso;
+  }
+
+  &__item-partner {
+    margin: 2px 0 0;
+    font-size: 13.5px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__item-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  &__item-original {
+    font-size: 13px;
+    color: colors.$color-text-secondary;
+    text-decoration: line-through;
+  }
+
+  &__item-amount {
+    font-size: 15px;
+    font-weight: 600;
+    color: colors.$color-espresso;
+
+    // On sale → highlight the discounted price so it reads as a deal.
+    &--sale {
+      color: colors.$color-burnt-red;
+    }
+  }
+}
