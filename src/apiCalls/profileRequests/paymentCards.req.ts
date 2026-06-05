@@ -1,6 +1,7 @@
 import api from "@/apiCalls/api";
 
-const authHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
+// Auth is carried by the httpOnly `access-token` cookie (sent automatically
+// via `withCredentials`). These are all client-side calls — no token param.
 
 export type CardBrand = "visa" | "mastercard" | "amex" | "other";
 
@@ -23,36 +24,21 @@ export interface AddCardPayload {
   isDefault?: boolean;
 }
 
-export const getCards = async (token: string): Promise<PaymentCard[]> => {
-  const res = await api.get("/api/user/cards", { headers: authHeader(token) });
+export const getCards = async (): Promise<PaymentCard[]> => {
+  const res = await api.get("/api/user/cards");
   return res.data.data as PaymentCard[];
 };
 
-export const addCard = async (
-  token: string,
-  data: AddCardPayload,
-): Promise<PaymentCard> => {
-  const res = await api.post("/api/user/cards", data, {
-    headers: authHeader(token),
-  });
+export const addCard = async (data: AddCardPayload): Promise<PaymentCard> => {
+  const res = await api.post("/api/user/cards", data);
   return res.data.data as PaymentCard;
 };
 
-export const setDefaultCard = async (
-  token: string,
-  id: string,
-): Promise<PaymentCard[]> => {
-  const res = await api.patch(
-    `/api/user/cards/${id}/default`,
-    {},
-    { headers: authHeader(token) },
-  );
+export const setDefaultCard = async (id: string): Promise<PaymentCard[]> => {
+  const res = await api.patch(`/api/user/cards/${id}/default`, {});
   return res.data.data as PaymentCard[];
 };
 
-export const deleteCard = async (
-  token: string,
-  id: string,
-): Promise<void> => {
-  await api.delete(`/api/user/cards/${id}`, { headers: authHeader(token) });
+export const deleteCard = async (id: string): Promise<void> => {
+  await api.delete(`/api/user/cards/${id}`);
 };

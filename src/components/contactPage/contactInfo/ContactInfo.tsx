@@ -2,12 +2,18 @@
 
 import React from "react";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
+import { useInformationFields } from "@/lib/hooks/useInformationFields";
 import "./contactInfo.scss";
 
 export default function ContactInfo() {
   const { t: Pages } = useClientTranslation("pages");
   const { t: Inputs } = useClientTranslation("inputs");
   const { t: Common } = useClientTranslation("common");
+  const { get } = useInformationFields();
+
+  const email = get("email", "info@georgianarts.ge");
+  const phone = get("phone", "+995 322 12 34 56");
+  const address = get("address", "12 Rustaveli Avenue\nTbilisi, 0108 Georgia");
 
   return (
     <div className="contact-info-card">
@@ -34,7 +40,7 @@ export default function ContactInfo() {
               {Inputs("label.email")}
             </span>
             <span className="contact-info-item__value">
-              info@georgianarts.ge
+              <a href={`mailto:${email}`}>{email}</a>
             </span>
           </div>
         </div>
@@ -57,7 +63,9 @@ export default function ContactInfo() {
             <span className="contact-info-item__label">
               {Inputs("label.phone")}
             </span>
-            <span className="contact-info-item__value">+995 322 12 34 56</span>
+            <span className="contact-info-item__value">
+              <a href={`tel:${phone.replace(/\s+/g, "")}`}>{phone}</a>
+            </span>
           </div>
         </div>
 
@@ -81,9 +89,12 @@ export default function ContactInfo() {
               {Common("location")}
             </span>
             <span className="contact-info-item__value">
-              12 Rustaveli Avenue
-              <br />
-              Tbilisi, 0108 Georgia
+              {address.split("\n").map((line, i) => (
+                <React.Fragment key={i}>
+                  {i > 0 && <br />}
+                  {line}
+                </React.Fragment>
+              ))}
             </span>
           </div>
         </div>
@@ -121,19 +132,6 @@ export default function ContactInfo() {
           <a href="#" className="social-links__link" aria-label="X (Twitter)">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
-            </svg>
-          </a>
-          <a href="#" className="social-links__link" aria-label="Pinterest">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0"></path>
-              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
             </svg>
           </a>
         </div>

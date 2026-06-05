@@ -28,6 +28,17 @@ export const loginUser = async (data: LoginTypes, lang: string) => {
   }
 };
 
+export const logoutUser = async () => {
+  try {
+    // Tells the backend to clear the httpOnly auth cookie. The browser sends
+    // the cookie automatically via `withCredentials`.
+    await api.post(`/api/user/logout`);
+  } catch (error) {
+    // Logout should never block the UI — clearing client state still happens.
+    console.error("Error logging out user:", error);
+  }
+};
+
 export const forgotPassword = async (email: string, lang: string) => {
   try {
     const response = await api.post(

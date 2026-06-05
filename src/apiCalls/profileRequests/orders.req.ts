@@ -5,7 +5,8 @@ import type {
   CheckoutPayload,
 } from "@/lib/types/orderTypes";
 
-const authHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
+// Auth is carried by the httpOnly `access-token` cookie (sent automatically
+// via `withCredentials`). These are all client-side calls — no token param.
 
 export interface GetOrdersResult {
   orders: Order[];
@@ -16,13 +17,9 @@ export interface GetOrdersResult {
 }
 
 export const getOrders = async (
-  token: string,
   params?: { status?: string; page?: number; limit?: number },
 ): Promise<GetOrdersResult> => {
-  const res = await api.get("/api/user/orders", {
-    headers: authHeader(token),
-    params,
-  });
+  const res = await api.get("/api/user/orders", { params });
   const meta = res.data.meta ?? {};
   return {
     orders: (res.data.data ?? []) as Order[],
@@ -35,19 +32,14 @@ export const getOrders = async (
   };
 };
 
-export const getOrder = async (token: string, id: string): Promise<Order> => {
-  const res = await api.get(`/api/user/orders/${id}`, {
-    headers: authHeader(token),
-  });
+export const getOrder = async (id: string): Promise<Order> => {
+  const res = await api.get(`/api/user/orders/${id}`);
   return res.data.data as Order;
 };
 
 export const checkoutOrder = async (
-  token: string,
   payload: CheckoutPayload,
 ): Promise<Order[]> => {
-  const res = await api.post("/api/user/orders/checkout", payload, {
-    headers: authHeader(token),
-  });
+  const res = await api.post("/api/user/orders/checkout", payload);
   return res.data.data as Order[];
 };

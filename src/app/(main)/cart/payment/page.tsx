@@ -44,6 +44,7 @@ export default function PaymentPage() {
               cvc={p.cvc}
               brand={p.brand}
               saveCard={p.saveCard}
+              errors={p.errors}
               onNumberChange={p.setNumber}
               onHolderChange={p.setHolder}
               onExpiryChange={p.setExpiry}

@@ -121,13 +121,8 @@ export const useShippingCheckout = (): ShippingCheckoutState => {
       return;
     }
     if (fetchedRef.current) return;
-    const token = localStorage.getItem("access-token");
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
     fetchedRef.current = true;
-    Promise.all([getProfile(token), getAddresses(token)])
+    Promise.all([getProfile(), getAddresses()])
       .then(([p, list]) => {
         setProfile(p);
         const preferGe = lang.toLowerCase() === "ge";
@@ -164,18 +159,16 @@ export const useShippingCheckout = (): ShippingCheckoutState => {
   };
 
   const handleSubmit = async (payload: AddressPayload) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     setBusy(true);
     try {
       if (editing) {
-        await updateAddress(token, editing._id, payload);
+        await updateAddress(editing._id, payload);
         toast.success(tAlerts("address_updated") || "მისამართი განახლდა");
-        setAddresses(await getAddresses(token));
+        setAddresses(await getAddresses());
       } else {
-        const created = await addAddress(token, payload);
+        const created = await addAddress(payload);
         toast.success(tAlerts("address_added") || "მისამართი დაემატა");
-        let fresh = await getAddresses(token);
+        let fresh = await getAddresses();
         const alreadyDefault = fresh.find(
           (a) => a._id === created._id,
         )?.isDefault;
@@ -185,8 +178,8 @@ export const useShippingCheckout = (): ShippingCheckoutState => {
               "გსურთ ეს მისამართი დააყენოთ ნაგულისხმევად?",
           );
           if (wantDefault) {
-            await setDefaultAddress(token, created._id);
-            fresh = await getAddresses(token);
+            await setDefaultAddress(created._id);
+            fresh = await getAddresses();
           }
         }
         setAddresses(fresh);
@@ -201,8 +194,6 @@ export const useShippingCheckout = (): ShippingCheckoutState => {
   };
 
   const handleDelete = async (id: string) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     if (
       !window.confirm(
         tPages("profile.addresses.delete_confirm") || "წავშალო ეს მისამართი?",
@@ -211,8 +202,8 @@ export const useShippingCheckout = (): ShippingCheckoutState => {
       return;
     setBusy(true);
     try {
-      await deleteAddress(token, id);
-      const fresh = await getAddresses(token);
+      await deleteAddress(id);
+      const fresh = await getAddresses();
       setAddresses(fresh);
       if (selectedId === id) {
         const def = fresh.find((a) => a.isDefault);

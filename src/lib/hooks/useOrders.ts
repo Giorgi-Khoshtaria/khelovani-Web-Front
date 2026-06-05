@@ -53,13 +53,7 @@ export const useOrders = (): UseOrdersState => {
     if (fetchedRef.current) return;
     fetchedRef.current = true;
 
-    const token = localStorage.getItem("access-token");
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
-
-    getOrders(token, { limit: 50 })
+    getOrders({ limit: 50 })
       .then((res) => {
         setAllOrders(res.orders);
         setCounts(res.counts);

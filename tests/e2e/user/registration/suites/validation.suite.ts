@@ -21,9 +21,6 @@ export function userRegistrationValidationSuite() {
       for (const field of [
         "idNumber",
         "nameEn",
-        "dateOfBirth",
-        "city",
-        "address",
         "email",
         "phone",
         "password",

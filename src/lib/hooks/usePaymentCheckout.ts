@@ -9,11 +9,14 @@ import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import type { CartItem } from "@/lib/types/cartTypes";
 import {
   type CardBrand,
+  type CardErrors,
   detectBrand,
   onlyDigits,
   cvcLengthForBrand,
   formatCardNumber,
   formatExpiry,
+  validateCard,
+  hasCardErrors,
 } from "@/lib/validations/cardValidations";
 import { checkoutOrder } from "@/apiCalls/profileRequests/orders.req";
 import {
@@ -31,6 +34,7 @@ export interface PaymentCheckoutState {
   saveCard: boolean;
   brand: CardBrand;
   paying: boolean;
+  errors: CardErrors;
   setNumber: (value: string) => void;
   setHolder: (value: string) => void;
   setExpiry: (value: string) => void;
@@ -41,9 +45,11 @@ export interface PaymentCheckoutState {
 }
 
 /**
- * Drives the payment step: card form state, brand-aware input formatting, and
- * route/cart guards (mirrors useShippingCheckout). No client-side validation —
- * the card is validated by the payment processor / backend.
+ * Drives the payment step: card form state, brand-aware input formatting,
+ * client-side format validation, and route/cart guards (mirrors
+ * useShippingCheckout). Validation only checks *format* (Luhn, length, expiry)
+ * so we don't place an order against an empty/garbage card — real
+ * authorization still belongs to a PCI-compliant processor.
  *
  * NOTE: there is no payment processor wired yet. The PAN/CVC must be sent to a
  * PCI-compliant tokenizing processor, and "save card" should later persist just
@@ -62,8 +68,13 @@ export const usePaymentCheckout = (): PaymentCheckoutState => {
   const [cvc, setCvcState] = useState("");
   const [saveCard, setSaveCard] = useState(false);
   const [paying, setPaying] = useState(false);
+  const [errors, setErrors] = useState<CardErrors>({});
 
   const brand = detectBrand(onlyDigits(number));
+
+  // Clears a field's error as the user edits it (matches the address form UX).
+  const clearError = (field: keyof CardErrors) =>
+    setErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
 
   // Redirect unauthenticated users to login.
   useEffect(() => {
@@ -76,11 +87,22 @@ export const usePaymentCheckout = (): PaymentCheckoutState => {
     if (isReady && items.length === 0) router.replace("/cart");
   }, [isReady, items.length, router]);
 
-  const setNumber = (value: string) => setNumberState(formatCardNumber(value));
-  const setHolder = (value: string) => setHolderState(value);
-  const setExpiry = (value: string) => setExpiryState(formatExpiry(value));
-  const setCvc = (value: string) =>
+  const setNumber = (value: string) => {
+    setNumberState(formatCardNumber(value));
+    clearError("number");
+  };
+  const setHolder = (value: string) => {
+    setHolderState(value);
+    clearError("holder");
+  };
+  const setExpiry = (value: string) => {
+    setExpiryState(formatExpiry(value));
+    clearError("expiry");
+  };
+  const setCvc = (value: string) => {
     setCvcState(onlyDigits(value).slice(0, cvcLengthForBrand(brand)));
+    clearError("cvc");
+  };
 
   const handlePay = async () => {
     // The shipping step stashed the address + contact; without it (e.g. a deep
@@ -90,9 +112,16 @@ export const usePaymentCheckout = (): PaymentCheckoutState => {
       router.replace("/cart/shipping");
       return;
     }
-    const token = localStorage.getItem("access-token");
-    if (!token) {
+    if (!isAuthenticated) {
       router.replace("/login");
+      return;
+    }
+
+    // Block checkout unless the card fields are present and well-formed. The
+    // form renders the per-field messages inline (translated) — no toast here.
+    const cardErrors = validateCard({ number, holder, expiry, cvc });
+    if (hasCardErrors(cardErrors)) {
+      setErrors(cardErrors);
       return;
     }
 
@@ -103,7 +132,7 @@ export const usePaymentCheckout = (): PaymentCheckoutState => {
     // empties the cart.
     setPaying(true);
     try {
-      await checkoutOrder(token, session);
+      await checkoutOrder(session);
       clearCheckoutSession();
       router.push("/cart/done");
     } catch {
@@ -124,6 +153,7 @@ export const usePaymentCheckout = (): PaymentCheckoutState => {
     saveCard,
     brand,
     paying,
+    errors,
     setNumber,
     setHolder,
     setExpiry,

@@ -1,51 +1,32 @@
 import api from "@/apiCalls/api";
 import type { Address, AddressPayload } from "@/lib/types/addressTypes";
 
-const authHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
+// Auth is carried by the httpOnly `access-token` cookie (sent automatically
+// via `withCredentials`). These are all client-side calls — no token param.
 
-export const getAddresses = async (token: string): Promise<Address[]> => {
-  const res = await api.get("/api/user/addresses", {
-    headers: authHeader(token),
-  });
+export const getAddresses = async (): Promise<Address[]> => {
+  const res = await api.get("/api/user/addresses");
   return res.data.data as Address[];
 };
 
-export const addAddress = async (
-  token: string,
-  data: AddressPayload,
-): Promise<Address> => {
-  const res = await api.post("/api/user/addresses", data, {
-    headers: authHeader(token),
-  });
+export const addAddress = async (data: AddressPayload): Promise<Address> => {
+  const res = await api.post("/api/user/addresses", data);
   return res.data.data as Address;
 };
 
 export const updateAddress = async (
-  token: string,
   id: string,
   data: AddressPayload,
 ): Promise<Address> => {
-  const res = await api.patch(`/api/user/addresses/${id}`, data, {
-    headers: authHeader(token),
-  });
+  const res = await api.patch(`/api/user/addresses/${id}`, data);
   return res.data.data as Address;
 };
 
-export const setDefaultAddress = async (
-  token: string,
-  id: string,
-): Promise<Address[]> => {
-  const res = await api.patch(
-    `/api/user/addresses/${id}/default`,
-    {},
-    { headers: authHeader(token) },
-  );
+export const setDefaultAddress = async (id: string): Promise<Address[]> => {
+  const res = await api.patch(`/api/user/addresses/${id}/default`, {});
   return res.data.data as Address[];
 };
 
-export const deleteAddress = async (
-  token: string,
-  id: string,
-): Promise<void> => {
-  await api.delete(`/api/user/addresses/${id}`, { headers: authHeader(token) });
+export const deleteAddress = async (id: string): Promise<void> => {
+  await api.delete(`/api/user/addresses/${id}`);
 };

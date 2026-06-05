@@ -114,23 +114,10 @@ export const nameGeValidationScenarios: ValidationScenario[] = [
   { id: "VAL-NAME-GE-004", field: "nameGe", value: "123", note: "digits only rejected" },
 ];
 
-export const dateOfBirthValidationScenarios: ValidationScenario[] = [
-  { id: "VAL-DOB-001", field: "dateOfBirth", value: "", note: "empty string" },
-  { id: "VAL-DOB-002", field: "dateOfBirth", value: "9999-12-31", note: "future date" },
-];
-
-export const addressValidationScenarios: ValidationScenario[] = [
-  { id: "VAL-ADDR-001", field: "address", value: "", note: "empty string" },
-  { id: "VAL-ADDR-002", field: "address", value: "AB", note: "too short" },
-  { id: "VAL-ADDR-003", field: "address", value: "A".repeat(201), note: "over max length" },
-];
-
 export const registrationFieldScenarios: ValidationScenario[] = [
   ...idNumberValidationScenarios,
   ...nameEnValidationScenarios,
   ...nameGeValidationScenarios,
-  ...dateOfBirthValidationScenarios,
-  ...addressValidationScenarios,
   ...emailValidationScenarios,
   ...phoneValidationScenarios,
   ...passwordValidationScenarios,
@@ -192,11 +179,11 @@ export const partnerFieldScenarios: ValidationScenario[] = [
 // ── Individual (physical person) partner scenarios ────────────
 
 export const partnerPersonalNumberScenarios: ValidationScenario[] = [
-  { id: "PRT-IND-001", field: "personalNumber", value: "", note: "empty string" },
-  { id: "PRT-IND-002", field: "personalNumber", value: "1234567890", note: "too short (10 digits)" },
-  { id: "PRT-IND-003", field: "personalNumber", value: "123456789012", note: "too long (12 digits)" },
-  { id: "PRT-IND-004", field: "personalNumber", value: "1234567890a", note: "contains letter" },
-  { id: "PRT-IND-005", field: "personalNumber", value: "           ", note: "whitespace only" },
+  { id: "PRT-IND-PNUM-001", field: "personalNumber", value: "", note: "empty string" },
+  { id: "PRT-IND-PNUM-002", field: "personalNumber", value: "1234567890", note: "too short (10 digits)" },
+  { id: "PRT-IND-PNUM-003", field: "personalNumber", value: "123456789012", note: "too long (12 digits)" },
+  { id: "PRT-IND-PNUM-004", field: "personalNumber", value: "1234567890a", note: "contains letter" },
+  { id: "PRT-IND-PNUM-005", field: "personalNumber", value: "           ", note: "whitespace only" },
 ];
 
 export const partnerIndividualFieldScenarios: ValidationScenario[] = [

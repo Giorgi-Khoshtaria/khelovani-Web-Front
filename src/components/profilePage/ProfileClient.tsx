@@ -111,12 +111,7 @@ export default function ProfileClient({ initialProfile }: Props) {
 
     if (profile) return;
 
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
-
-    document.cookie = `access-token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
-
-    getProfile(token)
+    getProfile()
       .then((data) => setProfile(data))
       .catch(() => router.replace("/login"));
   }, [isHydrated, isAuthenticated, profile, router]);

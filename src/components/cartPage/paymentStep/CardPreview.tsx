@@ -20,6 +20,16 @@ const BRAND_LABEL: Record<CardBrand, string> = {
 
 const NUMBER_PLACEHOLDER = "•••• •••• •••• ••••";
 
+/**
+ * Mask the PAN best-practice style: reveal only the last 4 digits, the rest
+ * shown as dots. Avoids displaying the full card number on screen.
+ */
+const maskNumber = (value: string): string => {
+  const digits = value.replace(/\D/g, "");
+  if (digits.length <= 4) return NUMBER_PLACEHOLDER;
+  return `•••• •••• •••• ${digits.slice(-4)}`;
+};
+
 /** Live preview of the card being entered (front face only — never the CVC). */
 export default function CardPreview({ number, holder, expiry, brand }: Props) {
   const { t: tPages } = useClientTranslation("pages");
@@ -31,7 +41,7 @@ export default function CardPreview({ number, holder, expiry, brand }: Props) {
         <span className="card-preview__brand">{BRAND_LABEL[brand]}</span>
       </div>
 
-      <div className="card-preview__number">{number || NUMBER_PLACEHOLDER}</div>
+      <div className="card-preview__number">{maskNumber(number)}</div>
 
       <div className="card-preview__bottom">
         <div className="card-preview__field">

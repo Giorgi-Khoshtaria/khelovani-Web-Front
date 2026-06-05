@@ -1,0 +1,102 @@
+@use "@/styles/colors.scss" as colors;
+
+.partner-hero {
+  background: colors.$color-white;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    padding: 22px;
+  }
+
+  &__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: colors.$color-walnut;
+    color: colors.$color-cream;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__name {
+    margin: 0;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    color: colors.$color-espresso;
+
+    @media (max-width: 600px) {
+      font-size: 26px;
+    }
+  }
+
+  &__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(colors.$color-success, 0.14);
+    color: colors.$color-success;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  &__divider {
+    height: 1px;
+    background: colors.$color-border;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 24px;
+    border: none;
+    border-radius: 999px;
+    background: colors.$color-darkest;
+    color: colors.$color-white;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    &:hover {
+      background: colors.$color-espresso;
+    }
+  }
+}

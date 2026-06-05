@@ -10,9 +10,10 @@ import { validLogin } from "../../../helpers/testData";
 export function userLoginHappyPathSuite() {
   test.describe("happy path", () => {
     test("submits valid login credentials", async ({ page }) => {
+      // Auth now rides an httpOnly cookie the backend sets — the JSON body
+      // only carries the user (no token).
       const api = await mockPost(page, "/api/user/login", {
-        token: "e2e-token",
-        user: { id: "user-1" },
+        user: { id: "user-1", nameEn: "Test User" },
       });
 
       await openScenario(page, "/login");
@@ -24,8 +25,7 @@ export function userLoginHappyPathSuite() {
 
     test("accepts backend-valid login password without registration complexity", async ({ page }) => {
       const api = await mockPost(page, "/api/user/login", {
-        token: "e2e-token",
-        user: { id: "user-1" },
+        user: { id: "user-1", nameEn: "Test User" },
       });
 
       await openScenario(page, "/login");

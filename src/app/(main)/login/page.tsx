@@ -66,8 +66,10 @@ function Login() {
     try {
       const response = await loginUser(data, lang);
 
-      if (response.token) {
-        login(response.token, response.user?.nameEn, response.user?.nameGe);
+      // The backend set the httpOnly auth cookie on this response; we only
+      // record the (non-sensitive) display name in client state.
+      if (response.user) {
+        login(response.user.nameEn, response.user.nameGe);
       }
 
       toast.success(

@@ -1,0 +1,116 @@
+@use "@/styles/colors.scss" as colors;
+
+.partner-detail {
+  background: colors.$color-bg-page;
+  min-height: calc(100vh - 200px);
+  padding: 32px 24px 80px;
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  // ── Two-column: sticky image left, scrollable content right ──
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 32px;
+    align-items: start;
+
+    @media (max-width: 960px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__media {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+
+    @media (max-width: 960px) {
+      position: static;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  // ── Skeleton ────────────────────────────────────────────────
+  &__skel {
+    border-radius: 24px;
+    background: linear-gradient(
+      90deg,
+      colors.$color-bg-secondary 25%,
+      colors.$color-ivory 50%,
+      colors.$color-bg-secondary 75%
+    );
+    background-size: 200% 100%;
+    animation: partner-detail-shimmer 1.4s ease infinite;
+
+    &--media {
+      aspect-ratio: 1 / 1;
+    }
+    &--card {
+      height: 240px;
+    }
+  }
+
+  // ── Error ───────────────────────────────────────────────────
+  &__error {
+    background: colors.$color-white;
+    border-radius: 24px;
+    padding: 72px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  &__error-icon svg {
+    width: 48px;
+    height: 48px;
+    color: colors.$color-walnut;
+  }
+
+  &__error-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: colors.$color-espresso;
+  }
+
+  &__error-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: colors.$color-walnut;
+    text-decoration: none;
+    font-weight: 600;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@keyframes partner-detail-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

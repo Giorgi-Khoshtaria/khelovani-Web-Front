@@ -3,6 +3,7 @@
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import {
   type CardBrand,
+  type CardErrors,
   cvcLengthForBrand,
 } from "@/lib/validations/cardValidations";
 import CardPreview from "./CardPreview";
@@ -15,6 +16,7 @@ interface Props {
   cvc: string;
   brand: CardBrand;
   saveCard: boolean;
+  errors: CardErrors;
   onNumberChange: (value: string) => void;
   onHolderChange: (value: string) => void;
   onExpiryChange: (value: string) => void;
@@ -42,6 +44,7 @@ export default function CardDetailsForm({
   cvc,
   brand,
   saveCard,
+  errors,
   onNumberChange,
   onHolderChange,
   onExpiryChange,
@@ -50,6 +53,7 @@ export default function CardDetailsForm({
 }: Props) {
   const { t: tPages } = useClientTranslation("pages");
   const { t: tInputs } = useClientTranslation("inputs");
+  const { t: tErr } = useClientTranslation("validation");
 
   return (
     <section className="card-form">
@@ -85,10 +89,14 @@ export default function CardDetailsForm({
             autoComplete="off"
             maxLength={23}
             placeholder="1234 5678 9012 3456"
-            className="card-form__input"
+            className={`card-form__input${errors.number ? " card-form__input--error" : ""}`}
             value={number}
             onChange={(e) => onNumberChange(e.target.value)}
+            aria-invalid={Boolean(errors.number)}
           />
+          {errors.number && (
+            <span className="card-form__error">{tErr(errors.number)}</span>
+          )}
         </div>
 
         <div className="card-form__field card-form__field--full">
@@ -102,10 +110,14 @@ export default function CardDetailsForm({
             autoComplete="off"
             maxLength={60}
             placeholder={tInputs("placeholder.card_holder") || "Giorgi Khoshtaria"}
-            className="card-form__input"
+            className={`card-form__input${errors.holder ? " card-form__input--error" : ""}`}
             value={holder}
             onChange={(e) => onHolderChange(e.target.value)}
+            aria-invalid={Boolean(errors.holder)}
           />
+          {errors.holder && (
+            <span className="card-form__error">{tErr(errors.holder)}</span>
+          )}
         </div>
 
         <div className="card-form__field">
@@ -120,10 +132,14 @@ export default function CardDetailsForm({
             autoComplete="off"
             maxLength={5}
             placeholder="MM/YY"
-            className="card-form__input"
+            className={`card-form__input${errors.expiry ? " card-form__input--error" : ""}`}
             value={expiry}
             onChange={(e) => onExpiryChange(e.target.value)}
+            aria-invalid={Boolean(errors.expiry)}
           />
+          {errors.expiry && (
+            <span className="card-form__error">{tErr(errors.expiry)}</span>
+          )}
         </div>
 
         <div className="card-form__field">
@@ -138,10 +154,14 @@ export default function CardDetailsForm({
             autoComplete="off"
             maxLength={cvcLengthForBrand(brand)}
             placeholder={brand === "amex" ? "1234" : "123"}
-            className="card-form__input"
+            className={`card-form__input${errors.cvc ? " card-form__input--error" : ""}`}
             value={cvc}
             onChange={(e) => onCvcChange(e.target.value)}
+            aria-invalid={Boolean(errors.cvc)}
           />
+          {errors.cvc && (
+            <span className="card-form__error">{tErr(errors.cvc)}</span>
+          )}
         </div>
       </div>
 

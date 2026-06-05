@@ -35,20 +35,28 @@ export function partnerRegistrationSecuritySuite() {
       await expect(page.locator("#identificationCode")).toHaveValue("123456789");
     });
 
-    test("category chips cap selection at five when enough categories exist", async ({ page }) => {
+    test("rejects selecting more categories than the organization limit", async ({ page }) => {
+      const api = await expectNoPost(page, "/api/partner/register");
+
       await openScenario(page, "/become-partner");
 
-      const chips = page.locator(".category-chip");
-      if ((await chips.count()) < 6) {
-        test.skip(true, "Need at least 6 categories to verify the max cap");
+      const trigger = page.locator("#categories");
+      await trigger.click();
+      const options = page.locator(".ms-option");
+      if ((await options.count()) < 6) {
+        test.skip(true, "Need at least 6 categories to exceed the org limit of 5");
       }
 
-      for (let index = 0; index < 5; index++) {
-        await chips.nth(index).click();
+      // The limit (org: 5) is enforced at submit-time validation, not by
+      // disabling options, so select one too many and expect a category error.
+      for (let index = 0; index < 6; index++) {
+        await options.nth(index).click();
       }
+      await trigger.click();
+      await submitCurrentForm(page);
 
-      await expect(page.locator(".category-chip--active")).toHaveCount(5);
-      await expect(chips.nth(5)).toBeDisabled();
+      await expectFieldError(page, "categories");
+      api.assert();
     });
   });
 }

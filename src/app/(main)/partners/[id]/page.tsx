@@ -1,8 +1,7 @@
 import { cache } from "react";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
-import PartnerProfile from "@/components/partnersPage/partnerProfile/PartnerProfile";
-import { PartnerProducts } from "@/components/partnersPage/partnerProfile/PartnerProducts";
+import PartnerDetail from "@/components/partnersPage/partnerDetail/PartnerDetail";
 import { getPartnerById } from "@/apiCalls/partnerRequests/partner.req";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
 import { IProduct } from "@/lib/types/productTypes";
@@ -55,16 +54,28 @@ export default async function PartnerProfilePage({
   const partnerData = await fetchPartner(id);
 
   let products: IProduct[] = [];
+  let productCount = partnerData?.productCount ?? 0;
   if (partnerData) {
-    products = await getProducts({ partnerId: id, limit: 4, isShown: true })
-      .then((res) => res.data || [])
-      .catch(() => []);
+    const res = await getProducts({
+      partnerId: id,
+      limit: 4,
+      isShown: true,
+    }).catch(() => null);
+    if (res) {
+      products = res.data || [];
+      productCount = res.meta?.totalCount ?? productCount;
+    }
   }
 
   return (
     <main>
-      <PartnerProfile id={id} initialData={partnerData} serverLang={lang} />
-      <PartnerProducts products={products} partnerId={id} />
+      <PartnerDetail
+        id={id}
+        initialData={partnerData}
+        products={products}
+        productCount={productCount}
+        serverLang={lang}
+      />
     </main>
   );
 }

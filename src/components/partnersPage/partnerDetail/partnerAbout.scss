@@ -1,0 +1,37 @@
+@use "@/styles/colors.scss" as colors;
+
+.partner-about {
+  background: colors.$color-white;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+
+  @media (max-width: 600px) {
+    padding: 22px;
+  }
+
+  &__title {
+    margin: 0 0 14px;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: colors.$color-espresso;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.6;
+      color: colors.$color-text-secondary;
+    }
+  }
+
+  &__empty {
+    font-style: italic;
+  }
+}

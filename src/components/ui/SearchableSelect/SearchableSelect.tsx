@@ -185,6 +185,7 @@ export default function SearchableSelect({
                   <button
                     type="button"
                     role="option"
+                    data-value={opt.value}
                     aria-selected={opt.value === value}
                     className={`searchable-select__option${
                       opt.value === value

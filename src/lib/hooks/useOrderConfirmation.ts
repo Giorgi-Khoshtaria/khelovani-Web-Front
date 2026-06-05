@@ -38,13 +38,7 @@ export const useOrderConfirmation = (): OrderConfirmationState => {
     if (doneRef.current) return;
     doneRef.current = true;
 
-    const token = localStorage.getItem("access-token");
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
-
-    getProfile(token)
+    getProfile()
       .then((p) => {
         const preferGe = lang.toLowerCase() === "ge";
         setName(preferGe ? p.nameGe || p.nameEn || "" : p.nameEn || p.nameGe || "");

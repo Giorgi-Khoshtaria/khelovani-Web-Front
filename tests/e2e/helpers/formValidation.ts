@@ -14,6 +14,12 @@ export type FormScenario = {
 export async function openScenario(page: Page, path: string) {
   await page.goto(path);
   await expect(page.locator("form").first()).toBeVisible();
+  // (main)/loading.tsx wraps every page in a Suspense boundary, so Next.js
+  // streams the page content into a hidden `<div id="S:0">` buffer and swaps it
+  // into place. Until the swap completes the page exists twice in the DOM, so a
+  // `#id` selector transiently matches both copies and trips strict mode. Wait
+  // for the streaming buffers to detach before interacting.
+  await expect(page.locator('[id^="S:"]')).toHaveCount(0);
 }
 
 export async function submitCurrentForm(page: Page) {
@@ -25,7 +31,18 @@ export async function fillField(page: Page, id: string, value: string) {
 }
 
 export async function selectField(page: Page, id: string, value: string) {
-  await page.locator(`#${id}`).selectOption(value);
+  const field = page.locator(`#${id}`);
+  const tagName = await field.evaluate((el) => el.tagName.toLowerCase());
+
+  if (tagName === "select") {
+    await field.selectOption(value);
+    return;
+  }
+
+  // Custom SearchableSelect renders a <button> trigger plus an option list whose
+  // entries expose their value via data-value. Open it, then pick by value.
+  await field.click();
+  await page.locator(`[role="option"][data-value="${value}"]`).click();
 }
 
 export async function setCheckbox(page: Page, id: string, checked: boolean) {
@@ -37,22 +54,49 @@ export async function setCheckbox(page: Page, id: string, checked: boolean) {
   }
 }
 
-export async function chooseFirstChips(page: Page, count = 1) {
-  const chips = page.locator(".category-chip");
-  await expect(chips.first()).toBeVisible();
-  for (let index = 0; index < count; index++) {
-    await chips.nth(index).click();
+export async function selectRadio(page: Page, name: string, value: string) {
+  const input = page.locator(
+    `input[type="radio"][name="${name}"][value="${value}"]`,
+  );
+  // Custom-styled radios visually hide the native input; the wrapping <label>
+  // is the clickable surface in that case.
+  if (await input.isVisible()) {
+    await input.click();
+  } else {
+    await input.locator("xpath=ancestor::label[1]").click();
   }
 }
 
+export async function chooseFirstChips(page: Page, count = 1) {
+  // Categories live in a CategoryMultiSelect dropdown: open the #categories
+  // trigger, toggle the first `count` options, then close the panel.
+  const trigger = page.locator("#categories");
+  await trigger.click();
+  const options = page.locator(".ms-option");
+  await expect(options.first()).toBeVisible();
+  for (let index = 0; index < count; index++) {
+    await options.nth(index).click();
+  }
+  await trigger.click();
+}
+
 export async function clearSelectedChips(page: Page) {
-  const activeChips = page.locator(".category-chip--active");
-  while ((await activeChips.count()) > 0) {
-    await activeChips.first().click();
+  // Selected categories render as removable chips outside the dropdown panel.
+  const removeButtons = page.locator(".ms-chip__remove");
+  while ((await removeButtons.count()) > 0) {
+    await removeButtons.first().click();
   }
 }
 
 export async function fillScenario(page: Page, scenario: FormScenario) {
+  // Radio choices (e.g. partnerType) gate which fields render, so apply them
+  // before filling fields — otherwise conditional inputs aren't in the DOM yet.
+  if (scenario.radio) {
+    for (const [name, value] of Object.entries(scenario.radio)) {
+      await selectRadio(page, name, value);
+    }
+  }
+
   if (scenario.fields) {
     for (const [id, value] of Object.entries(scenario.fields)) {
       if (typeof value === "boolean") {
@@ -62,12 +106,6 @@ export async function fillScenario(page: Page, scenario: FormScenario) {
       } else {
         await fillField(page, id, value);
       }
-    }
-  }
-
-  if (scenario.radio) {
-    for (const [name, value] of Object.entries(scenario.radio)) {
-      await page.locator(`input[type="radio"][name="${name}"][value="${value}"]`).click();
     }
   }
 
@@ -131,9 +169,9 @@ export async function expectFieldError(page: Page, id: string) {
 }
 
 export async function expectCategoryError(page: Page) {
-  await expect(
-    page.locator(".category-multi-field").locator(".error-text"),
-  ).toBeVisible();
+  // The category error renders as `.error-text` inside the #categories
+  // form-group, same shape as every other field.
+  await expectFieldError(page, "categories");
 }
 
 export async function expectNoFieldError(page: Page, id: string) {

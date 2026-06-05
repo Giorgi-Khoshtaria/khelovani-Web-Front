@@ -1,11 +1,5 @@
 import type { FormScenario } from "./formValidation";
 
-export const birthDateForAge = (age: number) => {
-  const date = new Date();
-  date.setFullYear(date.getFullYear() - age);
-  return date.toISOString().slice(0, 10);
-};
-
 export const validLogin: FormScenario = {
   path: "/login",
   fields: {
@@ -20,15 +14,12 @@ export const validRegistration: FormScenario = {
     idNumber: "12345678901",
     nameGe: "",
     nameEn: "John Smith",
-    dateOfBirth: birthDateForAge(16),
-    address: "Valid address",
     email: "john@example.com",
     phone: "599 123 456",
     password: "Strong1!",
     confirmPassword: "Strong1!",
     terms: true,
   },
-  select: { city: "tbilisi" },
 };
 
 export const validPartnerRegistration: FormScenario = {

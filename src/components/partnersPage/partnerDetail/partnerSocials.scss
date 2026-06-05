@@ -1,0 +1,29 @@
+@use "@/styles/colors.scss" as colors;
+
+.partner-socials {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  &__link {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: colors.$color-cream;
+    color: colors.$color-walnut;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background: colors.$color-espresso;
+      color: colors.$color-white;
+    }
+  }
+}

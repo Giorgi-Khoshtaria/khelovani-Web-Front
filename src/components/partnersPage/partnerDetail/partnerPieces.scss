@@ -1,0 +1,76 @@
+@use "@/styles/colors.scss" as colors;
+
+.partner-pieces {
+  margin-top: 48px;
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: colors.$color-walnut;
+  }
+
+  &__title {
+    margin: 12px 0 0;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: colors.$color-espresso;
+
+    @media (max-width: 600px) {
+      font-size: 24px;
+    }
+  }
+
+  &__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid colors.$color-walnut;
+    color: colors.$color-espresso;
+    font-size: 15px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      color: colors.$color-walnut;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+
+    @media (max-width: 1100px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 820px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 520px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

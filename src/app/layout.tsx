@@ -12,7 +12,10 @@ import { Lang } from "@/lib/types/lang.types";
 import { Translations } from "@/lib/types/translations";
 
 import { getTranslations } from "@/apiCalls/common.req";
-import { getPublicCategories, type PublicCategory } from "@/apiCalls/categoryRequests/category.req";
+import {
+  getPublicCategories,
+  type PublicCategory,
+} from "@/apiCalls/categoryRequests/category.req";
 import { getMenu, type MenuItem } from "@/apiCalls/menu/menu.req";
 
 export default async function RootLayout({

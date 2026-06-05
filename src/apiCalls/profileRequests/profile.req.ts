@@ -1,6 +1,10 @@
 import api from "@/apiCalls/api";
 
-const authHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
+// Client calls rely on the httpOnly `access-token` cookie (`withCredentials`).
+// Server-side callers (SSR) pass the token they read from cookies() and it's
+// forwarded as a Bearer header — hence `getProfile`'s optional `token`.
+const authHeader = (token?: string) =>
+  token ? { Authorization: `Bearer ${token}` } : undefined;
 
 export interface ProfileData {
   _id: string;
@@ -19,16 +23,15 @@ export interface ProfileData {
  * (toast, redirect to login, etc.). Matches the contract of
  * `updateProfile`/`changePassword`/etc.
  */
-export const getProfile = async (token: string): Promise<ProfileData> => {
+export const getProfile = async (token?: string): Promise<ProfileData> => {
   const res = await api.get("/api/user/profile", { headers: authHeader(token) });
   return res.data.data as ProfileData;
 };
 
 export const updateProfile = async (
-  token: string,
   data: Omit<ProfileData, "_id" | "profileImage">,
 ): Promise<ProfileData> => {
-  const res = await api.patch("/api/user/profile", data, { headers: authHeader(token) });
+  const res = await api.patch("/api/user/profile", data);
   return res.data.data as ProfileData;
 };
 
@@ -42,7 +45,7 @@ export class InvalidImageError extends Error {
   }
 }
 
-export const uploadProfileImage = async (token: string, file: File): Promise<string> => {
+export const uploadProfileImage = async (file: File): Promise<string> => {
   if (file.size > MAX_PROFILE_IMAGE_BYTES) {
     throw new InvalidImageError(
       "size",
@@ -59,25 +62,21 @@ export const uploadProfileImage = async (token: string, file: File): Promise<str
   const form = new FormData();
   form.append("profileImage", file);
   const res = await api.post("/api/user/profile/image", form, {
-    headers: { ...authHeader(token), "Content-Type": "multipart/form-data" },
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return res.data.data.profileImage as string;
 };
 
-export const deleteProfileImage = async (token: string): Promise<void> => {
-  await api.delete("/api/user/profile/image", { headers: authHeader(token) });
+export const deleteProfileImage = async (): Promise<void> => {
+  await api.delete("/api/user/profile/image");
 };
 
 export const changePassword = async (
-  token: string,
   data: { oldPassword: string; newPassword: string; confirmPassword: string },
 ): Promise<void> => {
-  await api.patch("/api/user/password", data, { headers: authHeader(token) });
+  await api.patch("/api/user/password", data);
 };
 
-export const deleteAccount = async (token: string, password: string): Promise<void> => {
-  await api.delete("/api/user/account", {
-    headers: authHeader(token),
-    data: { password },
-  });
+export const deleteAccount = async (password: string): Promise<void> => {
+  await api.delete("/api/user/account", { data: { password } });
 };

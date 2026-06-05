@@ -35,6 +35,23 @@ export const getPartnerById = async (id: string, signal?: AbortSignal) => {
   }
 };
 
+export interface PartnerMessagePayload {
+  subject: string;
+  message: string;
+}
+
+/**
+ * Send a message to a partner from the "Contact artisan" modal. Auth travels
+ * via the httpOnly cookie (the logged-in user is the sender) — throws on error
+ * so the caller can surface validation / failure states.
+ */
+export const sendPartnerMessage = async (
+  id: string,
+  payload: PartnerMessagePayload,
+): Promise<void> => {
+  await api.post(`/api/partner/${id}/contact`, payload);
+};
+
 export const getPinnedPartners = async (signal?: AbortSignal) => {
   try {
     const response = await api.get<{ data: Partner[] }>("/api/partner/pinned", {

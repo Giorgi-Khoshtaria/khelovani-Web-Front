@@ -23,16 +23,16 @@ export default function DangerZoneSection() {
 
   const handleDelete = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password) { setError("password_required"); return; }
-
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
+    if (!password) {
+      setError("password_required");
+      return;
+    }
 
     setLoading(true);
     try {
-      await deleteAccount(token, password);
+      await deleteAccount(password);
       toast.success(tAlerts("account_deleted") || "ანგარიში წაიშალა");
-      logout();
+      await logout();
       router.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -57,13 +57,22 @@ export default function DangerZoneSection() {
         </p>
       </div>
 
-      <button className="danger-zone-section__delete-btn" onClick={() => setShowModal(true)}>
+      <button
+        className="danger-zone-section__delete-btn"
+        onClick={() => setShowModal(true)}
+      >
         {tCommon("delete") || "ანგარიშის წაშლა"}
       </button>
 
       {showModal && (
-        <div className="danger-zone-section__overlay" onClick={() => !loading && setShowModal(false)}>
-          <div className="danger-zone-section__modal" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="danger-zone-section__overlay"
+          onClick={() => !loading && setShowModal(false)}
+        >
+          <div
+            className="danger-zone-section__modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 className="danger-zone-section__modal-title">
               {tProfile("profile.delete.confirm_title") || "დაადასტურე წაშლა"}
             </h3>
@@ -75,7 +84,10 @@ export default function DangerZoneSection() {
                 id="deletePassword"
                 label=""
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setError(""); }}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                }}
                 error={error}
                 placeholder="პაროლი"
                 fullWidth
@@ -84,13 +96,23 @@ export default function DangerZoneSection() {
                 <button
                   type="button"
                   className="danger-zone-section__modal-cancel"
-                  onClick={() => { setShowModal(false); setPassword(""); setError(""); }}
+                  onClick={() => {
+                    setShowModal(false);
+                    setPassword("");
+                    setError("");
+                  }}
                   disabled={loading}
                 >
                   {tCommon("cancel") || "გაუქმება"}
                 </button>
-                <button type="submit" className="danger-zone-section__modal-confirm" disabled={loading}>
-                  {loading ? (tCommon("loading") || "...") : (tCommon("delete") || "წაშლა")}
+                <button
+                  type="submit"
+                  className="danger-zone-section__modal-confirm"
+                  disabled={loading}
+                >
+                  {loading
+                    ? tCommon("loading") || "..."
+                    : tCommon("delete") || "წაშლა"}
                 </button>
               </div>
             </form>

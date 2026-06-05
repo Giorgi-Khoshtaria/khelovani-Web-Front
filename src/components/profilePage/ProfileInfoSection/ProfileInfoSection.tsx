@@ -59,12 +59,9 @@ export default function ProfileInfoSection({ profile, onUpdated }: Props) {
     const errs = validateProfileUpdate(formData);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
-
     setLoading(true);
     try {
-      const updated = await updateProfile(token, formData);
+      const updated = await updateProfile(formData);
       onUpdated(updated);
       await refreshProfile();
       setIsEditing(false);

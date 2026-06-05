@@ -50,11 +50,9 @@ export default function ProfileHeaderCard({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     setUploading(true);
     try {
-      await uploadProfileImage(token, file);
+      await uploadProfileImage(file);
       await refreshProfile();
       toast.success(tAlerts("image_uploaded") || "ფოტო აიტვირთა");
     } catch {
@@ -66,11 +64,9 @@ export default function ProfileHeaderCard({
   };
 
   const handleRemove = async () => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     setUploading(true);
     try {
-      await deleteProfileImage(token);
+      await deleteProfileImage();
       await refreshProfile();
       toast.success(tAlerts("image_removed") || "ფოტო წაიშალა");
     } catch {

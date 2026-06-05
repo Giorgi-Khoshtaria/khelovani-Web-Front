@@ -20,23 +20,16 @@ export default function PaymentsSection() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("access-token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    getCards(token)
+    getCards()
       .then(setCards)
       .catch(() => toast.error(tAlerts("error") || "შეცდომა"))
       .finally(() => setLoading(false));
   }, [tAlerts]);
 
   const handleSetDefault = async (id: string) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     setBusy(true);
     try {
-      const updated = await setDefaultCard(token, id);
+      const updated = await setDefaultCard(id);
       setCards(updated);
     } catch {
       toast.error(tAlerts("error") || "შეცდომა");
@@ -46,8 +39,6 @@ export default function PaymentsSection() {
   };
 
   const handleDelete = async (id: string) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     if (
       !window.confirm(
         tProfile("profile.payments.delete_confirm") || "წავშალო ეს ბარათი?",
@@ -57,8 +48,8 @@ export default function PaymentsSection() {
     }
     setBusy(true);
     try {
-      await deleteCard(token, id);
-      const refreshed = await getCards(token);
+      await deleteCard(id);
+      const refreshed = await getCards();
       setCards(refreshed);
       toast.success(tAlerts("card_deleted") || "ბარათი წაიშალა");
     } catch {

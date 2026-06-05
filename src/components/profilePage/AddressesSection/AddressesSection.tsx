@@ -25,12 +25,7 @@ export default function AddressesSection() {
   const [editing, setEditing] = useState<Address | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("access-token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    getAddresses(token)
+    getAddresses()
       .then(setAddresses)
       .catch(() => toast.error(tAlerts("error") || "შეცდომა"))
       .finally(() => setLoading(false));
@@ -52,18 +47,16 @@ export default function AddressesSection() {
   };
 
   const handleSubmit = async (payload: AddressPayload) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     setBusy(true);
     try {
       if (editing) {
-        await updateAddress(token, editing._id, payload);
+        await updateAddress(editing._id, payload);
         toast.success(tAlerts("address_updated") || "მისამართი განახლდა");
       } else {
-        await addAddress(token, payload);
+        await addAddress(payload);
         toast.success(tAlerts("address_added") || "მისამართი დაემატა");
       }
-      setAddresses(await getAddresses(token));
+      setAddresses(await getAddresses());
       closeModal();
     } catch {
       toast.error(tAlerts("error") || "შეცდომა");
@@ -73,11 +66,9 @@ export default function AddressesSection() {
   };
 
   const handleSetDefault = async (id: string) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     setBusy(true);
     try {
-      setAddresses(await setDefaultAddress(token, id));
+      setAddresses(await setDefaultAddress(id));
     } catch {
       toast.error(tAlerts("error") || "შეცდომა");
     } finally {
@@ -86,8 +77,6 @@ export default function AddressesSection() {
   };
 
   const handleDelete = async (id: string) => {
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
     if (
       !window.confirm(
         tPages("profile.addresses.delete_confirm") || "წავშალო ეს მისამართი?",
@@ -96,8 +85,8 @@ export default function AddressesSection() {
       return;
     setBusy(true);
     try {
-      await deleteAddress(token, id);
-      setAddresses(await getAddresses(token));
+      await deleteAddress(id);
+      setAddresses(await getAddresses());
       toast.success(tAlerts("address_deleted") || "მისამართი წაიშალა");
     } catch {
       toast.error(tAlerts("error") || "შეცდომა");

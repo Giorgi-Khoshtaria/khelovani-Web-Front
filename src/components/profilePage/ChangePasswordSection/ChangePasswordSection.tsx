@@ -30,12 +30,9 @@ export default function ChangePasswordSection() {
     const errs = validateChangePassword(formData);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
-    const token = localStorage.getItem("access-token");
-    if (!token) return;
-
     setLoading(true);
     try {
-      await changePassword(token, formData);
+      await changePassword(formData);
       setFormData(INITIAL);
       setErrors({});
       toast.success(tAlerts("password_updated") || "პაროლი შეიცვალა");

@@ -3,6 +3,7 @@ import {
   fillScenario,
   mockPost,
   openScenario,
+  selectRadio,
   submitCurrentForm,
 } from "../../../helpers/formValidation";
 import {
@@ -77,9 +78,7 @@ export function partnerRegistrationHappyPathSuite() {
 
       test("individual form shows personalNumber field and hides org-only fields", async ({ page }) => {
         await openScenario(page, "/become-partner");
-        await page
-          .locator('input[type="radio"][name="partnerType"][value="individual"]')
-          .click();
+        await selectRadio(page, "partnerType", "individual");
 
         await expect(page.locator("#personalNumber")).toBeVisible();
         await expect(page.locator("#identificationCode")).not.toBeVisible();

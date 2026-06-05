@@ -5,6 +5,7 @@ import {
   expectNoPost,
   openScenario,
   runFieldValidationScenario,
+  selectRadio,
   submitCurrentForm,
 } from "../../../helpers/formValidation";
 import {
@@ -65,9 +66,7 @@ export function partnerRegistrationValidationSuite() {
 
         await openScenario(page, "/become-partner");
         // Switch to individual type first
-        await page
-          .locator('input[type="radio"][name="partnerType"][value="individual"]')
-          .click();
+        await selectRadio(page, "partnerType", "individual");
         await submitCurrentForm(page);
 
         for (const field of [
