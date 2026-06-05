@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import "./partnerspage.scss";
 import PartnersHero from "@/components/partnersPage/partnersHero/PartnersHero";
 import PartnerListing from "@/components/partnersPage/partnerListing/PartnerListing";
@@ -5,6 +6,8 @@ import { getPartners } from "@/apiCalls/partnerRequests/partner.req";
 import type { PartnersHeroStats } from "@/lib/types/partnerTypes";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = { title: "პარტნიორები" };
 
 export default async function PartnersPage() {
   const emptyResponse = {

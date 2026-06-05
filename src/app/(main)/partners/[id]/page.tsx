@@ -23,7 +23,7 @@ export async function generateMetadata({
   const lang = (cookieStore.get("lang")?.value as Lang) || "ge";
 
   if (!partner) {
-    return { title: "Partner Not Found | Khelovani" };
+    return { title: "Partner Not Found" };
   }
 
   const name = lang === "ge" ? partner.companyNameGe : partner.companyNameEn;
@@ -33,7 +33,8 @@ export async function generateMetadata({
       : partner.descriptionEn || partner.description;
 
   return {
-    title: `${name} | Khelovani Partner`,
+    // Brand suffix is added by the root layout's title template.
+    title: name,
     description:
       description?.slice(0, 160) || `Check out ${name}'s profile on Khelovani.`,
     openGraph: {
@@ -68,7 +69,7 @@ export default async function PartnerProfilePage({
   }
 
   return (
-    <main>
+    <div>
       <PartnerDetail
         id={id}
         initialData={partnerData}
@@ -76,6 +77,6 @@ export default async function PartnerProfilePage({
         productCount={productCount}
         serverLang={lang}
       />
-    </main>
+    </div>
   );
 }

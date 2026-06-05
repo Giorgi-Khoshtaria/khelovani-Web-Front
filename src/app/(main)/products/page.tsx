@@ -4,9 +4,12 @@ import {
   getProducts,
   type GetProductsResponse,
 } from "@/apiCalls/productRequests/product.req";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = { title: "პროდუქტები" };
 
 const EMPTY: GetProductsResponse = {
   data: [],
@@ -23,7 +26,7 @@ export default async function ProductsPage() {
   const initialTotalCount = data.meta?.totalCount ?? 0;
 
   return (
-    <main>
+    <div>
       <ProductsHero />
       <Suspense fallback={<div>Loading...</div>}>
         <ProductListing
@@ -32,6 +35,6 @@ export default async function ProductsPage() {
           initialTotalCount={initialTotalCount}
         />
       </Suspense>
-    </main>
+    </div>
   );
 }

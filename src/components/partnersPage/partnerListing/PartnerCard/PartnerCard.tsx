@@ -1,5 +1,6 @@
 import { memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { PartnerCardProps } from "@/lib/types/partnerTypes";
 import { Icons } from "../constants";
 import { SocialLinks } from "./SocialLinks";
@@ -52,7 +53,13 @@ function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
       {/* ── Image ── */}
       <div className="partner-card__image">
         {partner.profilePhoto ? (
-          <img src={partner.profilePhoto} alt={name} loading="lazy" />
+          <Image
+            src={partner.profilePhoto}
+            alt={name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={index < 4}
+          />
         ) : (
           <div className="partner-card__placeholder" aria-hidden="true">
             {name.charAt(0).toUpperCase()}
@@ -119,10 +126,7 @@ function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
             <span className="partner-card__rating-count">({reviewCount})</span>
           </div>
 
-          <Link
-            href={`/partners/${partner._id}`}
-            className="partner-card__cta"
-          >
+          <Link href={`/partners/${partner._id}`} className="partner-card__cta">
             <span>{tNav("view_profile")}</span>
             <span aria-hidden="true">→</span>
           </Link>

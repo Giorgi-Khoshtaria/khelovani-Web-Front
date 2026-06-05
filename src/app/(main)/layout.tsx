@@ -9,7 +9,7 @@ export default async function MainLayout({
   return (
     <div className="layout">
       <Header />
-      {children}
+      <main>{children}</main>
       <Footer />
     </div>
   );

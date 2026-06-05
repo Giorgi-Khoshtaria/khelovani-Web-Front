@@ -21,13 +21,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const description = product.descriptionEn || product.descriptionGe;
     const ogImage = product.images?.[0] || DEFAULT_OG_IMAGE;
     return {
-      title: `${title} | Khelovani`,
+      // Brand suffix is added by the root layout's title template.
+      title,
       description: description?.slice(0, 160),
       openGraph: { images: [ogImage] },
     };
   } catch {
     return {
-      title: "Product | Khelovani",
+      title: "Product",
       openGraph: { images: [DEFAULT_OG_IMAGE] },
     };
   }
@@ -60,12 +61,12 @@ export default async function ProductDetailPage({ params }: Props) {
   }
 
   return (
-    <main>
+    <div>
       <ProductDetail product={product} partner={partner} />
       <RelatedProducts
         currentProductId={product._id}
         category={product.category}
       />
-    </main>
+    </div>
   );
 }

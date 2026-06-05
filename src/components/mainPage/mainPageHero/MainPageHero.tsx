@@ -28,6 +28,7 @@ function MainPageHero({ stats }: MainPageHeroProps) {
           alt=""
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="hero__bg-img"
         />

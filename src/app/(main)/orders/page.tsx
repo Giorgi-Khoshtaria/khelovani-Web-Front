@@ -11,18 +11,18 @@ export default function OrdersPage() {
 
   if (!o.ready) {
     return (
-      <main>
+      <div>
         <section className="orders-page">
           <div className="orders-page__loading">
             <span className="spinner" />
           </div>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <div>
       <section className="orders-page">
         <OrdersHero search={o.search} onSearchChange={o.setSearch} />
         <OrderStatusTabs
@@ -32,6 +32,6 @@ export default function OrdersPage() {
         />
         <OrderList orders={o.orders} />
       </section>
-    </main>
+    </div>
   );
 }

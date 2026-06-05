@@ -15,18 +15,18 @@ export default function PaymentPage() {
 
   if (!p.ready) {
     return (
-      <main>
+      <div>
         <section className="payment-step">
           <div className="payment-step__loading">
             <span className="spinner" />
           </div>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <div>
       <section className="payment-step">
         <PaymentHeader
           title={tPages("payment.title_word") || "გადახდა"}
@@ -63,6 +63,6 @@ export default function PaymentPage() {
           </aside>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

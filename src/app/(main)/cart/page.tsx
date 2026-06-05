@@ -18,19 +18,19 @@ export default function CartPage() {
 
   if (!isReady) {
     return (
-      <main>
+      <div>
         <section className="cart-page">
           <div className="cart-page__loading">
             <span className="spinner" />
           </div>
         </section>
-      </main>
+      </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <main>
+      <div>
         <section className="cart-page">
           <CartHeader pieces={0} />
           <CheckoutStepper active="cart" />
@@ -40,12 +40,12 @@ export default function CartPage() {
             onShop={() => router.push("/products")}
           />
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <div>
       <section className="cart-page">
         <CartHeader pieces={totalItems} />
         <CheckoutStepper active="cart" />
@@ -63,6 +63,6 @@ export default function CartPage() {
           </aside>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

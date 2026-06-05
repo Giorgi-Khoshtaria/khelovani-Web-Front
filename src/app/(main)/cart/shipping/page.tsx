@@ -16,18 +16,18 @@ export default function ShippingPage() {
 
   if (!s.ready) {
     return (
-      <main>
+      <div>
         <section className="shipping-step">
           <div className="shipping-step__loading">
             <span className="spinner" />
           </div>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <div>
       <section className="shipping-step">
         <ShippingHeader
           title={tPages("shipping.title_word") || "მიწოდება"}
@@ -75,6 +75,6 @@ export default function ShippingPage() {
           />
         )}
       </section>
-    </main>
+    </div>
   );
 }

@@ -1,6 +1,25 @@
+import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
+import { Cormorant_Garamond, Noto_Serif_Georgian } from "next/font/google";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.scss";
+
+// Self-hosted at build time (no render-blocking request to fonts.googleapis,
+// automatic preload + fallback-metric adjustment to avoid font-swap CLS).
+// Cormorant Garamond drives the English UI; Noto Serif Georgian covers ქართული.
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const notoSerifGeorgian = Noto_Serif_Georgian({
+  subsets: ["georgian"],
+  variable: "--font-georgian",
+  display: "swap",
+});
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
@@ -17,6 +36,18 @@ import {
   type PublicCategory,
 } from "@/apiCalls/categoryRequests/category.req";
 import { getMenu, type MenuItem } from "@/apiCalls/menu/menu.req";
+
+// Default title for every page (client-component pages can't export their own
+// metadata, so they inherit this). Server pages override `title` with the page
+// name, which renders through the template as "Page · Khelovani".
+export const metadata: Metadata = {
+  title: {
+    default: "Khelovani — ქართული ხელნაკეთი ნივთები",
+    template: "%s · Khelovani",
+  },
+  description:
+    "Khelovani — ქართველი ხელოსნებისა და ბრენდების ონლაინ მარკეტი: ხელნაკეთი კერამიკა, სამკაული, ტექსტილი და სხვა.",
+};
 
 export default async function RootLayout({
   children,
@@ -42,7 +73,10 @@ export default async function RootLayout({
   ]);
 
   return (
-    <html lang={initialLang === "ge" ? "ka" : "en"}>
+    <html
+      lang={initialLang === "ge" ? "ka" : "en"}
+      className={`${cormorant.variable} ${notoSerifGeorgian.variable}`}
+    >
       <body>
         <LanguageProvider
           initialTranslations={translations}

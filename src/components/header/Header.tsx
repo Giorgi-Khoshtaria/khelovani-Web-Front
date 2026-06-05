@@ -52,7 +52,9 @@ function Header() {
     <>
       <header className={headerClass}>
         <Link href="/" className="header__brand" aria-label="Khelovani — home">
-          <span className="header__logo-mark" aria-hidden="true">K</span>
+          <span className="header__logo-mark" aria-hidden="true">
+            K
+          </span>
           <span className="header__logo-word">Khelovani</span>
         </Link>
 
@@ -66,7 +68,13 @@ function Header() {
             className="header__icon-btn"
             aria-label="favorites"
           >
-            <svg width="18" height="17" viewBox="0 0 18 17" fill="none" aria-hidden="true">
+            <svg
+              width="18"
+              height="17"
+              viewBox="0 0 18 17"
+              fill="none"
+              aria-hidden="true"
+            >
               <path
                 d="M13.125 1.5c-1.628 0-3.03.916-4.125 2.244C7.905 2.416 6.503 1.5 4.875 1.5 2.182 1.5 0 3.682 0 6.375 0 10.336 9 15.75 9 15.75s9-5.414 9-9.375C18 3.682 15.818 1.5 13.125 1.5Z"
                 stroke="currentColor"
@@ -75,7 +83,10 @@ function Header() {
               />
             </svg>
             {favCount > 0 && (
-              <span className="header__icon-badge" aria-label={`${favCount} saved`}>
+              <span
+                className="header__icon-badge"
+                aria-label={`${favCount} saved`}
+              >
                 {favCount > 99 ? "99+" : favCount}
               </span>
             )}
@@ -102,7 +113,9 @@ function Header() {
             >
               EN
             </button>
-            <span className="header__lang-sep" aria-hidden="true">·</span>
+            <span className="header__lang-sep" aria-hidden="true">
+              ·
+            </span>
             <button
               type="button"
               className={`header__lang-btn${lang === "ge" ? " is-active" : ""}`}

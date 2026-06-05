@@ -1,7 +1,6 @@
 @use "@/styles/colors" as *;
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-// @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Noto+Serif+Georgian:wght@100..900&display=swap");
+// Fonts are self-hosted via next/font/google in layout.tsx, which exposes them
+// as the CSS variables referenced below (--font-cormorant, --font-georgian).
 *,
 *::before,
 *::after {
@@ -15,8 +14,8 @@
   --color-success: #{$color-success};
 
   // Default (English) — Cormorant Garamond for the whole site.
-  --font-body: "Cormorant Garamond", "Times New Roman", serif;
-  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: var(--font-cormorant), "Times New Roman", serif;
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
 }
 
 // Georgian — Noto Serif Georgian (Cormorant doesn't cover Georgian script).
@@ -27,8 +26,8 @@
 :lang(ge),
 [lang="ka"],
 [lang="ge"] {
-  --font-body: "Noto Serif Georgian", serif;
-  --font-serif: "Noto Serif Georgian", serif;
+  --font-body: var(--font-georgian), serif;
+  --font-serif: var(--font-georgian), serif;
 }
 
 html,

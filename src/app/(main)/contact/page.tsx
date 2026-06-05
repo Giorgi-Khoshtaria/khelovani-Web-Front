@@ -6,13 +6,14 @@ import ContactMap from "@/components/contactPage/contactMap/ContactMap";
 import "./contact.scss";
 
 export const metadata = {
-  title: "Contact Us | Khelovani",
-  description: "Get in touch with Khelovani for any inquiries about our products, artisans, or anything else.",
+  title: "Contact Us",
+  description:
+    "Get in touch with Khelovani for any inquiries about our products, artisans, or anything else.",
 };
 
 export default function ContactPage() {
   return (
-    <main className="contact-page">
+    <div className="contact-page">
       <ContactHero />
       
       <div className="contact-page__content">
@@ -21,6 +22,6 @@ export default function ContactPage() {
       </div>
 
       <ContactMap />
-    </main>
+    </div>
   );
 }

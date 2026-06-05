@@ -10,22 +10,22 @@ export default function DonePage() {
 
   if (!o.ready) {
     return (
-      <main>
+      <div>
         <section className="done-step">
           <div className="done-step__loading">
             <span className="spinner" />
           </div>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main>
+    <div>
       <section className="done-step">
         <CheckoutStepper active="done" />
         <OrderConfirmed name={o.name} email={o.email} onTrack={o.trackOrder} />
       </section>
-    </main>
+    </div>
   );
 }
