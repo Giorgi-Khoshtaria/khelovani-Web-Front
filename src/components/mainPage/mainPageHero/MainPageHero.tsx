@@ -5,11 +5,7 @@ import Image from "next/image";
 import "./mainPageHero.scss";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import type { PublicStats } from "@/apiCalls/common.req";
-
-function formatCompact(n: number): string {
-  if (n >= 1000) return `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`;
-  return String(n);
-}
+import { formatCompact } from "@/lib/utils/formatNumber";
 
 interface MainPageHeroProps {
   stats: PublicStats;
@@ -84,19 +80,19 @@ function MainPageHero({ stats }: MainPageHeroProps) {
             <span className="hero__stat-value">
               {stats.makers > 0 ? formatCompact(stats.makers) : "—"}
             </span>
-            <span className="hero__stat-label">{t("stats.makers")}</span>
+            <span className="hero__stat-label">{t("home.stats.makers")}</span>
           </div>
           <div className="hero__stat">
             <span className="hero__stat-value">
               {stats.pieces > 0 ? formatCompact(stats.pieces) : "—"}
             </span>
-            <span className="hero__stat-label">{t("stats.pieces")}</span>
+            <span className="hero__stat-label">{t("home.stats.pieces")}</span>
           </div>
           <div className="hero__stat">
             <span className="hero__stat-value">
               {formatCompact(stats.regions)}
             </span>
-            <span className="hero__stat-label">{t("stats.regions")}</span>
+            <span className="hero__stat-label">{t("home.stats.regions")}</span>
           </div>
         </div>
       </div>

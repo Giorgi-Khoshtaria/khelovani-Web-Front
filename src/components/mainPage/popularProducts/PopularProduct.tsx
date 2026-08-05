@@ -43,9 +43,9 @@ function PopularProduct({ grouped }: { grouped?: PinnedProductsGrouped }) {
       <div className="pop-products__container">
         <div className="pop-products__header">
           <div className="pop-products__heading">
-            <span className="pop-products__eyebrow">
+            {/* <span className="pop-products__eyebrow">
               {t("home.popularProducts.eyebrow")}
-            </span>
+            </span> */}
             <h2 className="pop-products__title">
               {t("home.popularProducts._title")}
             </h2>
@@ -79,13 +79,9 @@ function PopularProduct({ grouped }: { grouped?: PinnedProductsGrouped }) {
 
         <div className="pop-products__grid">
           {items.map((product) => (
-            <Link
-              key={product._id}
-              href={`/products/${product._id}`}
-              className="pop-products__item"
-            >
+            <div key={product._id} className="pop-products__item">
               <ProductCard product={product} />
-            </Link>
+            </div>
           ))}
         </div>
       </div>

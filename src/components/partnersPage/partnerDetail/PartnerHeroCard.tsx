@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCategories } from "@/contexts/CategoriesContext";
 import { Icon } from "@/lib/icons/icons";
 import type { Partner } from "@/lib/types/partnerTypes";
 import PartnerRating from "./PartnerRating";
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const VerifiedIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
     <path
       d="M12 3 5 6v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3z"
       stroke="currentColor"
@@ -38,7 +39,7 @@ const VerifiedIcon = () => (
   </svg>
 );
 
-/** The white identity card: avatar, name + verified, rating, meta, contact. */
+/** The spec panel: identity, credentials grid, contact — bordered, beside the photo. */
 export default function PartnerHeroCard({
   partner,
   partnerId,
@@ -49,6 +50,7 @@ export default function PartnerHeroCard({
 }: Props) {
   const { t: tPages } = useClientTranslation("pages");
   const { lang } = useLanguage();
+  const { getLabel } = useCategories();
   const isGe = lang === "ge";
   const [contactOpen, setContactOpen] = useState(false);
 
@@ -60,11 +62,14 @@ export default function PartnerHeroCard({
     .join("")
     .toUpperCase();
 
+  const firstCategory = partner.categories?.[0];
+  const categoryLabel = firstCategory ? getLabel(firstCategory, lang) : null;
+
   return (
     <div className="partner-hero">
-      <div className="partner-hero__avatar" aria-hidden="true">
-        {initials}
-      </div>
+      {categoryLabel && (
+        <span className="partner-hero__eyebrow">{categoryLabel}</span>
+      )}
 
       <div className="partner-hero__head">
         <h1 className="partner-hero__name">{name}</h1>

@@ -7,6 +7,9 @@ interface SocialLinkProps {
 
 /**
  * Clean sub-component for partner social links with automatic https prefixing.
+ * Renders as a button, not an anchor — the whole PartnerCard is itself a
+ * Link, and nested <a> tags are invalid HTML (the browser would silently
+ * break the surrounding link).
  */
 export const SocialLink = ({ url, type }: SocialLinkProps) => {
   if (!url) return null;
@@ -14,15 +17,18 @@ export const SocialLink = ({ url, type }: SocialLinkProps) => {
   const href = url.startsWith("http") ? url : `https://${url}`;
 
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
       className="partner-card__social"
       aria-label={String(type)}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open(href, "_blank", "noopener,noreferrer");
+      }}
     >
       {Icons[type]}
-    </a>
+    </button>
   );
 };
 

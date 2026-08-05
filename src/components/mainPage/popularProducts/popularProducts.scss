@@ -52,11 +52,10 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: 560px;
 }
 
 .pop-products__eyebrow {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -70,17 +69,18 @@
 .pop-products__title {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(32px, 4.4vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
   color: colors.$color-espresso;
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 .pop-products__subtitle {
   font-family: var(--font-body);
-  font-size: clamp(14px, 1.3vw, 17px);
-  line-height: 1.55;
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.6;
   color: colors.$color-text-secondary;
   margin: 0;
 }
@@ -128,7 +128,7 @@
   padding: 0 22px;
   border-radius: 999px;
   border: none;
-  background-color: colors.$color-white;
+  background-color: colors.$color-ivory;
   font-family: var(--font-body);
   font-size: 15px;
   font-weight: 500;
@@ -136,11 +136,13 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   box-shadow: 0 1px 2px rgba(colors.$color-espresso, 0.04);
 
   &:hover {
-    background-color: rgba(colors.$color-espresso, 0.06);
+    background-color: colors.$color-white;
   }
 
   &--active {
@@ -170,7 +172,9 @@
   color: colors.$color-text-secondary;
   font-size: 12px;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 // ── product grid ──────────────────────────────────────────

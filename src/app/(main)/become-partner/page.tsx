@@ -370,15 +370,19 @@ function PartnerRegistration() {
               <SearchableSelect
                 id="city"
                 value={formData.city}
-                options={CITY_OPTIONS}
+                options={CITY_OPTIONS.map((city) => ({
+                  value: city.value,
+                  label: city.label[lang === "ge" ? "ge" : "en"],
+                }))}
                 placeholder={tInputs("placeholder.city")}
                 searchPlaceholder={tCommon("search")}
                 emptyText={tCommon("no_results")}
                 error={!!errors.city}
                 onChange={(v) => {
                   setFormData((prev) => ({ ...prev, city: v }));
-                  if (errors.city)
+                  if (errors.city) {
                     setErrors((prev) => ({ ...prev, city: "" }));
+                  }
                 }}
               />
             </FormField>
@@ -414,7 +418,7 @@ function PartnerRegistration() {
             <div className="form-section">
               <CategoryMultiSelect
                 id="categories"
-                label={tInputs("label.categories") || "კატეგორიები"}
+                label={tInputs("category") || "კატეგორიები"}
                 options={categories.map((cat) => ({
                   value: cat.slug,
                   label: lang === "ge" ? cat.nameGe : cat.nameEn,

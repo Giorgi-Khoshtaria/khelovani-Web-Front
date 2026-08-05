@@ -1,32 +1,31 @@
 @use "@/styles/colors.scss" as colors;
 
 .partner-about {
-  background: colors.$color-white;
-  border-radius: 24px;
-  padding: 28px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  padding-top: 28px;
+  border-top: 1px solid rgba(colors.$color-espresso, 0.1);
+  max-width: 68ch;
 
-  @media (max-width: 600px) {
-    padding: 22px;
-  }
-
-  &__title {
-    margin: 0 0 14px;
-    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
-    font-size: 22px;
-    font-weight: 500;
-    color: colors.$color-espresso;
+  &__eyebrow {
+    display: block;
+    margin-bottom: 14px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: colors.$color-walnut;
   }
 
   &__body {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
 
     p {
       margin: 0;
-      font-size: 15px;
-      line-height: 1.6;
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
       color: colors.$color-text-secondary;
     }
   }

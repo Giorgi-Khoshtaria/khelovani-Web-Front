@@ -1,5 +1,17 @@
 @use "@/styles/colors.scss" as colors;
 
+// shared "arrow link" behavior for the featured cta + standard meta-link —
+// each caller sets its own gap/colors, this only carries the common motion.
+%cat-card-arrow-link {
+  display: inline-flex;
+  align-items: center;
+  transition: gap 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+
+  svg {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
 .cat-card {
   position: relative;
   width: 100%;
@@ -9,23 +21,68 @@
   background-color: colors.$color-white;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 1px 2px rgba(colors.$color-espresso, 0.06);
   transition:
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 6px 22px rgba(colors.$color-espresso, 0.08);
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 44px rgba(colors.$color-espresso, 0.16);
+  // desktop: fills the fixed-height bento cell (media/info split by flex %).
+  // below that the standard card sizes itself from its content instead, so
+  // the footer link is guaranteed to be visible at any width. the featured
+  // card's content is fully absolute-positioned (image, overlay, text), so
+  // it keeps height:100% — auto would collapse it to nothing.
+  @media (max-width: 960px) {
+    height: auto;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 480px) {
+    border-radius: 14px;
+  }
+
+  &--featured {
+    @media (max-width: 960px) {
+      height: 100%;
+    }
+  }
+
+  // hairline "mat" frame — reads as curated rather than boxed
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid rgba(colors.$color-espresso, 0.08);
+    pointer-events: none;
+    transition: border-color 0.32s ease;
+  }
+
+  &:hover,
+  a:focus-visible > & {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px rgba(colors.$color-espresso, 0.22);
+
+    &::after {
+      border-color: rgba(colors.$color-espresso, 0.16);
+    }
+  }
+
+  a:focus-visible > & {
+    outline: 2px solid colors.$color-walnut;
+    outline-offset: 3px;
   }
 
   &__img {
     object-fit: cover;
-    transition: transform 0.6s ease;
+    filter: saturate(0.92);
+    transition:
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.7s ease;
   }
 
   &:hover &__img {
-    transform: scale(1.05);
+    transform: scale(1.045);
+    filter: saturate(1.05);
   }
 
   // ─── small (image-on-top) variant ────────────────────────
@@ -33,58 +90,116 @@
   &__media {
     position: relative;
     width: 100%;
-    flex: 0 0 45%;
+    flex: 0 0 44%;
     overflow: hidden;
 
+    // below desktop the image keeps its own ratio and the info block
+    // that follows just takes whatever height its content needs
     @media (max-width: 960px) {
-      flex: 0 0 42%;
-    }
-
-    @media (max-width: 480px) {
-      flex: 0 0 40%;
+      flex: none;
+      aspect-ratio: 4 / 3;
     }
   }
 
   &__info {
     flex: 1 1 auto;
-    padding: 26px 28px 28px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 14px;
     background-color: colors.$color-white;
+    min-width: 0;
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 6px;
+    padding: 22px 24px 14px;
 
     @media (max-width: 480px) {
-      padding: 20px 22px 22px;
+      padding: 14px 16px 8px;
+      gap: 4px;
+    }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    padding: 10px 24px 22px;
+    border-top: 1px solid rgba(colors.$color-espresso, 0.08);
+
+    @media (max-width: 480px) {
+      padding: 8px 16px 20px;
     }
   }
 
   &__name {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: clamp(24px, 2vw, 32px);
-    line-height: 1.1;
+    font-size: clamp(17px, 1.5vw, 22px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
     color: colors.$color-espresso;
     margin: 0;
+    transition: color 0.28s ease;
+
+    @media (max-width: 480px) {
+      font-size: 15px;
+    }
+  }
+
+  &:hover &__name {
+    color: colors.$color-walnut;
   }
 
   &__meta-count {
-    font-family: var(--font-body);
-    font-size: 14px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: colors.$color-text-secondary;
+
+    @media (max-width: 480px) {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
   }
 
   &__meta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    @extend %cat-card-arrow-link;
+    gap: 6px;
     color: colors.$color-walnut;
+    font-family: var(--font-body);
     font-weight: 500;
-    transition: gap 0.18s ease;
+    font-size: 13px;
+    padding: 9px 16px;
+    border: 1px solid rgba(colors.$color-walnut, 0.32);
+    border-radius: 999px;
+    transition:
+      gap 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.25s ease,
+      background-color 0.25s ease;
+
+    svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+      padding: 7px 13px;
+    }
   }
 
   &:hover &__meta-link {
-    gap: 8px;
+    gap: 10px;
+    border-color: colors.$color-walnut;
+    background-color: rgba(colors.$color-walnut, 0.06);
+
+    svg {
+      transform: translate(2px, -2px);
+    }
   }
 
   // ─── featured variant (image fills + overlay) ────────────
@@ -108,27 +223,28 @@
     right: 0;
     bottom: 0;
     z-index: 2;
-    padding: 0 36px 36px;
+    padding: 0 28px 28px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
+    gap: 14px;
 
     @media (max-width: 480px) {
-      padding: 0 24px 24px;
+      padding: 0 18px 18px;
+      gap: 10px;
     }
   }
 
   &__pieces-pill {
     display: inline-flex;
     align-items: center;
-    padding: 7px 14px;
+    padding: 6px 12px;
     border-radius: 999px;
     border: 1px solid rgba(colors.$color-ivory, 0.55);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 11px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10px;
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: colors.$color-ivory;
     background-color: rgba(20, 13, 7, 0.18);
@@ -139,34 +255,31 @@
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(40px, 5vw, 72px);
-    line-height: 1;
+    font-size: clamp(28px, 3.4vw, 46px);
+    line-height: 1.02;
     color: colors.$color-ivory;
     margin: 0;
     letter-spacing: -0.01em;
   }
 
   &__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    height: 44px;
-    padding: 0 22px;
+    @extend %cat-card-arrow-link;
+    gap: 8px;
+    height: 38px;
+    padding: 0 18px;
     border-radius: 999px;
     background-color: colors.$color-ivory;
     color: colors.$color-espresso;
     font-family: var(--font-serif);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    margin-top: 4px;
-
-    svg {
-      transition: transform 0.2s ease;
-    }
+    transition:
+      background-color 0.25s ease,
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  &--featured:hover &__cta {
+  &--featured:hover &__cta,
+  a:focus-visible > &--featured &__cta {
     background-color: colors.$color-white;
     transform: translateY(-2px);
 

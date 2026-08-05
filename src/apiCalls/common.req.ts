@@ -30,9 +30,9 @@ export const getPublicStats = async (): Promise<PublicStats> => {
     return {
       makers: partnersRes.data?.meta?.totalCount ?? 0,
       pieces: productsRes.data?.meta?.totalCount ?? 0,
-      regions: 11, // TODO: replace with distinct regions endpoint when available
+      regions: 12, // TODO: replace with distinct regions endpoint when available
     };
   } catch {
-    return { makers: 0, pieces: 0, regions: 11 };
+    return { makers: 0, pieces: 0, regions: 12 };
   }
 };

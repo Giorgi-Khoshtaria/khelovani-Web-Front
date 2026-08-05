@@ -2,39 +2,40 @@
 @use "@/styles/defaultTexts.scss" as defaultTexts;
 @use "@/styles/animations.scss";
 
+// gallery-plaque card, matching ProductCard's language: full-bleed photo,
+// no boxed white frame, a hairline rule separating it from a compact label
 .partner-card {
   position: relative;
-  background: colors.$color-white;
-  border-radius: 16px;
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  max-width: 280px;
-  margin: 0 auto;
+  text-decoration: none;
+  color: inherit;
   animation: fadeIn 0.5s ease-out forwards;
   opacity: 0;
-  transition: transform 0.25s ease;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
     transform: translateY(-4px);
   }
 
-  // ── image ──
+  // ── image ──────────────────────────────────────────────
 
   &__image {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 11;
-    background: colors.$color-bg-secondary;
+    background-color: colors.$color-bg-secondary;
+    border-radius: 12px;
     overflow: hidden;
-    border-radius: 16px 16px 0 0;
+    box-shadow: 0 14px 28px -18px rgba(colors.$color-espresso, 0.35);
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s ease;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
   }
 
@@ -49,70 +50,51 @@
     align-items: center;
     justify-content: center;
     font-family: var(--font-serif);
-    font-size: 64px;
+    font-size: 48px;
     font-weight: 400;
     color: colors.$color-walnut;
-    opacity: 0.5;
+    opacity: 0.55;
   }
 
-  // category chip
+  // category chip — matches the monospace tracked-caps badge language
+  // used across category and product cards
   &__category {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 12px;
+    left: 12px;
     z-index: 2;
     display: inline-flex;
     align-items: center;
-    padding: 7px 14px;
+    height: 24px;
+    padding: 0 10px;
     border-radius: 6px;
-    background: colors.$color-ivory;
+    background-color: rgba(colors.$color-ivory, 0.92);
     color: colors.$color-espresso;
-    font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
-    max-width: 60%;
+    backdrop-filter: blur(3px);
+    max-width: calc(100% - 24px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  // initials avatar — overlapping bottom-left of image
-  &__avatar {
-    position: absolute;
-    left: 20px;
-    top: -28px;
-    z-index: 3;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: colors.$color-walnut;
-    color: colors.$color-ivory;
-    font-family: var(--font-serif);
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    border: 4px solid colors.$color-white;
-  }
-
-  // ── body ──
+  // ── body ──────────────────────────────────────────────
 
   &__body {
-    position: relative;
-    padding: 38px 20px 18px;
     display: flex;
     flex-direction: column;
     flex: 1;
     gap: 6px;
+    padding: 16px 2px 0;
   }
 
   &__name {
     font-family: var(--font-serif);
-    font-size: clamp(20px, 1.9vw, 24px);
+    font-size: clamp(19px, 1.7vw, 23px);
     font-weight: 400;
     color: colors.$color-espresso;
     line-height: 1.2;
@@ -120,6 +102,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.25s ease;
+  }
+
+  &:hover &__name {
+    color: colors.$color-walnut;
   }
 
   &__location {
@@ -159,7 +146,7 @@
     opacity: 0.55;
   }
 
-  // ── socials ──
+  // ── socials ───────────────────────────────────────────
 
   &__socials {
     display: inline-flex;
@@ -177,10 +164,12 @@
     width: 30px;
     height: 30px;
     border-radius: 8px;
-    background: rgba(colors.$color-walnut, 0.06);
+    border: none;
+    background-color: rgba(colors.$color-walnut, 0.06);
     color: colors.$color-walnut;
+    cursor: pointer;
     transition:
-      background 0.18s ease,
+      background-color 0.18s ease,
       color 0.18s ease,
       transform 0.18s ease;
     flex-shrink: 0;
@@ -191,13 +180,13 @@
     }
 
     &:hover {
-      background: colors.$color-walnut;
+      background-color: colors.$color-walnut;
       color: colors.$color-ivory;
       transform: translateY(-1px);
     }
   }
 
-  // ── footer ──
+  // ── footer ────────────────────────────────────────────
 
   &__footer {
     display: flex;
@@ -206,10 +195,10 @@
     gap: 10px;
     margin-top: auto;
     padding-top: 12px;
-    border-top: 1px solid rgba(colors.$color-espresso, 0.12);
+    border-top: 1px solid rgba(colors.$color-espresso, 0.1);
   }
 
-  // ── rating ──
+  // ── rating ────────────────────────────────────────────
 
   &__rating {
     display: inline-flex;
@@ -226,8 +215,9 @@
     font-size: 14px;
     color: rgba(colors.$color-walnut, 0.22);
     line-height: 1;
+
     &--on {
-      color: #b34a3a;
+      color: colors.$color-burnt-red;
     }
   }
 
@@ -244,7 +234,7 @@
     color: colors.$color-text-secondary;
   }
 
-  // ── cta ──
+  // ── cta (visual affordance only — the whole card is the link) ──
 
   &__cta {
     display: inline-flex;
@@ -254,23 +244,29 @@
     font-size: 15px;
     font-weight: 600;
     color: colors.$color-espresso;
-    text-decoration: none;
-    transition:
-      gap 0.18s ease,
-      color 0.18s ease;
+    transition: gap 0.2s ease, color 0.2s ease;
     white-space: nowrap;
 
-    &:hover {
-      color: colors.$color-walnut;
-      gap: 12px;
+    svg {
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  &:hover &__cta {
+    color: colors.$color-walnut;
+    gap: 12px;
+
+    svg {
+      transform: translate(2px, -2px);
     }
   }
 }
 
 @media (max-width: 600px) {
   .partner-card__body {
-    padding: 34px 18px 16px;
+    padding-top: 10px;
   }
+
   .partner-card__footer {
     flex-wrap: wrap;
   }

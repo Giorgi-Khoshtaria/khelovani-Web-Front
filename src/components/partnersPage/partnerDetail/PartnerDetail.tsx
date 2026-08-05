@@ -29,10 +29,7 @@ function DetailSkeleton() {
       <div className="partner-detail__inner">
         <div className="partner-detail__layout">
           <div className="partner-detail__skel partner-detail__skel--media" />
-          <div className="partner-detail__content">
-            <div className="partner-detail__skel partner-detail__skel--card" />
-            <div className="partner-detail__skel partner-detail__skel--card" />
-          </div>
+          <div className="partner-detail__skel partner-detail__skel--card" />
         </div>
       </div>
     </div>

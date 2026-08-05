@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect, useMemo } from "react";
-import Link from "next/link";
 import ProductCard from "../productCard/ProductCard";
 import "./productListing.scss";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
@@ -274,9 +273,7 @@ export default function ProductListing({
             </div>
           ) : products.length > 0 ? (
             products.map((product) => (
-              <Link key={product._id} href={`/products/${product._id}`}>
-                <ProductCard product={product} />
-              </Link>
+              <ProductCard key={product._id} product={product} />
             ))
           ) : (
             <div className="product-listing__empty">

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { IProduct } from "@/lib/types/productTypes";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
 import ProductCard from "../productCard/ProductCard";
@@ -57,11 +56,7 @@ export default function RelatedProducts({
                 <Skeleton height={14} width="40%" />
               </div>
             ))
-          : related.map((p) => (
-              <Link key={p._id} href={`/products/${p._id}`}>
-                <ProductCard product={p} />
-              </Link>
-            ))}
+          : related.map((p) => <ProductCard key={p._id} product={p} />)}
       </div>
     </section>
   );

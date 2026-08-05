@@ -8,15 +8,10 @@ interface Props {
   name: string;
 }
 
-/** Large partner photo with the category badge (sticky column handled by parent). */
+/** Modest-sized partner portrait (sticky column handled by parent). */
 export default function PartnerImage({ partner, name }: Props) {
-  const category = partner.categories?.[0];
-
   return (
     <div className="partner-image">
-      {category && (
-        <span className="partner-image__badge">{category.toUpperCase()}</span>
-      )}
       {partner.profilePhoto ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -25,7 +20,7 @@ export default function PartnerImage({ partner, name }: Props) {
           className="partner-image__photo"
         />
       ) : (
-        <div className="partner-image__placeholder">
+        <div className="partner-image__placeholder" aria-hidden="true">
           {name.charAt(0).toUpperCase()}
         </div>
       )}

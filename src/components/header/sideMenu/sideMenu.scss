@@ -31,6 +31,12 @@
       transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
       visibility 0s linear 0s; // reveal immediately on open
 
+    // language toggle fades in first
+    .side-menu__lang {
+      animation: fadeSlideIn 0.3s ease both;
+      animation-delay: 0.06s;
+    }
+
     // stagger nav links when menu opens
     .side-menu__nav > * {
       animation: fadeSlideIn 0.3s ease both;
@@ -84,6 +90,44 @@
   &:active {
     transform: rotate(90deg) scale(0.9);
   }
+}
+
+// ── Language toggle ─────────────────────────────────────────
+.side-menu__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(colors.$color-espresso, 0.08);
+  padding-bottom: 20px;
+}
+
+.side-menu__lang-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: colors.$color-espresso;
+  opacity: 0.5;
+  transition: opacity 0.18s ease;
+
+  &.is-active {
+    opacity: 1;
+    font-weight: 700;
+  }
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.side-menu__lang-sep {
+  opacity: 0.4;
+  color: colors.$color-espresso;
 }
 
 // ── Content sections ──────────────────────────────────────

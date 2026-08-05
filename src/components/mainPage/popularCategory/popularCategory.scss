@@ -11,7 +11,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 64px 0 72px;
+    padding: 64px 0 96px;
   }
 }
 
@@ -35,10 +35,11 @@
 // ── header ────────────────────────────────────────────────
 
 .pop-cat__header {
+  width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 32px;
+  gap: 20px;
   margin-bottom: 44px;
   opacity: 0;
   transform: translateY(28px);
@@ -57,12 +58,11 @@
 .pop-cat__heading {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-width: 540px;
+  gap: 12px;
 }
 
 .pop-cat__eyebrow {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -76,24 +76,25 @@
 .pop-cat__title {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(32px, 4.4vw, 56px);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
   color: colors.$color-espresso;
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 .pop-cat__subtitle {
   font-family: var(--font-body);
-  font-size: clamp(14px, 1.3vw, 17px);
-  line-height: 1.55;
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.6;
   color: colors.$color-text-secondary;
   margin: 0;
 }
 
 .pop-cat__view-all {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
   color: colors.$color-espresso;
   text-decoration: none;
@@ -102,6 +103,7 @@
   gap: 10px;
   border-bottom: 1px solid colors.$color-espresso;
   padding-bottom: 4px;
+  flex-shrink: 0;
   transition: gap 0.2s ease;
 
   &:hover {
@@ -114,9 +116,9 @@
 .pop-cat__grid {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  gap: 18px;
+  gap: 16px;
   width: 100%;
-  height: clamp(640px, 74vh, 860px);
+  height: clamp(560px, 60vh, 680px);
 
   opacity: 0;
   transform: translateY(36px);
@@ -124,10 +126,16 @@
     opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
 
+  // tablet: pinned card stacks above a 4-up grid, moderate gap
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
     height: auto;
-    gap: 14px;
+    gap: 20px;
+  }
+
+  // phone: compact stack, tight gaps
+  @media (max-width: 480px) {
+    gap: 12px;
   }
 }
 
@@ -138,8 +146,14 @@
   overflow: hidden;
   background-color: colors.$color-white;
 
+  // below desktop the card sizes itself from its content (see
+  // popularCategoryCard.scss) so the footer link can never get clipped
+  @media (max-width: 960px) {
+    border-radius: 20px;
+  }
+
   @media (max-width: 480px) {
-    border-radius: 18px;
+    border-radius: 14px;
   }
 }
 
@@ -147,11 +161,12 @@
   height: 100%;
 
   @media (max-width: 960px) {
-    height: 520px;
+    height: auto;
+    aspect-ratio: 2 / 1;
   }
 
   @media (max-width: 480px) {
-    height: 420px;
+    aspect-ratio: 4 / 3;
   }
 }
 
@@ -165,12 +180,11 @@
   @media (max-width: 960px) {
     height: auto;
     grid-template-rows: unset;
-    grid-auto-rows: 420px;
+    gap: 20px;
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 400px;
+    gap: 12px;
   }
 }
 

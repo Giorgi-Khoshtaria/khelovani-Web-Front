@@ -24,7 +24,7 @@ export default async function HomePage() {
       getPinnedCategories().catch((): PublicCategory[] => []),
       getPinnedProducts().catch((): PinnedProductsGrouped => EMPTY_GROUPED),
       getPinnedPartners().catch((): Partner[] => []),
-      getPublicStats().catch((): PublicStats => ({ makers: 0, pieces: 0, regions: 11 })),
+      getPublicStats().catch((): PublicStats => ({ makers: 0, pieces: 0, regions: 12 })),
     ]);
 
   const hasAnyProducts = Object.values(pinnedProducts).some((arr) => arr.length > 0);

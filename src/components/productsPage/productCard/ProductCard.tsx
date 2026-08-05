@@ -1,9 +1,11 @@
 "use client";
 
 import { memo } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import "./productCard.scss";
 import { IProduct, IPopulatedOwner } from "@/lib/types/productTypes";
+import { CONDITION_LABELS } from "@/lib/types/productCondition.enum";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useProductDisplay } from "@/lib/hooks/useProductDisplay";
 import { useProductImage } from "@/lib/hooks/useProductImage";
@@ -48,16 +50,23 @@ function ProductCardImpl({ product }: ProductCardProps) {
       : null;
   const oldPrice = salePrice !== null ? product.price : null;
 
-  const tag = isOutOfStock
+  const conditionLabel =
+    CONDITION_LABELS[product.condition]?.[lang === "ge" ? "ge" : "en"];
+
+  // one badge at a time — stock/pricing news outranks the (always-true)
+  // condition label, which outranks the one-of-a-kind fallback
+  const badge = isOutOfStock
     ? { label: tPages("products.out_of_stock") || "SOLD", mod: "sold" }
     : product.isOnSale && product.discountPercent
-    ? { label: `- ${product.discountPercent}%`, mod: "sale" }
+    ? { label: `-${product.discountPercent}%`, mod: "sale" }
+    : conditionLabel
+    ? { label: conditionLabel, mod: "condition" }
     : product.isOneOfAKind
     ? { label: "1 OF 1", mod: "one" }
     : null;
 
   return (
-    <article className="pcard">
+    <Link href={`/products/${product._id}`} className="pcard">
       <div className="pcard__image">
         <Image
           src={imgSrc}
@@ -68,9 +77,9 @@ function ProductCardImpl({ product }: ProductCardProps) {
           onError={handleImageError}
         />
 
-        {tag && (
-          <span className={`pcard__tag pcard__tag--${tag.mod}`}>
-            {tag.label}
+        {badge && (
+          <span className={`pcard__badge pcard__badge--${badge.mod}`}>
+            {badge.label}
           </span>
         )}
 
@@ -99,27 +108,10 @@ function ProductCardImpl({ product }: ProductCardProps) {
             />
           </svg>
         </button>
-      </div>
-
-      <div className="pcard__info">
-        <span className="pcard__category">{categoryLabel}</span>
-        <h3 className="pcard__title">{title}</h3>
-        <span className="pcard__partner">
-          {partnerName ?? ""}
-        </span>
-      </div>
-
-      <div className="pcard__cta">
-        <div className="pcard__prices">
-          <span className="pcard__price">₾{salePrice ?? product.price}</span>
-          {oldPrice && (
-            <span className="pcard__price-old">₾{oldPrice}</span>
-          )}
-        </div>
 
         <button
           type="button"
-          className="pcard__cart"
+          className="pcard__add"
           aria-label={tPages("cart.add_to_cart") || tNav("buy_now")}
           disabled={isOutOfStock || cartLoading}
           onClick={async (e) => {
@@ -142,7 +134,25 @@ function ProductCardImpl({ product }: ProductCardProps) {
           </svg>
         </button>
       </div>
-    </article>
+
+      <div className="pcard__divider" />
+
+      <div className="pcard__plaque">
+        <div className="pcard__row">
+          <div className="pcard__id">
+            <span className="pcard__category">{categoryLabel}</span>
+            <h3 className="pcard__title">{title}</h3>
+          </div>
+
+          <div className="pcard__value">
+            <span className="pcard__price">₾{salePrice ?? product.price}</span>
+            {oldPrice && <span className="pcard__price-old">₾{oldPrice}</span>}
+          </div>
+        </div>
+
+        <span className="pcard__partner">{partnerName ?? ""}</span>
+      </div>
+    </Link>
   );
 }
 

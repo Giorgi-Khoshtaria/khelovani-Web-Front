@@ -1,0 +1,104 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/tokens" as *;
+@use "@/styles/animations.scss";
+
+.about-hero {
+  position: relative;
+  width: 100%;
+  padding: 120px 24px 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  animation: fadeInPage 1.2s ease-out forwards;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 50% 15%, rgba(colors.$color-sand, 0.4) 0%, transparent 60%),
+      linear-gradient(180deg, colors.$color-ivory 0%, colors.$color-bg-page 100%);
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__eyebrow {
+    @extend .small-text;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    font-weight: 600;
+    color: colors.$color-walnut;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease-out 0.1s both;
+  }
+
+  &__title {
+    font-family: var(--font-serif);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    color: colors.$color-espresso;
+    margin: 0 0 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+
+    em {
+      font-style: italic;
+      color: colors.$color-walnut;
+    }
+  }
+
+  &__description {
+    @extend .medium-text;
+    color: colors.$color-text-secondary;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-size: clamp(15px, 1.4vw, 17px);
+    animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+
+  // a small printer's-mark dinkus — matches the contact hero's signature
+  &__mark {
+    position: relative;
+    width: 48px;
+    height: 1px;
+    margin-top: 36px;
+    background: rgba(colors.$color-walnut, 0.5);
+    animation: fadeUp 0.8s ease-out 0.5s both;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: colors.$color-walnut;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @media (max-width: $bp-mobile) {
+    padding: 80px 20px 120px;
+
+    &__eyebrow {
+      letter-spacing: 0.25em;
+      margin-bottom: 20px;
+    }
+  }
+}

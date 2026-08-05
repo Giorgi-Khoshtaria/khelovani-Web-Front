@@ -1,0 +1,125 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+
+.about-values {
+  width: 100%;
+  background-color: colors.$color-bg-page;
+  padding: 100px 64px;
+
+  @media (max-width: 1024px) {
+    padding: 80px 40px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 64px 24px;
+  }
+}
+
+.about-values__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 56px;
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+}
+
+.about-values__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-values__eyebrow {
+  @extend .small-text;
+  display: inline-block;
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-weight: 600;
+  color: colors.$color-walnut;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(colors.$color-walnut, 0.4);
+}
+
+.about-values__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: colors.$color-espresso;
+}
+
+.about-values__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: colors.$color-espresso;
+  text-decoration: none;
+  border-bottom: 1px solid colors.$color-espresso;
+  padding-bottom: 4px;
+  white-space: nowrap;
+  transition: gap 0.2s ease;
+
+  &:hover {
+    gap: 12px;
+  }
+}
+
+.about-values__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-values__card {
+  background-color: colors.$color-white;
+  border-radius: 24px;
+  padding: 40px;
+
+  @media (max-width: 640px) {
+    padding: 28px;
+  }
+}
+
+.about-values__number {
+  display: block;
+  margin-bottom: 20px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: colors.$color-burnt-red;
+}
+
+.about-values__card-title {
+  margin: 0 0 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2vw, 27px);
+  font-weight: 500;
+  line-height: 1.25;
+  color: colors.$color-espresso;
+}
+
+.about-values__card-body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.75;
+  color: colors.$color-text-secondary;
+}

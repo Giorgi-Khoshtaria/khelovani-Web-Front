@@ -1,51 +1,32 @@
 @use "@/styles/colors.scss" as colors;
 
-.partner-meta {
-  list-style: none;
+.partner-spec {
   margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 
   &__row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
+    align-items: baseline;
 
-  &__icon {
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 11px;
-    background: colors.$color-cream;
-    color: colors.$color-walnut;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
-
-  &__text {
-    font-size: 15px;
-    color: colors.$color-espresso;
-
-    strong {
-      font-weight: 700;
+    dt {
+      margin: 0;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: colors.$color-walnut;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    dd {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: colors.$color-espresso;
     }
   }
 }

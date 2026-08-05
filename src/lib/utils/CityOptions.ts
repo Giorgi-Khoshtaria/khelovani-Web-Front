@@ -1,8 +1,44 @@
 export const CITY_OPTIONS = [
-  { value: "tbilisi", label: "თბილისი" },
-  { value: "batumi", label: "ბათუმი" },
-  { value: "kutaisi", label: "ქუთაისი" },
-  { value: "rustavi", label: "რუსთავი" },
-  { value: "gori", label: "გორი" },
-  { value: "zugdidi", label: "ზუგდიდი" },
+  {
+    value: "tbilisi",
+    label: {
+      ge: "თბილისი",
+      en: "Tbilisi",
+    },
+  },
+  {
+    value: "batumi",
+    label: {
+      ge: "ბათუმი",
+      en: "Batumi",
+    },
+  },
+  {
+    value: "kutaisi",
+    label: {
+      ge: "ქუთაისი",
+      en: "Kutaisi",
+    },
+  },
+  {
+    value: "rustavi",
+    label: {
+      ge: "რუსთავი",
+      en: "Rustavi",
+    },
+  },
+  {
+    value: "gori",
+    label: {
+      ge: "გორი",
+      en: "Gori",
+    },
+  },
+  {
+    value: "zugdidi",
+    label: {
+      ge: "ზუგდიდი",
+      en: "Zugdidi",
+    },
+  },
 ];

@@ -12,16 +12,32 @@ interface PopularCategoryCardProps {
   productCount?: number;
 }
 
+function ArrowIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path
+        d="M3.5 10.5 10.5 3.5M5 3.5h5.5V9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function PopularCategoryCard({
   categoryName,
   slug,
   isFeatured,
   productCount,
 }: PopularCategoryCardProps) {
-  const { t } = useClientTranslation("pages");
+  const { t } = useClientTranslation("navigation");
+  const { t: tPages } = useClientTranslation("pages");
+
   const imageSrc = getCategoryPlaceholder(slug);
   const count = productCount ?? 0;
-  const piecesLabel = `${count} ${t("home.stats.pieces").toLowerCase()}`;
+  const piecesLabel = `${count} ${tPages("home.stats.pieces").toLowerCase()}`;
 
   if (isFeatured) {
     return (
@@ -39,16 +55,8 @@ function PopularCategoryCard({
           <span className="cat-card__pieces-pill">{piecesLabel}</span>
           <h3 className="cat-card__featured-name">{categoryName}</h3>
           <span className="cat-card__cta">
-            {t("home.popularCategory.explore")}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path
-                d="M3.5 10.5 10.5 3.5M5 3.5h5.5V9"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            {t("view_all")}
+            <ArrowIcon />
           </span>
         </div>
       </article>
@@ -67,12 +75,16 @@ function PopularCategoryCard({
         />
       </div>
       <div className="cat-card__info">
-        <h3 className="cat-card__name">{categoryName}</h3>
-        <span className="cat-card__meta-count">{piecesLabel}</span>
-        <span className="cat-card__meta-link">
-          {t("home.popularCategory.explore")}
-          <span aria-hidden="true">→</span>
-        </span>
+        <div className="cat-card__heading">
+          <h3 className="cat-card__name">{categoryName}</h3>
+          <span className="cat-card__meta-count">{piecesLabel}</span>
+        </div>
+        <div className="cat-card__footer">
+          <span className="cat-card__meta-link">
+            {t("view_all")}
+            <ArrowIcon />
+          </span>
+        </div>
       </div>
     </article>
   );

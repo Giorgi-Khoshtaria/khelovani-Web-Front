@@ -15,6 +15,20 @@ function getInitials(name: string): string {
   return parts.map((p) => p.charAt(0).toUpperCase()).join("");
 }
 
+function ArrowIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path
+        d="M3.5 10.5 10.5 3.5M5 3.5h5.5V9"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
   const { lang: ctxLang } = useLanguage();
   const activeLang = (ctxLang || "ge") as "ge" | "en";
@@ -46,7 +60,8 @@ function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
     !!partner.tiktok;
 
   return (
-    <article
+    <Link
+      href={`/partners/${partner._id}`}
       className="partner-card"
       style={{ animationDelay: `${(index % 6) * 60}ms` }}
     >
@@ -62,7 +77,7 @@ function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
           />
         ) : (
           <div className="partner-card__placeholder" aria-hidden="true">
-            {name.charAt(0).toUpperCase()}
+            {getInitials(name)}
           </div>
         )}
 
@@ -75,9 +90,6 @@ function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
 
       {/* ── Body ── */}
       <div className="partner-card__body">
-        <span className="partner-card__avatar" aria-hidden="true">
-          {getInitials(name)}
-        </span>
         <h3 className="partner-card__name" title={name}>
           {name.length > 50 ? name.slice(0, 50) + "…" : name}
         </h3>
@@ -126,13 +138,13 @@ function PartnerCardImpl({ partner, index = 0 }: PartnerCardProps) {
             <span className="partner-card__rating-count">({reviewCount})</span>
           </div>
 
-          <Link href={`/partners/${partner._id}`} className="partner-card__cta">
-            <span>{tNav("view_profile")}</span>
-            <span aria-hidden="true">→</span>
-          </Link>
+          <span className="partner-card__cta">
+            {tNav("view_profile")}
+            <ArrowIcon />
+          </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 

@@ -22,7 +22,6 @@ function Header() {
   const { lang, setLang } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   const isOverHero = TRANSPARENT_ROUTES.includes(pathname ?? "");
   const transparent = isOverHero && !scrolled;
 
@@ -39,7 +38,9 @@ function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
   const headerClass = [
     "header",
     transparent ? "header--transparent" : "header--solid",

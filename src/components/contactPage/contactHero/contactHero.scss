@@ -19,20 +19,8 @@
     inset: 0;
     z-index: 0;
     background:
-      radial-gradient(circle at 50% 30%, rgba(colors.$color-bg-secondary, 0.5) 0%, transparent 65%),
+      radial-gradient(circle at 50% 15%, rgba(colors.$color-sand, 0.4) 0%, transparent 60%),
       linear-gradient(180deg, colors.$color-ivory 0%, colors.$color-bg-page 100%);
-
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(to right, rgba(colors.$color-walnut, 0.06) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(colors.$color-walnut, 0.06) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
-      -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
-    }
   }
 
   &__inner {
@@ -76,6 +64,29 @@
     line-height: 1.7;
     font-size: clamp(15px, 1.4vw, 17px);
     animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+
+  // a small printer's-mark dinkus — the page's one quiet signature,
+  // in place of the tech-grid pattern this used to sit on
+  &__mark {
+    position: relative;
+    width: 48px;
+    height: 1px;
+    margin-top: 36px;
+    background: rgba(colors.$color-walnut, 0.5);
+    animation: fadeUp 0.8s ease-out 0.5s both;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: colors.$color-walnut;
+      transform: translate(-50%, -50%);
+    }
   }
 
   @media (max-width: $bp-mobile) {

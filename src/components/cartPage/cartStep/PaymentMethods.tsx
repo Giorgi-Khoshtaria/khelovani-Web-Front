@@ -3,8 +3,7 @@
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import "./paymentMethods.scss";
 
-const METHODS = ["VISA", "MC", "AMEX", "PayPal", "Apple Pay"] as const;
-
+const METHODS = ["Visa", "Mastercard", "American Express"] as const;
 export default function PaymentMethods() {
   const { t: tPages } = useClientTranslation("pages");
   return (

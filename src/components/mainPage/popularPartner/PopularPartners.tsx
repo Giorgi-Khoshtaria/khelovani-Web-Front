@@ -96,9 +96,6 @@ function PopularPartners({
       <div className="pop-partners__container">
         <div className="pop-partners__header">
           <div className="pop-partners__heading">
-            <span className="pop-partners__eyebrow">
-              {t("home.popularPartners.eyebrow")}
-            </span>
             <h2 className="pop-partners__title">
               {t("home.popular-Partners_title")}
             </h2>
@@ -114,7 +111,13 @@ function PopularPartners({
               disabled={index === 0}
               aria-label={tNav("previous")}
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+              >
                 <path
                   d="M9 2 4 7l5 5"
                   stroke="currentColor"
@@ -130,7 +133,13 @@ function PopularPartners({
               disabled={index >= maxIndex}
               aria-label={tNav("next")}
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+              >
                 <path
                   d="M5 2 10 7l-5 5"
                   stroke="currentColor"

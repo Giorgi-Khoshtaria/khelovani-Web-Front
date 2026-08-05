@@ -28,9 +28,6 @@ function PopularCategory({
       <div className="pop-cat__container">
         <div className="pop-cat__header">
           <div className="pop-cat__heading">
-            <span className="pop-cat__eyebrow">
-              {t("home.popularCategory.eyebrow")}
-            </span>
             <h2 className="pop-cat__title">
               {t("home.popularCategory._title")}
             </h2>
@@ -46,7 +43,6 @@ function PopularCategory({
         </div>
 
         <div className="pop-cat__grid">
-          {/* featured — left large card */}
           {featured && (
             <Link
               href={`/products?category=${featured.slug}`}
@@ -61,7 +57,6 @@ function PopularCategory({
             </Link>
           )}
 
-          {/* remaining 4 cards — 2×2 right grid */}
           <div className="pop-cat__grid-right">
             {rest.slice(0, 4).map((category) => (
               <Link

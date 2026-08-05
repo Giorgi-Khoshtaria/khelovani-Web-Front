@@ -1,0 +1,52 @@
+@use "@/styles/colors.scss" as colors;
+
+.about-stats {
+  width: 100%;
+  background-color: colors.$color-bg-page;
+  padding: 0 64px 100px;
+
+  @media (max-width: 1024px) {
+    padding: 0 40px 80px;
+  }
+
+  @media (max-width: 860px) {
+    padding: 0 24px 64px;
+  }
+}
+
+.about-stats__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 56px 64px;
+  padding-top: 56px;
+  border-top: 1px solid rgba(colors.$color-espresso, 0.12);
+
+  @media (max-width: 640px) {
+    gap: 32px 40px;
+    padding-top: 40px;
+  }
+}
+
+.about-stats__item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about-stats__value {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1;
+  color: colors.$color-espresso;
+}
+
+.about-stats__label {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: colors.$color-text-secondary;
+}

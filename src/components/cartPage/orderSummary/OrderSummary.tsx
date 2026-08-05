@@ -61,7 +61,7 @@ export default function OrderSummary({
             subtotal={totals.afterPromoSubtotal}
             threshold={FREE_SHIPPING_THRESHOLD}
           />
-          <PromoCodeInput onApply={applyPromo} applied={promoApplied} />
+          {/* <PromoCodeInput onApply={applyPromo} applied={promoApplied} /> */}
         </>
       )}
 

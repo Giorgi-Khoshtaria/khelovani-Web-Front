@@ -10,6 +10,7 @@ import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { CITY_OPTIONS } from "@/lib/utils/CityOptions";
 import SearchableSelect from "@/components/ui/SearchableSelect/SearchableSelect";
 import "./addAddressModal.scss";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Props {
   initial?: Address | null;
@@ -46,6 +47,7 @@ export default function AddAddressModal({
   const { t: tInputs } = useClientTranslation("inputs");
   const { t: tCommon } = useClientTranslation("common");
   const { t: tErr } = useClientTranslation("validation");
+  const { lang } = useLanguage();
 
   const [form, setForm] = useState<AddressFormData>({
     type: initial?.type ?? AddressType.Home,
@@ -104,8 +106,7 @@ export default function AddAddressModal({
               {initial
                 ? tPages("address_modal.eyebrow_edit") ||
                   "Edit delivery address"
-                : tPages("address_modal.eyebrow_new") ||
-                  "New delivery address"}
+                : tPages("address_modal.eyebrow_new") || "New delivery address"}
             </span>
             <h3 className="address-modal__title">
               {initial
@@ -151,10 +152,7 @@ export default function AddAddressModal({
           </div>
 
           <div className="address-modal__field">
-            <label
-              className="address-modal__label"
-              htmlFor="address-line"
-            >
+            <label className="address-modal__label" htmlFor="address-line">
               {tPages("address_modal.street") || "Street & house no."}{" "}
               <span aria-hidden="true">*</span>
             </label>
@@ -191,7 +189,10 @@ export default function AddAddressModal({
               <SearchableSelect
                 id="address-city"
                 value={form.city}
-                options={CITY_OPTIONS}
+                options={CITY_OPTIONS.map((city) => ({
+                  value: city.value,
+                  label: city.label[lang === "ge" ? "ge" : "en"],
+                }))}
                 placeholder={tInputs("placeholder.city") || "აირჩიე ქალაქი"}
                 searchPlaceholder={tCommon("search") || "ძებნა"}
                 emptyText={tCommon("no_results") || "შედეგი არ მოიძებნა"}
@@ -215,7 +216,9 @@ export default function AddAddressModal({
                 className={`address-modal__input${
                   errors.postalCode ? " address-modal__input--error" : ""
                 }`}
-                placeholder={tPages("address_modal.postal_placeholder") || "0108"}
+                placeholder={
+                  tPages("address_modal.postal_placeholder") || "0108"
+                }
                 value={form.postalCode}
                 maxLength={20}
                 onChange={(e) => patch({ postalCode: e.target.value })}
@@ -242,9 +245,7 @@ export default function AddAddressModal({
               id="address-notes"
               type="text"
               className={`address-modal__input${
-                errors.additionalComment
-                  ? " address-modal__input--error"
-                  : ""
+                errors.additionalComment ? " address-modal__input--error" : ""
               }`}
               placeholder={
                 tPages("address_modal.notes_placeholder") ||
@@ -252,9 +253,7 @@ export default function AddAddressModal({
               }
               value={form.additionalComment}
               maxLength={300}
-              onChange={(e) =>
-                patch({ additionalComment: e.target.value })
-              }
+              onChange={(e) => patch({ additionalComment: e.target.value })}
             />
             {errors.additionalComment && (
               <span className="address-modal__error">
@@ -292,9 +291,7 @@ export default function AddAddressModal({
               className="address-modal__submit"
               disabled={saving}
             >
-              <span>
-                {tPages("address_modal.save") || "Save address"}
-              </span>
+              <span>{tPages("address_modal.save") || "Save address"}</span>
               <span aria-hidden="true">✓</span>
             </button>
           </div>
