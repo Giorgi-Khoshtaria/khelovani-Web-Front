@@ -15,15 +15,6 @@
     padding: 22px;
   }
 
-  &__eyebrow {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: colors.$color-walnut;
-  }
-
   &__head {
     display: flex;
     align-items: center;
@@ -61,9 +52,15 @@
   &__actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
+
+    // Buttons stay grouped on the left, socials pinned to the right edge.
+    // (Was space-between, which spread three items apart once the rate
+    // button joined the row.)
+    .partner-socials {
+      margin-left: auto;
+    }
   }
 
   &__contact {
@@ -89,6 +86,33 @@
     &:hover {
       background: colors.$color-espresso;
       color: colors.$color-ivory;
+    }
+  }
+
+  &__rate {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border: 1px solid colors.$color-border;
+    border-radius: 999px;
+    background: transparent;
+    color: colors.$color-espresso;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-serif);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: colors.$color-burnt-red;
+    }
+
+    &:hover {
+      background: colors.$color-ivory;
+      border-color: colors.$color-walnut;
     }
   }
 }

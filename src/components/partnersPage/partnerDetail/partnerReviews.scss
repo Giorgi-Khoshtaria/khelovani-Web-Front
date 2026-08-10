@@ -1,0 +1,175 @@
+@use "@/styles/colors.scss" as colors;
+
+.partner-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 28px;
+  border: 1px solid colors.$color-border;
+  border-radius: 20px;
+  background: colors.$color-white;
+
+  @media (max-width: 560px) {
+    padding: 22px 18px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: colors.$color-walnut;
+  }
+
+  &__summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: colors.$color-espresso;
+  }
+
+  &__scale {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: colors.$color-text-secondary;
+  }
+
+  &__count {
+    font-size: 13.5px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__stars {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  &__star {
+    display: inline-flex;
+    color: rgba(colors.$color-walnut, 0.3);
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    &--on {
+      color: colors.$color-burnt-red;
+    }
+  }
+
+  &__skeletons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__skeleton {
+    height: 82px;
+    border-radius: 14px;
+    background: colors.$color-ivory;
+  }
+
+  &__empty {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: colors.$color-text-secondary;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__item {
+    display: flex;
+    gap: 14px;
+    padding: 18px 0;
+    border-top: 1px solid colors.$color-border;
+
+    &:first-child {
+      border-top: none;
+      padding-top: 4px;
+    }
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: colors.$color-ivory;
+    color: colors.$color-walnut;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif, Georgia, "Times New Roman", serif);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__author {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+
+  &__badge {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: colors.$color-ivory;
+    border: 1px solid colors.$color-border;
+    font-size: 11px;
+    font-weight: 600;
+    color: colors.$color-walnut;
+  }
+
+  &__date {
+    font-size: 12.5px;
+    color: colors.$color-text-secondary;
+  }
+
+  &__comment {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: colors.$color-text-secondary;
+    overflow-wrap: anywhere;
+  }
+
+  // The shared paginator sits flush with the list rather than centred in a
+  // full-width band, since this card is narrower than a listing page.
+  .custom-pagination {
+    margin-top: 6px;
+  }
+}

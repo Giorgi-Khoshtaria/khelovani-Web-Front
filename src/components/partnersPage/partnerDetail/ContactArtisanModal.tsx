@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useContactArtisan } from "./useContactArtisan";
+import { useContactArtisan } from "@/lib/hooks/useContactArtisan";
 import "./contactArtisanModal.scss";
 
 interface Props {
@@ -17,8 +17,22 @@ interface Props {
 
 const MailIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.7" />
-    <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    <rect
+      x="3"
+      y="5"
+      width="18"
+      height="14"
+      rx="2"
+      stroke="currentColor"
+      strokeWidth="1.7"
+    />
+    <path
+      d="m4 7 8 6 8-6"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -35,7 +49,12 @@ const PhoneIcon = () => (
 
 const CloseIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path
+      d="M6 6l12 12M18 6L6 18"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
@@ -111,12 +130,15 @@ export default function ContactArtisanModal({
                 : "Ask about a custom commission, materials, lead times or anything else.")}{" "}
             {name}{" "}
             {tPages("partner_profile.contact_reply_time") ||
-              (isGe ? "ჩვეულებრივ პასუხობს დღის განმავლობაში." : "usually replies within a day.")}
+              (isGe
+                ? "ჩვეულებრივ პასუხობს დღის განმავლობაში."
+                : "usually replies within a day.")}
           </p>
 
           <div className="contact-modal__field">
             <label className="contact-modal__label" htmlFor="contact-subject">
-              {tPages("partner_profile.contact_subject") || (isGe ? "თემა" : "Subject")}
+              {tPages("partner_profile.contact_subject") ||
+                (isGe ? "თემა" : "Subject")}
             </label>
             <input
               id="contact-subject"
@@ -132,13 +154,16 @@ export default function ContactArtisanModal({
               aria-invalid={Boolean(c.errors.subject)}
             />
             {c.errors.subject && (
-              <span className="contact-modal__error">{tErr(c.errors.subject)}</span>
+              <span className="contact-modal__error">
+                {tErr(c.errors.subject)}
+              </span>
             )}
           </div>
 
           <div className="contact-modal__field">
             <label className="contact-modal__label" htmlFor="contact-message">
-              {tPages("partner_profile.contact_message") || (isGe ? "შეტყობინება" : "Message")}
+              {tPages("partner_profile.contact_message") ||
+                (isGe ? "შეტყობინება" : "Message")}
             </label>
             <div className="contact-modal__textarea-wrap">
               <textarea
@@ -159,7 +184,9 @@ export default function ContactArtisanModal({
               </span>
             </div>
             {c.errors.message && (
-              <span className="contact-modal__error">{tErr(c.errors.message)}</span>
+              <span className="contact-modal__error">
+                {tErr(c.errors.message)}
+              </span>
             )}
           </div>
         </div>
@@ -172,7 +199,10 @@ export default function ContactArtisanModal({
             </a>
           )}
           {phone && (
-            <a className="contact-modal__chip" href={`tel:${phone.replace(/\s+/g, "")}`}>
+            <a
+              className="contact-modal__chip"
+              href={`tel:${phone.replace(/\s+/g, "")}`}
+            >
               <PhoneIcon />
               {phone}
             </a>
@@ -196,8 +226,10 @@ export default function ContactArtisanModal({
           >
             <MailIcon />
             {c.sending
-              ? tPages("partner_profile.contact_sending") || (isGe ? "იგზავნება…" : "Sending…")
-              : tPages("partner_profile.contact_send") || (isGe ? "გაგზავნა" : "Send message")}
+              ? tPages("partner_profile.contact_sending") ||
+                (isGe ? "იგზავნება…" : "Sending…")
+              : tPages("partner_profile.contact_send") ||
+                (isGe ? "გაგზავნა" : "Send message")}
           </button>
         </div>
       </div>

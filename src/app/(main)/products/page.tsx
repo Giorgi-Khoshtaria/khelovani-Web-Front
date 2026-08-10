@@ -2,8 +2,15 @@ import ProductsHero from "@/components/productsPage/productsHero/ProductsHero";
 import ProductListing from "@/components/productsPage/productListing/ProductListing";
 import {
   getProducts,
+  type GetProductsParams,
   type GetProductsResponse,
 } from "@/apiCalls/productRequests/product.req";
+import {
+  clampPrice,
+  PRICE_CEIL,
+  PRICE_FLOOR,
+  sanitizeCategory,
+} from "@/lib/utils/productFilters";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -16,10 +23,43 @@ const EMPTY: GetProductsResponse = {
   meta: { totalCount: 0, totalPages: 1, currentPage: 1, limit: 12 },
 };
 
-export default async function ProductsPage() {
-  const data = await getProducts({ page: 1, limit: 12 }).catch(
-    (): GetProductsResponse => EMPTY,
-  );
+interface Props {
+  // Next 16 App Router: searchParams is a Promise on server components.
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+const first = (v: string | string[] | undefined): string | null =>
+  Array.isArray(v) ? (v[0] ?? null) : (v ?? null);
+
+export default async function ProductsPage({ searchParams }: Props) {
+  const sp = await searchParams;
+
+  // Same sanitisation the client filter uses, so what SSR renders for
+  // e.g. /products?category=embroidery (as linked from the home page's
+  // "Popular categories") matches what the client would otherwise fetch —
+  // previously this page ignored the URL entirely and always rendered the
+  // unfiltered first page, and the client skipped its own first fetch
+  // assuming SSR had already applied the filter.
+  const category = sanitizeCategory(first(sp.category));
+  const search = first(sp.search) ?? "";
+  const partnerId = (first(sp.partnerId) ?? "").split(",")[0] || undefined;
+  const minPrice = clampPrice(first(sp.minPrice), PRICE_FLOOR);
+  const maxPriceRaw = first(sp.maxPrice);
+  const maxPrice =
+    maxPriceRaw === null ? PRICE_CEIL : clampPrice(maxPriceRaw, PRICE_CEIL);
+  const page = Number(first(sp.page)) || 1;
+
+  const params: GetProductsParams = {
+    page,
+    limit: 12,
+    ...(search && { search }),
+    ...(category !== "all" && { category }),
+    ...(partnerId && { partnerId }),
+    ...(minPrice > PRICE_FLOOR && { minPrice }),
+    ...(maxPrice < PRICE_CEIL && { maxPrice }),
+  };
+
+  const data = await getProducts(params).catch((): GetProductsResponse => EMPTY);
 
   const initialProducts = data.data ?? [];
   const initialTotalPages = data.meta?.totalPages ?? 1;

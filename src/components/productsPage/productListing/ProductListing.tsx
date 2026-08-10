@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef, useState, useEffect, useMemo } from "react";
+import { toast } from "react-toastify";
 import ProductCard from "../productCard/ProductCard";
 import "./productListing.scss";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
-import { IProduct, ProductCategory } from "@/lib/types/productTypes";
+import { IProduct } from "@/lib/types/productTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -12,27 +13,18 @@ import ProductPagination from "../ProductPagination/ProductPagination";
 import ProductFilters, {
   ProductFiltersState,
 } from "../productFilters/ProductFilters";
+import {
+  clampPrice,
+  PRICE_CEIL,
+  PRICE_FLOOR,
+  sanitizeCategory,
+} from "@/lib/utils/productFilters";
 
 interface ProductListingProps {
   initialProducts: IProduct[];
   initialTotalPages: number;
   initialTotalCount?: number;
 }
-
-const VALID_CATEGORIES = new Set<string>(Object.values(ProductCategory));
-const PRICE_FLOOR = 0;
-const PRICE_CEIL = 1000000;
-
-const sanitizeCategory = (raw: string | null): string => {
-  if (!raw || raw === "all") return "all";
-  return VALID_CATEGORIES.has(raw) ? raw : "all";
-};
-
-const clampPrice = (raw: string | null, fallback: number) => {
-  const n = Number(raw);
-  if (!Number.isFinite(n)) return fallback;
-  return Math.min(PRICE_CEIL, Math.max(PRICE_FLOOR, n));
-};
 
 export default function ProductListing({
   initialProducts,
@@ -77,6 +69,15 @@ export default function ProductListing({
   const [totalCount, setTotalCount] = useState(initialTotalCount);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isFirstRender = useRef(true);
+
+  const notifyEmptyCategory = () => {
+    toast.info(
+      tPages("products.category_empty_fallback") ||
+        (isGe
+          ? "ამ კატეგორიაში პროდუქტები არ მოიძებნა — ნაჩვენებია ყველა პროდუქტი"
+          : "No products in this category — showing all products instead"),
+    );
+  };
 
   // Debounce search input
   useEffect(() => {
@@ -153,13 +154,23 @@ export default function ProductListing({
 
         const response = await getProducts(params, controller.signal);
         if (controller.signal.aborted) return;
+        const resultCount = response.meta?.totalCount ?? 0;
+
+        // A category with no matches is a dead end — fall back to showing
+        // everything rather than leaving the visitor on an empty grid.
+        if (filters.category !== "all" && resultCount === 0) {
+          notifyEmptyCategory();
+          setCategory("all");
+          return;
+        }
+
         setProducts(response.data);
         setTotalPages(response.meta?.totalPages ?? 1);
 
         // Only refresh the unfiltered total when no filters are active,
         // so the "X pieces" label stays stable while filtering.
         if (!hasFilters) {
-          setTotalCount(response.meta?.totalCount ?? 0);
+          setTotalCount(resultCount);
         }
       } catch (error) {
         if (controller.signal.aborted) return;
@@ -179,6 +190,17 @@ export default function ProductListing({
     filters.maxPrice,
     page,
   ]);
+
+  const hasHandledEmptyInitialCategory = useRef(false);
+  useEffect(() => {
+    if (hasHandledEmptyInitialCategory.current) return;
+    hasHandledEmptyInitialCategory.current = true;
+
+    if (initialCategory !== "all" && initialTotalCount === 0) {
+      notifyEmptyCategory();
+      setCategory("all");
+    }
+  }, []);
 
   // ── Filter mutators ──────────────────────────────────────────
   const setSearch = (v: string) =>

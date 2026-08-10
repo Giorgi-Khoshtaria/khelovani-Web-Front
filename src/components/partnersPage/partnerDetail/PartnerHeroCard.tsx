@@ -6,10 +6,12 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCategories } from "@/contexts/CategoriesContext";
 import { Icon } from "@/lib/icons/icons";
 import type { Partner } from "@/lib/types/partnerTypes";
+import type { MyReview, ReviewSummary } from "@/lib/types/reviewTypes";
 import PartnerRating from "./PartnerRating";
 import PartnerMeta from "./PartnerMeta";
 import PartnerSocials from "./PartnerSocials";
 import ContactArtisanModal from "./ContactArtisanModal";
+import RatePartnerModal from "./RatePartnerModal";
 import "./partnerHeroCard.scss";
 
 interface Props {
@@ -19,6 +21,11 @@ interface Props {
   city: string;
   address: string;
   productCount: number;
+  /** Live aggregate — preferred over the partner doc so it updates on save. */
+  reviewSummary?: ReviewSummary;
+  /** The visitor's own review, when they already rated this partner. */
+  myReview?: MyReview | null;
+  onReviewSaved?: () => void;
 }
 
 const VerifiedIcon = () => (
@@ -47,12 +54,16 @@ export default function PartnerHeroCard({
   city,
   address,
   productCount,
+  reviewSummary,
+  myReview = null,
+  onReviewSaved,
 }: Props) {
   const { t: tPages } = useClientTranslation("pages");
   const { lang } = useLanguage();
   const { getLabel } = useCategories();
   const isGe = lang === "ge";
   const [contactOpen, setContactOpen] = useState(false);
+  const [rateOpen, setRateOpen] = useState(false);
 
   const initials = name
     .split(/\s+/)
@@ -67,10 +78,6 @@ export default function PartnerHeroCard({
 
   return (
     <div className="partner-hero">
-      {categoryLabel && (
-        <span className="partner-hero__eyebrow">{categoryLabel}</span>
-      )}
-
       <div className="partner-hero__head">
         <h1 className="partner-hero__name">{name}</h1>
         {partner.verified && (
@@ -82,7 +89,12 @@ export default function PartnerHeroCard({
         )}
       </div>
 
-      <PartnerRating rating={partner.rating} reviewCount={partner.reviewCount} />
+      <PartnerRating
+        rating={reviewSummary?.total ? reviewSummary.average : partner.rating}
+        reviewCount={
+          reviewSummary?.total ? reviewSummary.total : partner.reviewCount
+        }
+      />
 
       <div className="partner-hero__divider" />
 
@@ -91,6 +103,7 @@ export default function PartnerHeroCard({
         city={city}
         address={address}
         productCount={productCount}
+        categoryLabel={categoryLabel}
       />
 
       <div className="partner-hero__divider" />
@@ -107,6 +120,18 @@ export default function PartnerHeroCard({
               (isGe ? "დაკავშირება" : "Contact artisan")}
           </button>
         )}
+        <button
+          type="button"
+          className="partner-hero__rate"
+          onClick={() => setRateOpen(true)}
+        >
+          {Icon.starFilled}
+          {myReview
+            ? tPages("partner_profile.rate_edit_btn") ||
+              (isGe ? "შეფასების რედაქტირება" : "Edit your rating")
+            : tPages("partner_profile.rate_btn") ||
+              (isGe ? "შეფასება" : "Rate artisan")}
+        </button>
         <PartnerSocials partner={partner} />
       </div>
 
@@ -118,6 +143,17 @@ export default function PartnerHeroCard({
           email={partner.email}
           phone={partner.phone}
           onClose={() => setContactOpen(false)}
+        />
+      )}
+
+      {rateOpen && (
+        <RatePartnerModal
+          partnerId={partnerId}
+          name={name}
+          initials={initials}
+          initialReview={myReview}
+          onClose={() => setRateOpen(false)}
+          onSaved={() => onReviewSaved?.()}
         />
       )}
     </div>

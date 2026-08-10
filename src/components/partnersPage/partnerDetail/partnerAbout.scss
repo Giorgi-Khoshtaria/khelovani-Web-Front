@@ -1,9 +1,18 @@
 @use "@/styles/colors.scss" as colors;
 
 .partner-about {
-  padding-top: 28px;
-  border-top: 1px solid rgba(colors.$color-espresso, 0.1);
-  max-width: 68ch;
+  // Full column width already (the old max-width: 68ch cap is gone), but
+  // with no visible background/border it had no right edge to read against,
+  // so it still looked narrower than the bordered hero/reviews cards beside
+  // it. Matching their card treatment now.
+  padding: 26px 28px;
+  border: 1px solid colors.$color-border;
+  border-radius: 20px;
+  background: colors.$color-white;
+
+  @media (max-width: 560px) {
+    padding: 22px 18px;
+  }
 
   &__eyebrow {
     display: block;

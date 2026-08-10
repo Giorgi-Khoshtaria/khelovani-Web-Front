@@ -6,12 +6,17 @@ import type { Partner } from "@/lib/types/partnerTypes";
 import { useClientTranslation } from "@/lib/hooks/useClientTranslation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Icon } from "@/lib/icons/icons";
-import { usePartnerDetail, localizePartner } from "./usePartnerDetail";
+import {
+  usePartnerDetail,
+  localizePartner,
+} from "@/lib/hooks/usePartnerDetail";
 import BackToPartners from "./BackToPartners";
 import PartnerImage from "./PartnerImage";
 import PartnerHeroCard from "./PartnerHeroCard";
 import PartnerAbout from "./PartnerAbout";
 import PartnerPieces from "./PartnerPieces";
+import PartnerReviews from "./PartnerReviews";
+import { usePartnerReviews } from "@/lib/hooks/usePartnerReviews";
 import "./partnerDetail.scss";
 
 interface Props {
@@ -51,6 +56,9 @@ export default function PartnerDetail({
     lang,
   } = usePartnerDetail(id, initialData, serverLang);
   const productCount = ssrProductCount ?? hookProductCount;
+  // Reviews are fetched here (before any early return, as hooks require) so the
+  // hero button and the list below share one request and one refresh.
+  const reviews = usePartnerReviews(id);
   const { t: tPages } = useClientTranslation("pages");
   const { lang: clientLang } = useLanguage();
   const isGe = (serverLang || clientLang) === "ge";
@@ -99,9 +107,26 @@ export default function PartnerDetail({
               city={city}
               address={address}
               productCount={productCount}
+              reviewSummary={reviews.summary}
+              myReview={reviews.myReview}
+              onReviewSaved={reviews.refresh}
             />
-            <PartnerAbout description={description} />
           </div>
+        </div>
+
+        {/* Below the photo+info row, full page width rather than confined
+            to the narrower right-hand column. */}
+        <div className="partner-detail__extras">
+          <PartnerAbout description={description} />
+          <PartnerReviews
+            reviews={reviews.reviews}
+            summary={reviews.summary}
+            myReviewId={reviews.myReview?._id}
+            isLoading={reviews.isLoading}
+            page={reviews.page}
+            totalPages={reviews.totalPages}
+            onPageChange={reviews.goToPage}
+          />
         </div>
 
         <PartnerPieces

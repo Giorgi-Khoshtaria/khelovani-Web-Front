@@ -27,6 +27,20 @@
       font-family: var(--font-body);
       font-size: 15px;
       color: colors.$color-espresso;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__link {
+    color: colors.$color-espresso;
+    text-decoration: underline;
+    text-decoration-color: rgba(colors.$color-espresso, 0.3);
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: colors.$color-walnut;
+      text-decoration-color: currentColor;
     }
   }
 }

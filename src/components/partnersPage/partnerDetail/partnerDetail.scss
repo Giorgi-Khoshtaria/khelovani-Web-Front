@@ -44,6 +44,15 @@
     min-width: 0;
   }
 
+  // Description + reviews, below the photo/info row — spans the full page
+  // width (matches __inner) rather than being confined to the hero card's
+  // narrower right-hand column.
+  &__extras {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
   // ── Skeleton ────────────────────────────────────────────────
   &__skel {
     border-radius: 24px;

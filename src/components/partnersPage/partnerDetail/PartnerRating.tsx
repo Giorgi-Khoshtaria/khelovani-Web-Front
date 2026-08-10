@@ -31,7 +31,10 @@ export default function PartnerRating({ rating, reviewCount }: Props) {
           </span>
         ))}
       </span>
-      <span className="partner-rating__score">{rating.toFixed(1)}</span>
+      <span className="partner-rating__score">
+        {rounded}
+        <span className="partner-rating__scale">/5</span>
+      </span>
       {typeof reviewCount === "number" && (
         <span className="partner-rating__reviews">
           {reviewCount}{" "}
