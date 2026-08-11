@@ -76,9 +76,9 @@ function PartnersHero({ stats }: PartnersHeroProps) {
           </div>
         </div>
 
-        <div className="ph__divider" aria-hidden="true" />
+        {/* <div className="ph__divider" aria-hidden="true" /> */}
 
-        <div className="ph__stats">
+        {/* <div className="ph__stats">
           <div className="ph__stat">
             <span className="ph__stat-value">{totalMakers}</span>
             <span className="ph__stat-label">{tPages("stats.makers")}</span>
@@ -91,7 +91,7 @@ function PartnersHero({ stats }: PartnersHeroProps) {
             <span className="ph__stat-value">{craftCount}</span>
             <span className="ph__stat-label">{tPages("stats.pieces")}</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

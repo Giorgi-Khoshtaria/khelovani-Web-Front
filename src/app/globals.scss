@@ -34,7 +34,10 @@ html,
 body {
   background-color: $color-bg-page;
   color: $color-text-primary;
-  overflow-x: hidden;
+  // overflow-x: clip (not hidden) — hidden would compute overflow-y to
+  // auto too, turning body into its own scroll container and breaking
+  // every position: sticky element on the site.
+  overflow-x: clip;
 }
 
 body {

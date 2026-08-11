@@ -1,0 +1,149 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/defaultTexts.scss" as defaultTexts;
+@use "@/styles/tokens" as *;
+@use "@/styles/animations.scss";
+
+.policy-hero {
+  position: relative;
+  width: 100%;
+  padding: 140px 24px 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, colors.$color-sand 0%, colors.$color-bg-page 65%);
+  animation: fadeInPage 1s ease-out forwards;
+
+  @media (max-width: $bp-mobile) {
+    padding: 108px 20px 72px;
+  }
+}
+
+.policy-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.policy-hero__eyebrow {
+  @extend .small-text;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-weight: 600;
+  color: colors.$color-burnt-red;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(colors.$color-burnt-red, 0.4);
+  margin-bottom: 26px;
+  animation: fadeUp 0.8s ease-out 0.1s both;
+}
+
+.policy-hero__title {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: colors.$color-espresso;
+  margin: 0 0 22px;
+  animation: fadeUp 0.8s ease-out 0.2s both;
+
+  em {
+    font-style: italic;
+    color: colors.$color-walnut;
+  }
+}
+
+.policy-hero__description {
+  @extend .medium-text;
+  color: colors.$color-text-secondary;
+  max-width: 620px;
+  line-height: 1.7;
+  font-size: clamp(15px, 1.4vw, 17px);
+  margin: 0 auto 28px;
+  animation: fadeUp 0.8s ease-out 0.3s both;
+}
+
+.policy-hero__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: colors.$color-text-secondary;
+  margin: 0 0 40px;
+  animation: fadeUp 0.8s ease-out 0.4s both;
+
+  @media (max-width: $bp-xs) {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.policy-hero__meta-dot {
+  color: rgba(colors.$color-walnut, 0.5);
+
+  @media (max-width: $bp-xs) {
+    display: none;
+  }
+}
+
+// ─── tab switcher ───────────────────────────────────────────
+
+.policy-hero__tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background-color: colors.$color-bg-accent;
+  border-radius: $radius-pill;
+  animation: fadeUp 0.8s ease-out 0.5s both;
+
+  @media (max-width: $bp-xs) {
+    flex-direction: column;
+    width: 100%;
+    border-radius: $radius-lg;
+  }
+}
+
+.policy-hero__tab {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 14px 26px;
+  border-radius: $radius-pill;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: colors.$color-walnut;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    color: colors.$color-espresso;
+  }
+
+  &--active {
+    background-color: colors.$color-espresso;
+    color: colors.$color-ivory;
+    box-shadow: 0 6px 18px rgba(colors.$color-espresso, 0.28);
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$color-espresso;
+    outline-offset: 2px;
+  }
+
+  @media (max-width: $bp-xs) {
+    width: 100%;
+  }
+}

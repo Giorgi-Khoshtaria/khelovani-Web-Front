@@ -22,7 +22,7 @@ export default function FavoritesHero() {
         </p>
       </div>
 
-      <div className="fav-hero__stats">
+      {/* <div className="fav-hero__stats">
         <div className="fav-hero__stat">
           <span className="fav-hero__stat-icon" aria-hidden>
             ♡
@@ -48,7 +48,7 @@ export default function FavoritesHero() {
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
     </header>
   );
 }

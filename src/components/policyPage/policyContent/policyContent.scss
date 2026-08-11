@@ -1,0 +1,188 @@
+@use "@/styles/colors.scss" as colors;
+@use "@/styles/tokens" as *;
+
+.policy-content {
+  width: 100%;
+  background-color: colors.$color-bg-page;
+  padding: 0 24px 120px;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: $bp-mobile) {
+    padding: 0 16px 80px;
+  }
+}
+
+.policy-content__inner {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+
+  @media (max-width: $bp-tablet) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+// ─── left: sticky table of contents ────────────────────────
+
+.policy-content__toc {
+  position: sticky;
+  top: 104px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+
+  @media (max-width: $bp-tablet) {
+    position: static;
+    padding-bottom: 0;
+  }
+}
+
+.policy-content__toc-label {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: colors.$color-walnut;
+  padding-bottom: 12px;
+  border-bottom: 1px solid colors.$color-border;
+}
+
+.policy-content__toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  @media (max-width: $bp-tablet) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+}
+
+.policy-content__toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 8px;
+  border: none;
+  border-radius: $radius-sm;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: colors.$color-text-secondary;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.18s ease, background-color 0.18s ease;
+
+  &:hover {
+    color: colors.$color-espresso;
+    background-color: rgba(colors.$color-espresso, 0.05);
+  }
+
+  &--active {
+    color: colors.$color-espresso;
+    font-weight: 600;
+    background-color: rgba(colors.$color-burnt-red, 0.08);
+
+    .policy-content__toc-index {
+      color: colors.$color-burnt-red;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$color-espresso;
+    outline-offset: 2px;
+  }
+}
+
+.policy-content__toc-index {
+  flex-shrink: 0;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: colors.$color-text-secondary;
+}
+
+// ─── right: flows in the page's own scroll ─────────────────
+// The left TOC is sticky and rides along until this column's content
+// ends, then releases naturally — no separate inner scrollbar.
+
+.policy-content__panel {
+  min-width: 0;
+}
+
+.policy-content__summary {
+  background-color: colors.$color-ivory;
+  border: 1px solid colors.$color-border;
+  border-radius: $radius-lg;
+  padding: 28px 32px;
+  margin-bottom: 56px;
+
+  p {
+    margin: 10px 0 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.75;
+    color: colors.$color-espresso;
+  }
+}
+
+.policy-content__summary-label {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: colors.$color-burnt-red;
+}
+
+.policy-content__section {
+  padding: 40px 0;
+  border-top: 1px solid colors.$color-border;
+  scroll-margin-top: 120px;
+
+  &:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  h3 {
+    margin: 8px 0 16px;
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 500;
+    color: colors.$color-espresso;
+  }
+
+  p {
+    margin: 0 0 14px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.8;
+    color: colors.$color-text-secondary;
+    max-width: 68ch;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.policy-content__section-number {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: colors.$color-burnt-red;
+}
