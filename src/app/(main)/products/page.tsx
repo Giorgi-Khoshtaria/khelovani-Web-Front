@@ -12,11 +12,38 @@ import {
   sanitizeCategory,
 } from "@/lib/utils/productFilters";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
+import { getPageByPath } from "@/apiCalls/pageRequests/page.req";
+import { Lang } from "@/lib/types/lang.types";
+import { buildPageMetadata } from "@/lib/utils/seo";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = { title: "პროდუქტები" };
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("lang")?.value as Lang) || "ge";
+
+  try {
+    const page = await getPageByPath("/products");
+    return buildPageMetadata({
+      path: "/products",
+      title: lang === "ge" ? page.title.ka : page.title.en,
+      description: lang === "ge" ? page.description.ka : page.description.en,
+      ogImage: page.ogImage,
+      noindex: page.noindex,
+    });
+  } catch {
+    return buildPageMetadata({
+      path: "/products",
+      title: lang === "ge" ? "პროდუქტები" : "Products",
+      description:
+        lang === "ge"
+          ? "დაათვალიერეთ ხელნაკეთი პროდუქტები ქართველი ხელოსნებისგან — კერამიკა, სამკაული, ტექსტილი და სხვა."
+          : "Browse handmade products from Georgian artisans — ceramics, jewelry, textiles, and more.",
+    });
+  }
+}
 
 const EMPTY: GetProductsResponse = {
   data: [],

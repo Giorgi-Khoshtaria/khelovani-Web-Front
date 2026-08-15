@@ -36,17 +36,45 @@ import {
   type PublicCategory,
 } from "@/apiCalls/categoryRequests/category.req";
 import { getMenu, type MenuItem } from "@/apiCalls/menu/menu.req";
+import { SITE_URL, SITE_NAME, organizationJsonLd } from "@/lib/utils/seo";
 
 // Default title for every page (client-component pages can't export their own
 // metadata, so they inherit this). Server pages override `title` with the page
 // name, which renders through the template as "Page · Khelovani".
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Khelovani — ქართული ხელნაკეთი ნივთები",
     template: "%s · Khelovani",
   },
   description:
     "Khelovani — ქართველი ხელოსნებისა და ბრენდების ონლაინ მარკეტი: ხელნაკეთი კერამიკა, სამკაული, ტექსტილი და სხვა.",
+  keywords: [
+    "ხელნაკეთი ნივთები",
+    "ქართული ხელოსნობა",
+    "handmade Georgia",
+    "Georgian crafts",
+    "Khelovani",
+  ],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "ka_GE",
+    alternateLocale: "en_US",
+    images: [{ url: "/assets/og-default.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/assets/og-default.png"],
+  },
 };
 
 export default async function RootLayout({
@@ -78,6 +106,10 @@ export default async function RootLayout({
       className={`${cormorant.variable} ${notoSerifGeorgian.variable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
         <LanguageProvider
           initialTranslations={translations}
           initialLang={initialLang}

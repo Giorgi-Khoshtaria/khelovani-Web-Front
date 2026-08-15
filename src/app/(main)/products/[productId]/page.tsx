@@ -6,6 +6,7 @@ import { Partner } from "@/lib/types/partnerTypes";
 import ProductDetail from "@/components/productsPage/productDetail/ProductDetail";
 import type { Metadata } from "next";
 import RelatedProducts from "@/components/productsPage/relatedProducts/RelatedProducts";
+import { buildPageMetadata, productJsonLd } from "@/lib/utils/seo";
 
 interface Props {
   params: Promise<{ productId: string }>;
@@ -20,17 +21,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const title = product.titleEn || product.titleGe;
     const description = product.descriptionEn || product.descriptionGe;
     const ogImage = product.images?.[0] || DEFAULT_OG_IMAGE;
-    return {
-      // Brand suffix is added by the root layout's title template.
+    // Brand suffix is added by the root layout's title template.
+    return buildPageMetadata({
+      path: `/products/${productId}`,
       title,
-      description: description?.slice(0, 160),
-      openGraph: { images: [ogImage] },
-    };
+      description: description?.slice(0, 160) || "",
+      ogImage,
+    });
   } catch {
-    return {
+    return buildPageMetadata({
+      path: `/products/${productId}`,
       title: "Product",
-      openGraph: { images: [DEFAULT_OG_IMAGE] },
-    };
+      description: "",
+      ogImage: DEFAULT_OG_IMAGE,
+    });
   }
 }
 
@@ -60,8 +64,27 @@ export default async function ProductDetailPage({ params }: Props) {
     }
   }
 
+  const jsonLd = productJsonLd({
+    path: `/products/${productId}`,
+    titleKa: product.titleGe,
+    titleEn: product.titleEn,
+    descriptionKa: product.descriptionGe,
+    descriptionEn: product.descriptionEn,
+    images: product.images,
+    price: product.price,
+    currency: product.currency,
+    inStock: product.stockQuantity > 0,
+    partnerName: partner
+      ? partner.companyNameEn || partner.companyNameGe
+      : undefined,
+  });
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ProductDetail product={product} partner={partner} />
       <RelatedProducts
         currentProductId={product._id}

@@ -6,6 +6,7 @@ import { getPartnerById } from "@/apiCalls/partnerRequests/partner.req";
 import { getProducts } from "@/apiCalls/productRequests/product.req";
 import { IProduct } from "@/lib/types/productTypes";
 import { Lang } from "@/lib/types/lang.types";
+import { buildPageMetadata, partnerJsonLd } from "@/lib/utils/seo";
 
 // Per-request dedupe: generateMetadata + page render share one fetch.
 const fetchPartner = cache((id: string) =>
@@ -23,7 +24,11 @@ export async function generateMetadata({
   const lang = (cookieStore.get("lang")?.value as Lang) || "ge";
 
   if (!partner) {
-    return { title: "Partner Not Found" };
+    return buildPageMetadata({
+      path: `/partners/${id}`,
+      title: "Partner Not Found",
+      description: "",
+    });
   }
 
   const name = lang === "ge" ? partner.companyNameGe : partner.companyNameEn;
@@ -32,15 +37,14 @@ export async function generateMetadata({
       ? partner.description
       : partner.descriptionEn || partner.description;
 
-  return {
-    // Brand suffix is added by the root layout's title template.
+  // Brand suffix is added by the root layout's title template.
+  return buildPageMetadata({
+    path: `/partners/${id}`,
     title: name,
     description:
       description?.slice(0, 160) || `Check out ${name}'s profile on Khelovani.`,
-    openGraph: {
-      images: partner.profilePhoto ? [partner.profilePhoto] : [],
-    },
-  };
+    ogImage: partner.profilePhoto,
+  });
 }
 
 export default async function PartnerProfilePage({
@@ -68,8 +72,28 @@ export default async function PartnerProfilePage({
     }
   }
 
+  const jsonLd = partnerData
+    ? partnerJsonLd({
+        path: `/partners/${id}`,
+        name:
+          lang === "ge" ? partnerData.companyNameGe : partnerData.companyNameEn,
+        description:
+          lang === "ge"
+            ? partnerData.description
+            : partnerData.descriptionEn || partnerData.description,
+        image: partnerData.profilePhoto,
+        city: partnerData.city,
+      })
+    : null;
+
   return (
     <div>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
       <PartnerDetail
         id={id}
         initialData={partnerData}
